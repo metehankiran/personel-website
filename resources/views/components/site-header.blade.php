@@ -45,9 +45,9 @@
                         <div class="nav-drop-title">Blog</div>
                         <div class="nav-drop-desc">Teknik makaleler</div>
                     </a>
-                    <a class="nav-drop-link" href="{{ $link('notes') }}">
-                        <div class="nav-drop-title">Notlar</div>
-                        <div class="nav-drop-desc">Kısa düşünceler</div>
+                    <a class="nav-drop-link" href="{{ $link('bookmarks') }}">
+                        <div class="nav-drop-title">Yer İşaretlerim</div>
+                        <div class="nav-drop-desc">Faydalı linkler</div>
                     </a>
                 </div>
             </div>
@@ -67,7 +67,6 @@
                 <span class="search-trigger-text">Ara…</span>
                 <kbd>⌘K</kbd>
             </button>
-            <span class="status-dot">Müsait</span>
             <a href="{{ $link('contact') }}" class="btn btn-primary btn-sm">İletişim</a>
         </div>
     </div>
