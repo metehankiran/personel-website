@@ -14,6 +14,7 @@ Route::get('/references', [PageController::class, 'references'])->name('referenc
 Route::get('/stack', [PageController::class, 'stack'])->name('stack');
 Route::get('/cv', [PageController::class, 'cv'])->name('cv');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/bookmarks', [PageController::class, 'bookmarks'])->name('bookmarks');
 
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
 Route::get('/projects/{slug}', [ProjectController::class, 'show'])->name('projects.show');
