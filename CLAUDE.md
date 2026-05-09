@@ -37,6 +37,75 @@ Standard Laravel 13 layout — most behavior follows framework defaults. Things 
 - **Tests**: `Pest.php` extends `TestCase` for the `Feature` suite. `RefreshDatabase` is **commented out** at the suite level — opt in per test file when database state matters. Most new tests should be feature tests (`php artisan make:test --pest Name`), unit tests only for pure logic.
 - **Skills directory** (`.claude/skills/`) contains Laravel/PHP/Tailwind specialist skills that auto-activate when relevant — let them trigger naturally; don't manually invoke unless needed.
 
+## Architecture Conventions
+
+**Admin / backend** will be built on **Filament** (not yet installed). Public-facing controllers therefore stay minimal — no `Route::resource()`, no RESTful CRUD routes for content management. When admin is needed, add Filament Resources under `app/Filament/Resources/`.
+
+**Frontend controller strategy:**
+- **Static pages** → single `PageController` with one action per page (`home()`, `about()`, `services()`, `references()`, `stack()`, `cv()`, `uses()`, `contact()`).
+- **Dynamic content** → dedicated controllers with only the actions actually needed: `BlogController` (`index`, `show`), `ProjectController` (`index`, `show`), `NoteController` (`index`, `show`).
+- **Form submissions** → small action-specific controllers (e.g. `ContactController@send`).
+- Avoid invokable controllers for static pages — grouping them in `PageController` keeps related view logic in one place.
+
+**Layout:** the master Blade layout is always `resources/views/layouts/app.blade.php` — extend it with `@extends('layouts.app')`. Do not introduce alternative layout names.
+
+**View organization:**
+```
+resources/views/
+├── layouts/
+│   └── app.blade.php           # Master layout
+├── components/                 # Reusable Blade components (header, footer, etc.)
+└── pages/
+    ├── home.blade.php
+    ├── about.blade.php
+    └── blog/
+        ├── index.blade.php
+        └── show.blade.php
+```
+
+## Test-Driven Development (Required)
+
+This project follows TDD strictly — tests come first, implementation follows.
+
+**Per-feature workflow:**
+1. Write a failing test in `tests/Feature/` (or `tests/Unit/` for pure logic).
+2. Run `composer test` (or `php artisan test --compact`) — confirm it fails.
+3. Write the minimum code (route + controller + view + model) to make it pass.
+4. Run tests again — confirm green.
+5. Refactor if needed — tests must still pass.
+6. Run `vendor/bin/pint --dirty --format agent`.
+7. Commit.
+
+**Pre-commit checks (mandatory before every commit):**
+- ✅ `composer test` — all tests must pass.
+- ✅ `vendor/bin/pint --dirty --format agent` — formatting clean on changed PHP files.
+- ❌ Do not commit when tests fail. Fix the failure first.
+- ❌ Do not commit when Pint reports issues. Apply formatting first.
+
+For markdown-only or config-only changes, still run both — Pint is a no-op on non-PHP files, and tests act as a smoke check that nothing else broke.
+
+## Coding Standards (Required)
+
+**All code is written in English. Only end-user-facing strings may be Turkish.**
+
+English-only:
+- Variables, functions, classes, methods, properties, enums, constants
+- File and folder names
+- Route names and URL slugs (`/about`, `/contact`, `/projects` — never `/hakkimda`, `/iletisim`)
+- Migration table/column names
+- Commit messages and branch names
+- Code comments and PHPDoc
+- Test names, config keys, log messages
+
+Turkish allowed (only for things the end user sees):
+- Blade template content (visible text)
+- Validation messages shown to users
+- Email subjects and bodies sent to users
+- UI labels, button text, flash messages
+- Seed data when it represents user-facing content (sample posts, etc.)
+
+The supplied static theme uses Turkish URL slugs (`hakkimda.html`, `iletisim.html`) — when porting to Blade, **rewrite the routes in English** but keep the visible link text Turkish: `hakkimda.html` → `Route::get('/about', ...)->name('about')` with `<a href="{{ route('about') }}">Hakkımda</a>` in the view.
+
 ## Commit Workflow (Required)
 
 **Conventional Commits format is mandatory** for every commit on this repo.
