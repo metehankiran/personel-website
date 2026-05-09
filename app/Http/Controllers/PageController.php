@@ -38,11 +38,6 @@ class PageController extends Controller
         return view('pages.cv');
     }
 
-    public function uses(): View
-    {
-        return view('pages.uses');
-    }
-
     public function contact(): View
     {
         return view('pages.contact');

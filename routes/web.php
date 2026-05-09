@@ -11,5 +11,4 @@ Route::get('/services', [PageController::class, 'services'])->name('services');
 Route::get('/references', [PageController::class, 'references'])->name('references');
 Route::get('/stack', [PageController::class, 'stack'])->name('stack');
 Route::get('/cv', [PageController::class, 'cv'])->name('cv');
-Route::get('/uses', [PageController::class, 'uses'])->name('uses');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');

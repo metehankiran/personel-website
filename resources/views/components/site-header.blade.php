@@ -49,10 +49,6 @@
                         <div class="nav-drop-title">Notlar</div>
                         <div class="nav-drop-desc">Kısa düşünceler</div>
                     </a>
-                    <a class="nav-drop-link" href="{{ $link('uses') }}">
-                        <div class="nav-drop-title">Uses</div>
-                        <div class="nav-drop-desc">Setup ve araçlar</div>
-                    </a>
                 </div>
             </div>
             <div class="nav-item">
