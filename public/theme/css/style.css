@@ -179,6 +179,10 @@ em { font-style: italic; font-weight: 400; }
   padding: 8px; z-index: 50;
   display: none;
 }
+.nav-dropdown::before {
+  content: ''; position: absolute;
+  top: -8px; left: 0; right: 0; height: 8px;
+}
 .nav-item:hover .nav-dropdown { display: block; }
 .nav-drop-link {
   display: block; padding: 10px 12px; border-radius: 8px;
