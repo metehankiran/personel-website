@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Laravel'de gerçekten lazım olan paketler — Metehan Kıran</title>
+<meta name="description" content="Her projede tekrar tekrar kurduğum 7 paket — neden vazgeçilmez, hangi alternatifleri denedim, ne zaman kullanmamak gerekir." />
+<meta name="author" content="Metehan Kıran" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+
+<link rel="canonical" href="https://metehankiran.dev/blog-post.html" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="tr_TR" />
+<meta property="og:url" content="https://metehankiran.dev/blog-post.html" />
+<meta property="og:title" content="Laravel'de gerçekten lazım olan paketler — Metehan Kıran" />
+<meta property="og:description" content="Her projede tekrar tekrar kurduğum 7 paket — neden vazgeçilmez, hangi alternatifleri denedim, ne zaman kullanmamak gerekir." />
+<meta property="og:image" content="https://metehankiran.dev/og-image.png" />
+<meta property="og:site_name" content="Metehan Kıran" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Laravel'de gerçekten lazım olan paketler — Metehan Kıran" />
+<meta name="twitter:description" content="Her projede tekrar tekrar kurduğum 7 paket — neden vazgeçilmez, hangi alternatifleri denedim, ne zaman kullanmamak gerekir." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;500&family=Source+Serif+Pro:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Laravel'de gerçekten lazım olan paketler",
+  "datePublished": "2024-11-12",
+  "author": { "@type": "Person", "name": "Metehan Kıran" },
+  "description": "Her projede tekrar tekrar kurduğum 7 paket — neden vazgeçilmez, hangi alternatifleri denedim, ne zaman kullanmamak gerekir.",
+  "url": "https://metehankiran.dev/blog-post.html"
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Ana içeriğe atla</a>
+<header class="site-header" role="banner">
+  <div class="site-header-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-mark"></span>
+      <span class="brand-text">
+        <span class="brand-name">Metehan Kıran</span>
+        <span class="brand-role">full-stack developer</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Ana menü">
+<div class="nav-item"><a href="index.html" class="nav-link" data-nav="index.html">Ana sayfa</a></div>
+<div class="nav-item"><a href="hakkimda.html" class="nav-link" data-nav="hakkimda.html">Hakkımda</a></div>
+<div class="nav-item">
+  <button class="nav-link" type="button">İşler<svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 3.5L4.5 6L7 3.5"/></svg></button>
+  <div class="nav-dropdown">
+    <a class="nav-drop-link" href="projeler.html" data-nav="projeler.html"><div class="nav-drop-title">Projeler</div><div class="nav-drop-desc">28 case study</div></a>
+    <a class="nav-drop-link" href="hizmetler.html" data-nav="hizmetler.html"><div class="nav-drop-title">Hizmetler</div><div class="nav-drop-desc">Freelance teklif</div></a>
+    <a class="nav-drop-link" href="referanslar.html" data-nav="referanslar.html"><div class="nav-drop-title">Referanslar</div><div class="nav-drop-desc">Müşteri yorumları</div></a>
+    <a class="nav-drop-link" href="stack.html" data-nav="stack.html"><div class="nav-drop-title">Stack</div><div class="nav-drop-desc">Kullandığım teknolojiler</div></a>
+  </div>
+</div>
+<div class="nav-item">
+  <button class="nav-link" type="button">Yazı<svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 3.5L4.5 6L7 3.5"/></svg></button>
+  <div class="nav-dropdown">
+    <a class="nav-drop-link" href="blog.html" data-nav="blog.html"><div class="nav-drop-title">Blog</div><div class="nav-drop-desc">Teknik makaleler</div></a>
+    <a class="nav-drop-link" href="notlar.html" data-nav="notlar.html"><div class="nav-drop-title">Notlar</div><div class="nav-drop-desc">Kısa düşünceler</div></a>
+    <a class="nav-drop-link" href="uses.html" data-nav="uses.html"><div class="nav-drop-title">Uses</div><div class="nav-drop-desc">Setup ve araçlar</div></a>
+  </div>
+</div>
+<div class="nav-item"><a href="cv.html" class="nav-link" data-nav="cv.html">CV</a></div>
+<div class="nav-item"><a href="iletisim.html" class="nav-link" data-nav="iletisim.html">İletişim</a></div></nav>
+    <div class="nav-right">
+      <button type="button" class="nav-theme-toggle" data-theme-toggle aria-label="Tema değiştir" title="Tema değiştir">☾</button>
+      <button type="button" class="search-trigger" data-search-trigger aria-label="Sitede ara (Cmd+K)" aria-haspopup="dialog">
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+    <circle cx="6" cy="6" r="4.2"/><path d="M9 9L12.5 12.5"/>
+  </svg>
+  <span class="search-trigger-text">Ara…</span>
+  <kbd>⌘K</kbd>
+</button>
+      <span class="status-dot">Müsait</span>
+      <a href="iletisim.html" class="btn btn-primary btn-sm">İletişim</a>
+    </div>
+  </div>
+</header>
+<main id="main-content" tabindex="-1">
+
+<article class="article">
+  <header class="article-header">
+    <div class="container-narrow">
+      <div class="article-meta-top">
+        <a href="blog.html" class="back-link">← Blog</a>
+        <span class="chip">Laravel</span>
+      </div>
+      <h1 class="article-title">Laravel'de gerçekten lazım olan paketler</h1>
+      <p class="article-lede">Her projede tekrar tekrar kurduğum 7 paket — neden vazgeçilmez, hangi alternatifleri denedim, ne zaman kullanmamak gerekir.</p>
+      <div class="article-byline">
+        <div class="byline-author">
+          <span class="brand-mark"></span>
+          <div>
+            <div class="byline-name">Metehan Kıran</div>
+            <div class="byline-meta">12 Kasım 2024 · 6 dk okuma</div>
+          </div>
+        </div>
+        <div class="article-share">
+          <button class="share-btn" type="button" aria-label="Twitter'da paylaş">𝕏</button>
+          <button class="share-btn" type="button" aria-label="LinkedIn'de paylaş">in</button>
+          <button class="share-btn" type="button" aria-label="Linki kopyala">⌘</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container-narrow article-body">
+    <div class="article-toc-wrap">
+      <aside class="article-toc" aria-label="İçindekiler">
+        <div class="eyebrow-sm" style="margin-bottom:14px;">İçindekiler</div>
+        <ol>
+          <li><a href="#giris" class="active">Giriş</a></li>
+          <li><a href="#paket-1">1. Spatie Laravel Permission</a></li>
+          <li><a href="#paket-2">2. Laravel Telescope</a></li>
+          <li><a href="#paket-3">3. Pest</a></li>
+          <li><a href="#paket-4">4. Laravel Horizon</a></li>
+          <li><a href="#paket-5">5. Laravel Scout</a></li>
+          <li><a href="#paket-6">6. Spatie Media Library</a></li>
+          <li><a href="#paket-7">7. Laravel Pulse</a></li>
+          <li><a href="#sonuc">Sonuç</a></li>
+        </ol>
+      </aside>
+      <div class="prose-article">
+        <p class="lead-para" id="giris">5 yıllık Laravel pratiğimde, her yeni projeye başladığımda otomatik kurduğum bir avuç paket var. Bunların hiçbiri "havalı olduğu için" değil — hepsi gerçek bir problemi çözüyor ve yıllar içinde kendini ispatladılar.</p>
+
+        <p>Bu listenin amacı bir "must-have" katalogu çıkartmak değil. Daha çok, hangi problemi hangi paketle çözdüğümü ve neden bu paketi seçtiğimi anlatmak. Listedeki paketlerin alternatiflerini de denedim — kararı paylaşmak istiyorum.</p>
+
+        <h2 id="paket-1">1. Spatie Laravel Permission</h2>
+        <p>Authorization yönetimi, üzerinde 10 dakika düşünülmemiş bir konuysa hayatınız çok zorlaşır. Bu paket, role + permission tabanlı yetkilendirmeyi standardize ediyor.</p>
+        <pre><code>composer require spatie/laravel-permission
+
+// User modeli
+use HasRoles;
+
+// Kullanım
+$user-&gt;assignRole('editor');
+$user-&gt;can('publish-articles');</code></pre>
+        <p>Alternatifi: kendin yazmak. Denedim, geri döndüm.</p>
+        <blockquote>Authorization, ürünün mantığıyla en sıkı bağı olan ama en çok ihmal edilen kısımdır. Standart bir paket kullanmak takım hatalarını radikal düşürüyor.</blockquote>
+
+        <h2 id="paket-2">2. Laravel Telescope</h2>
+        <p>Local geliştirmede mutlaka açık tutarım. SQL, request, exception, mail — hepsi tek bir dashboard'ta. Production'da kapatın, çünkü performans maliyeti var ve hassas veri sızdırır.</p>
+
+        <h2 id="paket-3">3. Pest</h2>
+        <p>PHPUnit'in syntax'ı bana hep ağır geldi. Pest ile test yazmak gerçekten zevkli hale geliyor.</p>
+        <pre><code>it('logs user in', function () {
+    $user = User::factory()-&gt;create();
+    actingAs($user)-&gt;get('/dashboard')-&gt;assertOk();
+});</code></pre>
+
+        <h2 id="paket-4">4. Laravel Horizon</h2>
+        <p>Queue işlerini takip etmek için. Redis ile kullanmak şart, ama zaten Redis kullanıyorsanız Horizon hayatı kolaylaştırıyor.</p>
+
+        <h2 id="paket-5">5. Laravel Scout</h2>
+        <p>Full-text arama. Algolia ile başlardım ama maliyet yüksek; bugün Meilisearch ile self-host ediyorum.</p>
+
+        <h2 id="paket-6">6. Spatie Media Library</h2>
+        <p>Dosya yükleme + thumbnail + multiple disk desteği. Manuel S3 entegrasyonu yapmaktan kurtarıyor.</p>
+
+        <h2 id="paket-7">7. Laravel Pulse</h2>
+        <p>Production'da app sağlığını izlemek için. Sentry'nin yaptığı şeyin ücretsiz versiyonu sayılabilir, ama daha sınırlı.</p>
+
+        <h2 id="sonuc">Sonuç</h2>
+        <p>Her paket, ekstra bir bağımlılık demek. Ama bu listedeki 7 paketin hiçbiri için "keşke yazmasaydım" demedim. Aksine, her birini elimle yazmaya kalkıştığımda sonuç hep daha kötü oldu.</p>
+        <p>Kullanmadığın bir paket varsa, denemek için bir günü ayır. Hangi sorunu çözdüğünü anlamadan, "şimdi lazım" demeden kurma.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="article-footer">
+    <div class="container-narrow">
+      <div class="article-tags-row">
+        <div class="eyebrow-sm">Etiketler</div>
+        <div class="tag-list"><span class="chip">Laravel</span><span class="chip">PHP</span><span class="chip">Backend</span></div>
+      </div>
+      <div class="article-cta">
+        <h3>Bu yazıdan hoşlandın mı?</h3>
+        <p>Ayda 1-2 yazı. Email'ine düşüversin.</p>
+        <form data-mk-form><input class="input" placeholder="email@adres" /><button class="btn btn-primary">Abone ol →</button></form>
+      </div>
+    </div>
+  </footer>
+</article>
+
+<section><div class="container">
+  <div class="section-head"><h2>Sıradakiler</h2><a href="blog.html" class="link-arrow">Tüm yazılar →</a></div>
+  <div class="grid-3">
+    <a href="blog-post.html" class="card"><div class="card-image"></div><div class="card-title-row"><h3 class="card-title">.NET Core ile API yazarken yaptığım 5 hata</h3></div><div class="card-desc">8 dk · .NET</div></a>
+    <a href="blog-post.html" class="card"><div class="card-image"></div><div class="card-title-row"><h3 class="card-title">Vue 3 Composition API: pratiğe geçince</h3></div><div class="card-desc">5 dk · Vue</div></a>
+    <a href="blog-post.html" class="card"><div class="card-image"></div><div class="card-title-row"><h3 class="card-title">Multi-tenant SaaS: tek veritabanı ya da kiracı başına?</h3></div><div class="card-desc">12 dk · Mimari</div></a>
+  </div>
+</div></section>
+</main>
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand"><span class="brand-mark"></span><span>Metehan Kıran</span></div>
+      <p class="footer-text">Bağımsız full-stack developer. Laravel, Vue ve .NET Core ile ürünler inşa ediyorum. İstanbul'dan, dünyanın her yerine.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Site</div>
+      <div class="footer-links">
+        <a href="index.html">Ana sayfa</a><a href="hakkimda.html">Hakkımda</a><a href="projeler.html">Projeler</a><a href="blog.html">Blog</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">İşler</div>
+      <div class="footer-links">
+        <a href="hizmetler.html">Hizmetler</a><a href="stack.html">Stack</a><a href="referanslar.html">Referanslar</a><a href="cv.html">CV</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Bağlan</div>
+      <div class="footer-links">
+        <a href="mailto:merhaba@metehankiran.dev">Email</a><a href="#">GitHub</a><a href="#">LinkedIn</a><a href="#">Twitter</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 Metehan Kıran</span><span>İstanbul, Türkiye</span></div>
+</footer>
+<script src="js/main.js"></script>
+<script src="js/search.js" defer></script>
+<script src="js/cookie.js" defer></script>
+</body>
+</html>
