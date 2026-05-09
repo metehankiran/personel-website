@@ -1,3 +1,64 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+
+Personal blog site built on **Laravel 13 + Tailwind v4 + Pest 4**. Currently a fresh Laravel skeleton — the blog domain (posts, categories, tags, etc.) has not yet been built. Treat the current state as a starting point: when adding blog features, scaffold via `php artisan make:` commands and follow the conventions described below.
+
+- Owner: Metehan Kıran (single-user / single-author site)
+- Stack: PHP 8.5, Laravel 13.7, Tailwind v4 (via `@tailwindcss/vite`), Vite 8, Pest 4, SQLite
+- Default drivers: `DB_CONNECTION=sqlite`, `QUEUE_CONNECTION=database`, `CACHE_STORE=database`, `SESSION_DRIVER=database` — no Redis/external services required to run locally.
+
+## Development Commands
+
+| Task | Command |
+| --- | --- |
+| Start full dev environment (server + queue worker + log tail + Vite) | `composer run dev` |
+| Run tests (clears config first) | `composer test` |
+| Run a single test file | `php artisan test --compact tests/Feature/SomeTest.php` |
+| Filter by test name | `php artisan test --compact --filter=testName` |
+| Frontend dev server only | `npm run dev` |
+| Build frontend assets | `npm run build` |
+| Format PHP (required before finalizing changes) | `vendor/bin/pint --dirty --format agent` |
+| Tail logs in real time | `php artisan pail` |
+| First-time setup | `composer setup` |
+
+`composer run dev` is the preferred dev loop — it concurrently runs `php artisan serve`, `queue:listen`, `pail`, and `npm run dev` so a single terminal covers everything. If a frontend change isn't visible in the browser, the user likely needs to (re)start `npm run dev` or run `npm run build`.
+
+## Architecture Notes
+
+Standard Laravel 13 layout — most behavior follows framework defaults. Things worth knowing that aren't obvious from a directory listing:
+
+- **No `app/Http/Kernel.php` / `app/Console/Kernel.php`** — Laravel 11+ moved these into `bootstrap/app.php`. Register middleware, exception handling, and console scheduling there, not in the legacy locations.
+- **Routes live in `routes/web.php` and `routes/console.php`** — there is no `routes/api.php` by default. If an API surface is needed, install it via `php artisan install:api` rather than creating the file manually (this also wires up Sanctum).
+- **Database is SQLite** at `database/database.sqlite`. Migrations should stay portable; avoid MySQL-specific column types unless the user agrees to switch drivers.
+- **Frontend pipeline**: `resources/css/app.css` and `resources/js/app.js` are the Vite entry points (configured in `vite.config.js`). Tailwind v4 is loaded via the `@tailwindcss/vite` plugin — there is no `tailwind.config.js`; configuration lives inside the CSS file using `@theme` (Tailwind v4 convention). The `Instrument Sans` font is fetched at build time via the `bunny` Vite plugin.
+- **Tests**: `Pest.php` extends `TestCase` for the `Feature` suite. `RefreshDatabase` is **commented out** at the suite level — opt in per test file when database state matters. Most new tests should be feature tests (`php artisan make:test --pest Name`), unit tests only for pure logic.
+- **Skills directory** (`.claude/skills/`) contains Laravel/PHP/Tailwind specialist skills that auto-activate when relevant — let them trigger naturally; don't manually invoke unless needed.
+
+## Commit Workflow (Required)
+
+**Conventional Commits format is mandatory** for every commit on this repo.
+
+Format: `<type>(<scope>): <description>` — e.g. `feat(blog): add post listing page`, `fix(auth): resolve redirect loop`, `chore(deps): bump pest to 4.8`.
+
+Allowed types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `perf`, `build`, `ci`.
+
+Workflow rules:
+- **Commit at logical boundaries.** When a feature/fix/refactor/test addition is complete, proactively remind the user to commit before moving on. Don't let unrelated changes pile up.
+- **Atomic commits.** If multiple independent changes accumulate, split them into separate commits with separate messages — never bundle unrelated work.
+- **Never commit automatically.** Always propose the message and wait for explicit approval.
+- **Never use** `--no-verify`, `--amend` on shared commits, or force-push without explicit user request.
+- Commit messages may be written in Turkish or English; the Conventional Commits structure must be preserved either way.
+
+## Replies
+
+- Be concise. Skip obvious explanations; focus on what's important.
+- Do not create documentation files (`*.md`) unless explicitly requested.
+
+---
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
@@ -154,3 +215,5 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - Do NOT delete tests without approval.
 
 </laravel-boost-guidelines>
+</content>
+</invoke>
