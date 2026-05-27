@@ -27,6 +27,8 @@ Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
 Route::get('/projects/{project:slug}', [ProjectController::class, 'show'])->name('projects.show');
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
+Route::get('/blog/category/{category:slug}', [BlogController::class, 'category'])->name('blog.category');
+Route::get('/blog/tag/{tag:slug}', [BlogController::class, 'tag'])->name('blog.tag');
 Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');

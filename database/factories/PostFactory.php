@@ -23,7 +23,6 @@ class PostFactory extends Factory
             'body' => fake()->paragraphs(5, true),
             'cover_image' => null,
             'category_id' => Category::factory(),
-            'reading_time' => fake()->numberBetween(2, 15),
             'is_published' => false,
             'published_at' => null,
         ];

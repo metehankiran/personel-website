@@ -23,7 +23,6 @@ it('shows blog post content', function () {
     $post = Post::factory()->published()->for($category)->create([
         'title' => 'Test Başlık',
         'body' => 'Makale içeriği burada.',
-        'reading_time' => 8,
     ]);
     $post->tags()->attach($tag);
 
@@ -32,7 +31,7 @@ it('shows blog post content', function () {
         ->assertSee('Makale içeriği burada', escape: false)
         ->assertSee('Laravel', escape: false)
         ->assertSee('PHP', escape: false)
-        ->assertSee('8 dk', escape: false);
+        ->assertSee('dk okuma', escape: false);
 });
 
 it('shows related posts', function () {

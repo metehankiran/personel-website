@@ -25,13 +25,12 @@ it('displays published posts from database', function () {
     Post::factory()->published()->for($category)->create([
         'title' => 'Test Yazısı',
         'excerpt' => 'Kısa açıklama',
-        'reading_time' => 6,
     ]);
 
     $this->get(route('blog'))
         ->assertSee('Test Yazısı', escape: false)
         ->assertSee('Kısa açıklama', escape: false)
-        ->assertSee('6 dk', escape: false)
+        ->assertSee('dk okuma', escape: false)
         ->assertSee('Laravel', escape: false);
 });
 
@@ -45,13 +44,38 @@ it('does not display draft posts', function () {
         ->assertDontSee('Taslak Yazı');
 });
 
-it('displays tag filters from database', function () {
-    $tag = Tag::factory()->create(['name' => 'PHP']);
-    $post = Post::factory()->published()->for(Category::factory())->create();
-    $post->tags()->attach($tag);
+it('filters posts by category via url', function () {
+    $laravel = Category::factory()->create(['name' => 'Laravel', 'slug' => 'laravel']);
+    $vue = Category::factory()->create(['name' => 'Vue', 'slug' => 'vue']);
+    Post::factory()->published()->for($laravel)->create(['title' => 'Laravel Yazısı']);
+    Post::factory()->published()->for($vue)->create(['title' => 'Vue Yazısı']);
+
+    $this->get(route('blog.category', $laravel))
+        ->assertOk()
+        ->assertSee('Laravel Yazısı', escape: false)
+        ->assertDontSee('Vue Yazısı');
+});
+
+it('filters posts by tag via url', function () {
+    $tag = Tag::factory()->create(['name' => 'PHP', 'slug' => 'php']);
+    $category = Category::factory()->create();
+    $tagged = Post::factory()->published()->for($category)->create(['title' => 'PHP Yazısı']);
+    $tagged->tags()->attach($tag);
+    Post::factory()->published()->for($category)->create(['title' => 'Diğer Yazı']);
+
+    $this->get(route('blog.tag', $tag))
+        ->assertOk()
+        ->assertSee('PHP Yazısı', escape: false)
+        ->assertDontSee('Diğer Yazı');
+});
+
+it('shows category and tag links in sidebar', function () {
+    Category::factory()->create(['name' => 'Laravel', 'slug' => 'laravel']);
+    Tag::factory()->create(['name' => 'PHP', 'slug' => 'php']);
 
     $this->get(route('blog'))
-        ->assertSee('PHP', escape: false);
+        ->assertSee(route('blog.category', 'laravel'), escape: false)
+        ->assertSee(route('blog.tag', 'php'), escape: false);
 });
 
 it('shows newsletter subscription form', function () {

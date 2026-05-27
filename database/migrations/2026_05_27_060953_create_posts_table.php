@@ -19,7 +19,6 @@ return new class extends Migration
             $table->longText('body');
             $table->string('cover_image')->nullable();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
-            $table->unsignedInteger('reading_time')->default(0);
             $table->boolean('is_published')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();

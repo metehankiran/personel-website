@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'Blog — Metehan Kıran')
+@section('title', ($activeCategory ? $activeCategory->name . ' — ' : ($activeTag ? $activeTag->name . ' — ' : '')) . 'Blog — Metehan Kıran')
 
 @section('content')
     <section><div class="container">
         <div class="split-2" style="grid-template-columns:1fr 280px;align-items:start;">
             <div>
                 <div class="eyebrow">Blog</div>
-                <h1 class="h1">Yazılar.</h1>
+                <h1 class="h1">{{ $activeCategory ? $activeCategory->name : ($activeTag ? '#'.$activeTag->name : 'Yazılar.') }}</h1>
                 <p class="lede" style="max-width:480px;">Çalışırken karşılaştığım problemleri, deneyimleri ve denedikçe öğrendiklerimi yazıyorum.</p>
                 <div style="margin-top:48px;">
                     @forelse($posts as $post)
-                        <a href="{{ route('blog.show', $post) }}" class="post" data-filter-target="blog" data-filter-value="{{ $post->category->name }}">
+                        <a href="{{ route('blog.show', $post) }}" class="post">
                             <div class="post-meta">
                                 <span class="chip">{{ $post->category->name }}</span>
                                 <span class="post-date">{{ $post->published_at->format('Y-m-d') }}</span>
@@ -23,18 +23,28 @@
                             @endif
                         </a>
                     @empty
-                        <p style="color:var(--dim);">Henüz yazı yayınlanmadı.</p>
+                        <p style="color:var(--dim);">Bu filtrede yazı bulunamadı.</p>
                     @endforelse
                 </div>
             </div>
             <aside class="sidebar" style="display:flex;flex-direction:column;gap:32px;">
+                @if($categories->isNotEmpty())
+                    <div>
+                        <div class="eyebrow-sm" style="margin-bottom:16px;">Kategoriler</div>
+                        <div class="tag-list">
+                            <a href="{{ route('blog') }}" class="tag {{ !$activeCategory && !$activeTag ? 'active' : '' }}">Hepsi</a>
+                            @foreach($categories as $category)
+                                <a href="{{ route('blog.category', $category) }}" class="tag {{ $activeCategory?->id === $category->id ? 'active' : '' }}">{{ $category->name }}</a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
                 @if($tags->isNotEmpty())
                     <div>
                         <div class="eyebrow-sm" style="margin-bottom:16px;">Etiketler</div>
-                        <div class="tag-list" data-filter-group="blog">
-                            <button class="tag active" data-filter="all">Hepsi</button>
+                        <div class="tag-list">
                             @foreach($tags as $tag)
-                                <button class="tag" data-filter="{{ $tag->name }}">{{ $tag->name }}</button>
+                                <a href="{{ route('blog.tag', $tag) }}" class="chip {{ $activeTag?->id === $tag->id ? 'active' : '' }}" style="text-decoration:none;">{{ $tag->name }}</a>
                             @endforeach
                         </div>
                     </div>
