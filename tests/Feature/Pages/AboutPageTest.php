@@ -20,5 +20,5 @@ it('shows about hero content', function () {
 
 it('marks about as active in navigation', function () {
     $this->get(route('about'))
-        ->assertSeeInOrder(['nav-link active', 'Hakkımda'], escape: false);
+        ->assertSeeInOrder(['font-medium', 'Hakkımda'], escape: false);
 });

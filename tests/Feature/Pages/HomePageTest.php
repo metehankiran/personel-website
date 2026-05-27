@@ -16,14 +16,14 @@ it('renders the home page with a 200 status', function () {
 it('extends the app layout including header and footer', function () {
     $response = $this->get(route('home'));
 
-    $response->assertSee('site-header', escape: false);
-    $response->assertSee('site-footer', escape: false);
+    $response->assertSee('role="banner"', escape: false);
+    $response->assertSee('role="contentinfo"', escape: false);
 });
 
-it('loads the theme stylesheet and scripts from the public theme directory', function () {
+it('loads the required scripts from the public theme directory', function () {
     $response = $this->get(route('home'));
 
-    $response->assertSee(asset('theme/css/style.css'), escape: false);
+    $response->assertSee('cdn.tailwindcss.com', escape: false);
     $response->assertSee(asset('theme/js/main.js'), escape: false);
 });
 

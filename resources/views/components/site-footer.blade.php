@@ -1,51 +1,76 @@
 @php
     $link = fn (string $name): string => Route::has($name) ? route($name) : '#';
+    $footerLinkClass = 'text-[13px] text-neutral-950 dark:text-neutral-50 opacity-85 hover:opacity-100 transition-opacity';
 @endphp
-<footer class="site-footer" role="contentinfo">
-    <div class="footer-inner">
+
+<footer class="border-t border-neutral-200 dark:border-neutral-800 mt-10" role="contentinfo">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-12 lg:pt-[60px] pb-8 lg:pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-8 lg:gap-12">
+
+        {{-- Brand Column --}}
         <div>
-            <div class="footer-brand"><span class="brand-mark"></span><span>{{ $general->author_name }}</span></div>
+            <div class="flex items-center gap-2.5 mb-4">
+                <span class="w-6 h-6 rounded-full bg-neutral-950 dark:bg-neutral-50 relative inline-block">
+                    <span class="absolute inset-1 bg-white dark:bg-neutral-950 rounded-lg"></span>
+                </span>
+                <span class="text-sm font-semibold text-neutral-950 dark:text-neutral-50">{{ $general->author_name }}</span>
+            </div>
             @if($general->footer_text)
-                <p class="footer-text">{{ $general->footer_text }}</p>
+                <p class="text-[13px] text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-xs m-0">{{ $general->footer_text }}</p>
             @endif
         </div>
+
+        {{-- Site Links --}}
         <div>
-            <div class="footer-col-title">Site</div>
-            <div class="footer-links">
-                <a href="{{ route('home') }}">Ana sayfa</a>
-                <a href="{{ $link('about') }}">Hakkımda</a>
-                <a href="{{ $link('projects') }}">Projeler</a>
-                <a href="{{ $link('blog') }}">Blog</a>
+            <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-3.5">Site</div>
+            <div class="flex flex-col gap-2.5">
+                <a href="{{ route('home') }}" class="{{ $footerLinkClass }}">Ana sayfa</a>
+                <a href="{{ $link('about') }}" class="{{ $footerLinkClass }}">Hakkımda</a>
+                <a href="{{ $link('projects') }}" class="{{ $footerLinkClass }}">Projeler</a>
+                <a href="{{ $link('blog') }}" class="{{ $footerLinkClass }}">Blog</a>
             </div>
         </div>
+
+        {{-- İşler Links --}}
         <div>
-            <div class="footer-col-title">İşler</div>
-            <div class="footer-links">
-                <a href="{{ $link('services') }}">Hizmetler</a>
-                <a href="{{ $link('stack') }}">Stack</a>
-                <a href="{{ $link('references') }}">Referanslar</a>
-                <a href="{{ $link('cv') }}">CV</a>
+            <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-3.5">İşler</div>
+            <div class="flex flex-col gap-2.5">
+                <a href="{{ $link('services') }}" class="{{ $footerLinkClass }}">Hizmetler</a>
+                <a href="{{ $link('stack') }}" class="{{ $footerLinkClass }}">Stack</a>
+                <a href="{{ $link('references') }}" class="{{ $footerLinkClass }}">Referanslar</a>
+                <a href="{{ $link('cv') }}" class="{{ $footerLinkClass }}">CV</a>
             </div>
         </div>
+
+        {{-- Social Links --}}
         <div>
-            <div class="footer-col-title">Bağlan</div>
-            <div class="footer-links">
+            <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-3.5">Bağlan</div>
+            <div class="flex flex-col gap-2.5">
                 @if($general->author_email)
-                    <a href="mailto:{{ $general->author_email }}">Email</a>
+                    <a href="mailto:{{ $general->author_email }}" class="{{ $footerLinkClass }} inline-flex items-center gap-1.5">
+                        <i data-lucide="mail" class="w-3.5 h-3.5"></i> Email
+                    </a>
                 @endif
                 @if($social->github_url)
-                    <a href="{{ $social->github_url }}" target="_blank" rel="noopener">GitHub</a>
+                    <a href="{{ $social->github_url }}" target="_blank" rel="noopener" class="{{ $footerLinkClass }} inline-flex items-center gap-1.5">
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> GitHub
+                    </a>
                 @endif
                 @if($social->linkedin_url)
-                    <a href="{{ $social->linkedin_url }}" target="_blank" rel="noopener">LinkedIn</a>
+                    <a href="{{ $social->linkedin_url }}" target="_blank" rel="noopener" class="{{ $footerLinkClass }} inline-flex items-center gap-1.5">
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> LinkedIn
+                    </a>
                 @endif
                 @if($social->twitter_url)
-                    <a href="{{ $social->twitter_url }}" target="_blank" rel="noopener">Twitter</a>
+                    <a href="{{ $social->twitter_url }}" target="_blank" rel="noopener" class="{{ $footerLinkClass }} inline-flex items-center gap-1.5">
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> Twitter
+                    </a>
                 @endif
             </div>
         </div>
     </div>
-    <div class="footer-bottom">
+
+    {{-- Footer Bottom --}}
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row justify-between gap-2 text-xs text-neutral-500">
         <span>© {{ now()->year }} {{ $general->author_name }}</span>
         <span>{{ $general->author_location ?? '' }}</span>
     </div>

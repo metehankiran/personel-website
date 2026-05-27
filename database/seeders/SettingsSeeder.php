@@ -28,7 +28,7 @@ class SettingsSeeder extends Seeder
         $general->author_title = 'Full-stack Developer';
         $general->author_location = 'İstanbul, TR';
         $general->bio = '5 yıllık deneyime sahip bağımsız full-stack developer. Laravel, Vue.js ve .NET Core ekosistemlerinde uzmanlaştım. 40+ müşteriyle — KOBİ\'lerden kurumsal şirketlere — production-hazır ürünler teslim ettim.';
-        $general->hero_title = 'Bağımsız <em>full-stack</em> developer.<br/><span class="dim">Ürünleri sıfırdan teslim ederim.</span>';
+        $general->hero_title = 'Bağımsız <em>full-stack</em> developer.';
         $general->hero_subtitle = '5 yıldır Laravel, Vue ve .NET Core ile çalışıyorum. E-ticaretten kurumsal CRM\'lere — küçük ekiplerle ya da tek başıma.';
         $general->availability_status = 'Yeni proje alıyor';
         $general->homepage_stats = [

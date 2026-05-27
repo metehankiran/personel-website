@@ -3,68 +3,91 @@
 @section('title', ($activeCategory ? $activeCategory->name . ' — ' : ($activeTag ? $activeTag->name . ' — ' : '')) . 'Blog — Metehan Kıran')
 
 @section('content')
-    <section><div class="container">
-        <div class="split-2" style="grid-template-columns:1fr 280px;align-items:start;">
-            <div>
-                <div class="eyebrow">Blog</div>
-                <h1 class="h1">{{ $activeCategory ? $activeCategory->name : ($activeTag ? '#'.$activeTag->name : 'Yazılar.') }}</h1>
-                <p class="lede" style="max-width:480px;">Çalışırken karşılaştığım problemleri, deneyimleri ve denedikçe öğrendiklerimi yazıyorum.</p>
-                <div style="margin-top:48px;">
-                    @forelse($posts as $post)
-                        <a href="{{ route('blog.show', $post) }}" class="post">
-                            <div class="post-meta">
-                                <span class="chip">{{ $post->category->name }}</span>
-                                <span class="post-date">{{ $post->published_at->format('Y-m-d') }}</span>
-                                <span class="post-read">· {{ $post->reading_time }} dk okuma</span>
+    <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10 lg:gap-16 items-start">
+
+                {{-- Posts --}}
+                <div>
+                    <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-3">Blog</div>
+                    <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">{{ $activeCategory ? $activeCategory->name : ($activeTag ? '#'.$activeTag->name : 'Yazılar.') }}</h1>
+                    <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[480px]">Çalışırken karşılaştığım problemleri, deneyimleri ve denedikçe öğrendiklerimi yazıyorum.</p>
+
+                    <div class="mt-12">
+                        @forelse($posts as $post)
+                            <a href="{{ route('blog.show', $post) }}" class="block py-8 border-b border-neutral-200 dark:border-neutral-800 first:border-t transition-colors hover:opacity-90">
+                                <div class="flex gap-4 items-center mb-3">
+                                    <span class="inline-block text-[11px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 rounded-full font-medium whitespace-nowrap text-neutral-950 dark:text-neutral-50">{{ $post->category->name }}</span>
+                                    <span class="text-xs text-neutral-500 tabular-nums">{{ $post->published_at->format('Y-m-d') }}</span>
+                                    <span class="text-xs text-neutral-500">· {{ $post->reading_time }} dk okuma</span>
+                                </div>
+                                <h2 class="m-0 mb-2 text-[26px] font-semibold tracking-tight leading-tight text-neutral-950 dark:text-neutral-50">{{ $post->title }}</h2>
+                                @if($post->excerpt)
+                                    <p class="m-0 text-[15px] text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-[640px]">{{ $post->excerpt }}</p>
+                                @endif
+                            </a>
+                        @empty
+                            <p class="text-neutral-600 dark:text-neutral-400">Bu filtrede yazı bulunamadı.</p>
+                        @endforelse
+                    </div>
+                </div>
+
+                {{-- Sidebar --}}
+                <aside class="flex flex-col gap-8 lg:sticky lg:top-24">
+                    @if($categories->isNotEmpty())
+                        <div>
+                            <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-4">Kategoriler</div>
+                            <div class="flex flex-wrap gap-1.5">
+                                <a href="{{ route('blog') }}" @class([
+                                    'text-xs px-3 py-1.5 rounded-full font-medium border transition-colors',
+                                    'bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 border-neutral-950 dark:border-neutral-50' => !$activeCategory && !$activeTag,
+                                    'bg-transparent text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600' => $activeCategory || $activeTag,
+                                ])>Hepsi</a>
+                                @foreach($categories as $category)
+                                    <a href="{{ route('blog.category', $category) }}" @class([
+                                        'text-xs px-3 py-1.5 rounded-full font-medium border transition-colors',
+                                        'bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 border-neutral-950 dark:border-neutral-50' => $activeCategory?->id === $category->id,
+                                        'bg-transparent text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600' => $activeCategory?->id !== $category->id,
+                                    ])>{{ $category->name }}</a>
+                                @endforeach
                             </div>
-                            <h2>{{ $post->title }}</h2>
-                            @if($post->excerpt)
-                                <p class="post-excerpt">{{ $post->excerpt }}</p>
-                            @endif
-                        </a>
-                    @empty
-                        <p style="color:var(--dim);">Bu filtrede yazı bulunamadı.</p>
-                    @endforelse
-                </div>
-            </div>
-            <aside class="sidebar" style="display:flex;flex-direction:column;gap:32px;">
-                @if($categories->isNotEmpty())
-                    <div>
-                        <div class="eyebrow-sm" style="margin-bottom:16px;">Kategoriler</div>
-                        <div class="tag-list">
-                            <a href="{{ route('blog') }}" class="tag {{ !$activeCategory && !$activeTag ? 'active' : '' }}">Hepsi</a>
-                            @foreach($categories as $category)
-                                <a href="{{ route('blog.category', $category) }}" class="tag {{ $activeCategory?->id === $category->id ? 'active' : '' }}">{{ $category->name }}</a>
-                            @endforeach
                         </div>
-                    </div>
-                @endif
-                @if($tags->isNotEmpty())
-                    <div>
-                        <div class="eyebrow-sm" style="margin-bottom:16px;">Etiketler</div>
-                        <div class="tag-list">
-                            @foreach($tags as $tag)
-                                <a href="{{ route('blog.tag', $tag) }}" class="chip {{ $activeTag?->id === $tag->id ? 'active' : '' }}" style="text-decoration:none;">{{ $tag->name }}</a>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-                <div class="sidebar-card" id="newsletter">
-                    <div style="font-size:14px;font-weight:600;margin-bottom:6px;">Yeni yazılar için bülten</div>
-                    <p style="margin:0 0 12px;font-size:12px;color:var(--dim);line-height:1.5;">Ayda 1-2 yazı, spam yok.</p>
-                    @if(session('success'))
-                        <p style="font-size:13px;color:var(--success);">{{ session('success') }}</p>
                     @endif
-                    <form action="{{ route('newsletter.subscribe') }}" method="POST">
-                        @csrf
-                        <input class="input input-sm" name="email" type="email" placeholder="email@adres" required style="margin-bottom:8px;" />
-                        @error('email')
-                            <p style="font-size:12px;color:red;margin:0 0 8px;">{{ $message }}</p>
-                        @enderror
-                        <button type="submit" class="btn btn-primary btn-sm btn-block">Abone ol</button>
-                    </form>
-                </div>
-            </aside>
+
+                    @if($tags->isNotEmpty())
+                        <div>
+                            <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-4">Etiketler</div>
+                            <div class="flex flex-wrap gap-1.5">
+                                @foreach($tags as $tag)
+                                    <a href="{{ route('blog.tag', $tag) }}" @class([
+                                        'text-[11px] px-2 py-0.5 rounded-full font-medium transition-colors',
+                                        'bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950' => $activeTag?->id === $tag->id,
+                                        'bg-neutral-100 dark:bg-neutral-900 text-neutral-950 dark:text-neutral-50' => $activeTag?->id !== $tag->id,
+                                    ])>{{ $tag->name }}</a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- Newsletter --}}
+                    <div class="p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50 dark:bg-neutral-900">
+                        <div class="text-sm font-semibold text-neutral-950 dark:text-neutral-50 mb-1.5">Yeni yazılar için bülten</div>
+                        <p class="m-0 mb-3 text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">Ayda 1-2 yazı, spam yok.</p>
+                        @if(session('success'))
+                            <p class="text-[13px] text-green-600 dark:text-green-400">{{ session('success') }}</p>
+                        @endif
+                        <form action="{{ route('newsletter.subscribe') }}" method="POST">
+                            @csrf
+                            <input class="w-full px-3 py-2 text-[13px] font-sans bg-white dark:bg-neutral-950 text-neutral-950 dark:text-neutral-50 border border-neutral-200 dark:border-neutral-800 rounded-lg outline-none transition-colors focus:border-neutral-950 dark:focus:border-neutral-50 placeholder:text-neutral-400 dark:placeholder:text-neutral-600 mb-2" name="email" type="email" placeholder="email@adres" required />
+                            @error('email')
+                                <p class="text-xs text-red-500 mb-2">{{ $message }}</p>
+                            @enderror
+                            <button type="submit" class="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 text-[13px] font-medium rounded-lg bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85 cursor-pointer border-none font-sans">Abone ol</button>
+                        </form>
+                    </div>
+                </aside>
+
+            </div>
         </div>
-    </div></section>
+    </section>
 @endsection

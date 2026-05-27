@@ -1,4 +1,4 @@
-/* Spotlight-style global search
+/* Spotlight-style global search (Tailwind styled)
    ─ Open: Cmd/Ctrl+K, "/" hotkey, or click search trigger
    ─ Close: Esc, click backdrop, click result
    ─ Keyboard nav: ↑↓ to move, Enter to open
@@ -47,32 +47,37 @@
   ];
   window.MK_SEARCH_INDEX = MK_SEARCH_INDEX;
 
+  // ─── Inject keyframe animation ────────────────────
+  var styleEl = document.createElement('style');
+  styleEl.textContent = '@keyframes spotlight-pop{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:none}}';
+  document.head.appendChild(styleEl);
+
   // ─── Build modal DOM (once) ───────────────────────
   const modal = document.createElement('div');
-  modal.className = 'spotlight';
-  modal.setAttribute('hidden', '');
+  modal.className = 'fixed inset-0 z-[200] items-start justify-center pt-[12vh]';
+  modal.style.display = 'none';
   modal.setAttribute('role', 'dialog');
   modal.setAttribute('aria-modal', 'true');
   modal.setAttribute('aria-label', 'Sitede ara');
   modal.innerHTML = `
-    <div class="spotlight-backdrop" data-spotlight-close></div>
-    <div class="spotlight-panel" role="document">
-      <div class="spotlight-input-row">
-        <svg class="spotlight-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+    <div class="absolute inset-0 bg-neutral-950/20 backdrop-blur-[20px]" style="backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%)" data-spotlight-close></div>
+    <div class="relative bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden flex flex-col max-h-[70vh] w-[min(640px,92vw)]" style="box-shadow:0 24px 80px rgba(0,0,0,0.25),0 4px 16px rgba(0,0,0,0.1);animation:spotlight-pop .18s cubic-bezier(.2,.9,.3,1.2)" role="document">
+      <div class="flex items-center gap-3 px-5 py-[18px] border-b border-neutral-200 dark:border-neutral-800">
+        <svg class="text-neutral-600 dark:text-neutral-400 shrink-0" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
           <circle cx="8" cy="8" r="5.5"/><path d="M12 12L16 16"/>
         </svg>
-        <input type="search" class="spotlight-input"
+        <input type="search" class="spotlight-input flex-1 min-w-0 text-[17px] font-sans bg-transparent text-neutral-950 dark:text-neutral-50 border-none outline-none p-0 placeholder:text-neutral-400 dark:placeholder:text-neutral-600"
                placeholder="Sitede ara — sayfalar, projeler, yazılar…"
                autocomplete="off" spellcheck="false"
                aria-label="Arama" aria-controls="spotlight-results"
                aria-activedescendant="" />
-        <kbd class="spotlight-kbd" aria-hidden="true">esc</kbd>
+        <kbd class="font-sans text-[11px] px-[7px] py-[3px] rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 shrink-0" aria-hidden="true">esc</kbd>
       </div>
-      <div class="spotlight-results" id="spotlight-results" role="listbox" aria-label="Sonuçlar"></div>
-      <div class="spotlight-footer">
-        <span><kbd>↑</kbd><kbd>↓</kbd> dolaş</span>
-        <span><kbd>↵</kbd> aç</span>
-        <span><kbd>esc</kbd> kapat</span>
+      <div class="spotlight-results flex-1 overflow-y-auto p-2" id="spotlight-results" role="listbox" aria-label="Sonuçlar"></div>
+      <div class="flex gap-[18px] px-[18px] py-3 border-t border-neutral-200 dark:border-neutral-800 text-xs text-neutral-500 bg-neutral-50 dark:bg-neutral-900">
+        <span><kbd class="font-sans text-[10px] px-[5px] py-[1px] rounded-[3px] bg-white dark:bg-neutral-950 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 mr-1">↑</kbd><kbd class="font-sans text-[10px] px-[5px] py-[1px] rounded-[3px] bg-white dark:bg-neutral-950 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 mr-1">↓</kbd> dolaş</span>
+        <span><kbd class="font-sans text-[10px] px-[5px] py-[1px] rounded-[3px] bg-white dark:bg-neutral-950 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 mr-1">↵</kbd> aç</span>
+        <span><kbd class="font-sans text-[10px] px-[5px] py-[1px] rounded-[3px] bg-white dark:bg-neutral-950 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 mr-1">esc</kbd> kapat</span>
       </div>
     </div>`;
   document.body.appendChild(modal);
@@ -116,7 +121,7 @@
     const idx = lower.indexOf(q.toLowerCase());
     if (idx < 0) return escapeHtml(text);
     return escapeHtml(text.slice(0, idx)) +
-      '<mark>' + escapeHtml(text.slice(idx, idx + q.length)) + '</mark>' +
+      '<mark class="bg-green-500/25 text-neutral-950 dark:text-neutral-50 px-0.5 rounded-sm">' + escapeHtml(text.slice(idx, idx + q.length)) + '</mark>' +
       escapeHtml(text.slice(idx + q.length));
   }
   function escapeHtml(s) {
@@ -127,7 +132,7 @@
     const q = input.value.trim();
     currentResults = rank(q);
     if (!currentResults.length) {
-      resultsEl.innerHTML = `<div class="spotlight-empty">"${escapeHtml(q)}" için sonuç yok</div>`;
+      resultsEl.innerHTML = '<div class="py-8 px-4 text-center text-neutral-600 dark:text-neutral-400 text-sm">"' + escapeHtml(q) + '" için sonuç yok</div>';
       input.setAttribute('aria-activedescendant', '');
       return;
     }
@@ -138,21 +143,22 @@
     });
     let html = '';
     Object.keys(groups).forEach(type => {
-      html += `<div class="spotlight-group-title">${escapeHtml(type)}</div>`;
+      html += '<div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase px-3 pt-3.5 pb-1.5">' + escapeHtml(type) + '</div>';
       groups[type].forEach(r => {
         const id = 'sp-r-' + r.i;
-        const sel = r.i === cursor ? ' is-active' : '';
-        html += `<button type="button" class="spotlight-item${sel}"
-                  id="${id}" role="option" aria-selected="${r.i === cursor}"
-                  data-idx="${r.i}" data-url="${escapeHtml(r.item.url)}">
-          <span class="spotlight-item-title">${highlight(r.item.title, q)}</span>
-          <span class="spotlight-item-desc">${highlight(r.item.desc, q)}</span>
-          <span class="spotlight-item-arrow" aria-hidden="true">↵</span>
-        </button>`;
+        const activeClass = r.i === cursor ? ' bg-neutral-100 dark:bg-neutral-900' : '';
+        const arrowOpacity = r.i === cursor ? 'opacity-100 text-neutral-600 dark:text-neutral-400' : 'opacity-0 text-neutral-400';
+        html += '<button type="button" class="spotlight-item grid grid-cols-[1fr_auto] gap-x-4 items-center w-full px-3 py-2.5 border-none bg-transparent rounded-lg text-left cursor-pointer font-sans text-neutral-950 dark:text-neutral-50' + activeClass + '"'
+          + ' id="' + id + '" role="option" aria-selected="' + (r.i === cursor) + '"'
+          + ' data-idx="' + r.i + '" data-url="' + escapeHtml(r.item.url) + '">'
+          + '<span class="text-sm font-medium col-span-1">' + highlight(r.item.title, q) + '</span>'
+          + '<span class="text-xs text-neutral-600 dark:text-neutral-400 col-[1] row-[2] mt-0.5 overflow-hidden text-ellipsis whitespace-nowrap">' + highlight(r.item.desc, q) + '</span>'
+          + '<span class="col-[2] row-span-2 text-sm ' + arrowOpacity + '" aria-hidden="true">↵</span>'
+          + '</button>';
       });
     });
     resultsEl.innerHTML = html;
-    const active = resultsEl.querySelector('.spotlight-item.is-active');
+    var active = resultsEl.querySelector('.spotlight-item[aria-selected="true"]');
     if (active) {
       input.setAttribute('aria-activedescendant', active.id);
       active.scrollIntoView({ block: 'nearest' });
@@ -161,9 +167,9 @@
 
   // ─── Open / close ─────────────────────────────────
   function open() {
-    if (!modal.hasAttribute('hidden')) return;
+    if (modal.style.display === 'flex') return;
     lastFocus = document.activeElement;
-    modal.removeAttribute('hidden');
+    modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     cursor = 0;
     input.value = '';
@@ -171,8 +177,8 @@
     requestAnimationFrame(() => input.focus());
   }
   function close() {
-    if (modal.hasAttribute('hidden')) return;
-    modal.setAttribute('hidden', '');
+    if (modal.style.display === 'none') return;
+    modal.style.display = 'none';
     document.body.style.overflow = '';
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
@@ -213,7 +219,6 @@
       e.preventDefault();
       close();
     } else if (e.key === 'Tab') {
-      // trap focus inside input (the only focusable, results are activated via keyboard cursor)
       e.preventDefault();
     }
   });
@@ -237,7 +242,7 @@
   // Global hotkeys: Cmd/Ctrl+K, "/"
   document.addEventListener('keydown', (e) => {
     const isShortcut = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k';
-    const isSlash = e.key === '/' && !modal.hasAttribute('hidden') === false &&
+    const isSlash = e.key === '/' && modal.style.display === 'none' &&
       !/^(input|textarea|select)$/i.test((document.activeElement || {}).tagName || '');
     if (isShortcut) { e.preventDefault(); open(); }
     else if (isSlash) { e.preventDefault(); open(); }

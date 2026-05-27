@@ -3,92 +3,158 @@
 @section('title', $project->title . ' — Projeler — Metehan Kıran')
 
 @section('content')
-    <section><div class="container">
-        <div style="margin-bottom:48px;"><a href="{{ route('projects') }}" class="back-link">← Tüm projeler</a></div>
-        <div class="split-2 split-hero">
-            <div>
-                <div class="eyebrow"><span class="chip">{{ $project->category->name }}</span></div>
-                <h1 class="h1-xl">{{ $project->title }}</h1>
-                <p class="lede" style="max-width:560px;">{{ $project->description }}</p>
-                <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;">
-                    <a href="{{ route('contact') }}" class="btn btn-primary">Benzer bir şey yap →</a>
-                </div>
-            </div>
-            <div class="def-stack">
-                @if($project->client)
-                    <div class="def-row"><span class="def-key">Müşteri</span><span class="def-val">{{ $project->client }}</span></div>
-                @endif
-                <div class="def-row"><span class="def-key">Yıl</span><span class="def-val">{{ $project->year }}</span></div>
-                @if($project->duration)
-                    <div class="def-row"><span class="def-key">Süre</span><span class="def-val">{{ $project->duration }}</span></div>
-                @endif
-                @if($project->role)
-                    <div class="def-row"><span class="def-key">Rolüm</span><span class="def-val">{{ $project->role }}</span></div>
-                @endif
-                <div class="def-row"><span class="def-key">Stack</span><span class="def-val">{{ implode(' · ', $project->stack) }}</span></div>
-                @if($project->extras)
-                    @foreach($project->extras as $extra)
-                        <div class="def-row"><span class="def-key">{{ $extra['label'] }}</span><span class="def-val">{{ $extra['value'] }}</span></div>
-                    @endforeach
-                @endif
-            </div>
-        </div>
-        @if($project->cover_image && $project->stats && count($project->stats) <= 5)
-            <div style="margin-top:64px;display:grid;grid-template-columns:1.5fr 1fr;gap:32px;align-items:stretch;">
-                <div class="featured-image" style="aspect-ratio:16/10;border-radius:16px;overflow:hidden;">
-                    <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" style="width:100%;height:100%;object-fit:cover;">
-                </div>
-                <div style="display:flex;flex-direction:column;gap:16px;justify-content:center;">
-                    @foreach($project->stats as $stat)
-                        <div class="metric-card"><div class="metric-num">{{ $stat['value'] }}</div><div class="metric-label">{{ $stat['label'] }}</div></div>
-                    @endforeach
-                </div>
-            </div>
-        @elseif($project->cover_image && $project->stats)
-            <div class="featured-image" style="margin-top:64px;aspect-ratio:16/9;border-radius:16px;overflow:hidden;">
-                <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" style="width:100%;height:100%;object-fit:cover;">
-            </div>
-            <div class="grid-2 metrics-row" style="margin-top:32px;">
-                @foreach($project->stats as $stat)
-                    <div class="metric-card"><div class="metric-num">{{ $stat['value'] }}</div><div class="metric-label">{{ $stat['label'] }}</div></div>
-                @endforeach
-            </div>
-        @elseif($project->cover_image)
-            <div class="featured-image" style="margin-top:64px;aspect-ratio:16/9;border-radius:16px;overflow:hidden;">
-                <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" style="width:100%;height:100%;object-fit:cover;">
-            </div>
-        @elseif($project->stats)
-            <div class="grid-3 metrics-row" style="margin-top:64px;">
-                @foreach($project->stats as $stat)
-                    <div class="metric-card"><div class="metric-num">{{ $stat['value'] }}</div><div class="metric-label">{{ $stat['label'] }}</div></div>
-                @endforeach
-            </div>
-        @endif
-    </div></section>
+    <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
 
+            {{-- Back Link --}}
+            <div class="mb-12">
+                <a href="{{ route('projects') }}" class="text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors inline-flex items-center gap-1">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Tüm projeler
+                </a>
+            </div>
+
+            {{-- Hero --}}
+            <div class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-10 lg:gap-16 items-end">
+                <div>
+                    <div class="mb-3">
+                        <span class="inline-block text-[11px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 rounded-full font-medium text-neutral-950 dark:text-neutral-50">{{ $project->category->name }}</span>
+                    </div>
+                    <h1 class="text-[44px] sm:text-[56px] lg:text-[72px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">{{ $project->title }}</h1>
+                    <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[560px]">{{ $project->description }}</p>
+                    <div class="mt-7 flex flex-wrap gap-3">
+                        <a href="{{ route('contact') }}" class="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium rounded-xl bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85">Benzer bir şey yap <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                </div>
+
+                {{-- Definition Stack --}}
+                <div class="flex flex-col gap-5 pb-2">
+                    @if($project->client)
+                        <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
+                            <span class="text-xs text-neutral-500 tracking-[1.2px] uppercase">Müşteri</span>
+                            <span class="text-sm font-medium text-neutral-950 dark:text-neutral-50">{{ $project->client }}</span>
+                        </div>
+                    @endif
+                    <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
+                        <span class="text-xs text-neutral-500 tracking-[1.2px] uppercase">Yıl</span>
+                        <span class="text-sm font-medium text-neutral-950 dark:text-neutral-50">{{ $project->year }}</span>
+                    </div>
+                    @if($project->duration)
+                        <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
+                            <span class="text-xs text-neutral-500 tracking-[1.2px] uppercase">Süre</span>
+                            <span class="text-sm font-medium text-neutral-950 dark:text-neutral-50">{{ $project->duration }}</span>
+                        </div>
+                    @endif
+                    @if($project->role)
+                        <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
+                            <span class="text-xs text-neutral-500 tracking-[1.2px] uppercase">Rolüm</span>
+                            <span class="text-sm font-medium text-neutral-950 dark:text-neutral-50">{{ $project->role }}</span>
+                        </div>
+                    @endif
+                    <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
+                        <span class="text-xs text-neutral-500 tracking-[1.2px] uppercase">Stack</span>
+                        <span class="text-sm font-medium text-neutral-950 dark:text-neutral-50">{{ implode(' · ', $project->stack) }}</span>
+                    </div>
+                    @if($project->extras)
+                        @foreach($project->extras as $extra)
+                            <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
+                                <span class="text-xs text-neutral-500 tracking-[1.2px] uppercase">{{ $extra['label'] }}</span>
+                                <span class="text-sm font-medium text-neutral-950 dark:text-neutral-50">{{ $extra['value'] }}</span>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+
+            {{-- Cover + Stats --}}
+            @if($project->cover_image && $project->stats && count($project->stats) <= 5)
+                <div class="mt-16 grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-8 items-stretch">
+                    <div class="aspect-[16/10] rounded-2xl overflow-hidden">
+                        <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex flex-col gap-4 justify-center">
+                        @foreach($project->stats as $stat)
+                            <div class="p-7 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50 dark:bg-neutral-900">
+                                <div class="text-[44px] font-medium tracking-tighter leading-none text-neutral-950 dark:text-neutral-50">{{ $stat['value'] }}</div>
+                                <div class="mt-2 text-[13px] text-neutral-600 dark:text-neutral-400">{{ $stat['label'] }}</div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @elseif($project->cover_image && $project->stats)
+                <div class="mt-16 aspect-video rounded-2xl overflow-hidden">
+                    <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-8">
+                    @foreach($project->stats as $stat)
+                        <div class="p-7 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50 dark:bg-neutral-900">
+                            <div class="text-[44px] font-medium tracking-tighter leading-none text-neutral-950 dark:text-neutral-50">{{ $stat['value'] }}</div>
+                            <div class="mt-2 text-[13px] text-neutral-600 dark:text-neutral-400">{{ $stat['label'] }}</div>
+                        </div>
+                    @endforeach
+                </div>
+            @elseif($project->cover_image)
+                <div class="mt-16 aspect-video rounded-2xl overflow-hidden">
+                    <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
+                </div>
+            @elseif($project->stats)
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-16">
+                    @foreach($project->stats as $stat)
+                        <div class="p-7 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50 dark:bg-neutral-900">
+                            <div class="text-[44px] font-medium tracking-tighter leading-none text-neutral-950 dark:text-neutral-50">{{ $stat['value'] }}</div>
+                            <div class="mt-2 text-[13px] text-neutral-600 dark:text-neutral-400">{{ $stat['label'] }}</div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
+        </div>
+    </section>
+
+    {{-- Body --}}
     @if($project->body)
-        <section><div class="container-narrow">
-            <div class="prose">{!! $project->body !!}</div>
-        </div></section>
+        <section class="py-10 lg:py-[60px]">
+            <div class="max-w-[920px] mx-auto px-6 lg:px-12">
+                <div class="flex flex-col gap-[18px] text-[17px] leading-[1.7] opacity-90 max-w-[640px] text-neutral-600 dark:text-neutral-400
+                    [&>p]:m-0
+                    [&>h2]:mt-10 [&>h2]:mb-4 [&>h2]:text-2xl [&>h2]:font-semibold [&>h2]:tracking-tight [&>h2]:text-neutral-950 dark:[&>h2]:text-neutral-50 [&>h2]:opacity-100
+                    [&>ul]:pl-5 [&>ul]:list-disc
+                    [&>ol]:pl-5 [&>ol]:list-decimal
+                    [&>a]:underline [&>a]:underline-offset-2
+                    [&>strong]:font-semibold">
+                    {!! $project->body !!}
+                </div>
+            </div>
+        </section>
     @endif
 
+    {{-- Related Projects --}}
     @if($relatedProjects->isNotEmpty())
-        <section><div class="container">
-            <div class="section-head"><h2>Diğer projeler</h2><a href="{{ route('projects') }}" class="link-arrow">Tümünü gör →</a></div>
-            <div class="grid-3">
-                @foreach($relatedProjects as $related)
-                    <a href="{{ route('projects.show', $related) }}" class="card">
-                        <div class="card-image">
+        <section class="py-10 lg:py-[60px]">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="flex justify-between items-baseline mb-7">
+                    <h2 class="m-0 text-2xl font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">Diğer projeler</h2>
+                    <a href="{{ route('projects') }}" class="text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors">Tümünü gör →</a>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    @foreach($relatedProjects as $related)
+                        <a href="{{ route('projects.show', $related) }}" class="block p-6 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600">
                             @if($related->cover_image)
-                                <img src="{{ Storage::url($related->cover_image) }}" alt="{{ $related->title }}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+                                <div class="aspect-[16/10] rounded-lg mb-4 overflow-hidden border border-neutral-200 dark:border-neutral-800">
+                                    <img src="{{ Storage::url($related->cover_image) }}" alt="{{ $related->title }}" class="w-full h-full object-cover">
+                                </div>
+                            @else
+                                <div class="aspect-[16/10] rounded-lg mb-4 bg-gradient-to-br from-neutral-200 dark:from-neutral-800 to-neutral-100 dark:to-neutral-900 border border-neutral-200 dark:border-neutral-800"></div>
                             @endif
-                        </div>
-                        <div class="card-title-row"><h3 class="card-title">{{ $related->title }}</h3><span class="card-year">{{ $related->year }}</span></div>
-                        <div class="card-desc">{{ $related->description }}</div>
-                        <span class="chip">{{ $related->category->name }}</span>
-                    </a>
-                @endforeach
+                            <div class="flex justify-between items-baseline mb-1.5">
+                                <h3 class="m-0 text-base font-semibold text-neutral-950 dark:text-neutral-50">{{ $related->title }}</h3>
+                                <span class="text-xs text-neutral-600 dark:text-neutral-400 tabular-nums">{{ $related->year }}</span>
+                            </div>
+                            <div class="text-[13px] text-neutral-600 dark:text-neutral-400 leading-relaxed">{{ $related->description }}</div>
+                            <span class="inline-block mt-3 text-[11px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded-full font-medium text-neutral-950 dark:text-neutral-50">{{ $related->category->name }}</span>
+                        </a>
+                    @endforeach
+                </div>
             </div>
-        </div></section>
+        </section>
     @endif
 @endsection

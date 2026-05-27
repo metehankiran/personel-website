@@ -3,95 +3,128 @@
 @section('title', $post->title . ' — Metehan Kıran')
 
 @section('content')
-    <article class="article">
-        <header class="article-header">
-            <div class="container-narrow">
-                <div class="article-meta-top">
-                    <a href="{{ route('blog') }}" class="back-link">← Blog</a>
-                    <span class="chip">{{ $post->category->name }}</span>
+    <article>
+        {{-- Header --}}
+        <header class="pt-8 pb-12 border-b border-neutral-200 dark:border-neutral-800">
+            <div class="max-w-[920px] mx-auto px-6 lg:px-12">
+                <div class="flex items-center gap-3 mb-8">
+                    <a href="{{ route('blog') }}" class="text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors inline-flex items-center gap-1">
+                        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Blog
+                    </a>
+                    <span class="inline-block text-[11px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 rounded-full font-medium text-neutral-950 dark:text-neutral-50">{{ $post->category->name }}</span>
                 </div>
-                <h1 class="article-title">{{ $post->title }}</h1>
+
+                <h1 class="m-0 text-[36px] sm:text-[44px] lg:text-[56px] leading-[1.05] font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50">{{ $post->title }}</h1>
+
                 @if($post->excerpt)
-                    <p class="article-lede">{{ $post->excerpt }}</p>
+                    <p class="mt-6 text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-[720px] m-0 mt-6">{{ $post->excerpt }}</p>
                 @endif
-                <div class="article-byline">
-                    <div class="byline-author">
-                        <span class="brand-mark"></span>
+
+                {{-- Byline --}}
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mt-10 pt-6 border-t border-neutral-200 dark:border-neutral-800">
+                    <div class="flex items-center gap-3.5">
+                        <span class="w-10 h-10 rounded-full bg-neutral-950 dark:bg-neutral-50 relative inline-block shrink-0">
+                            <span class="absolute inset-[7px] bg-white dark:bg-neutral-950 rounded-[13px]"></span>
+                        </span>
                         <div>
-                            <div class="byline-name">Metehan Kıran</div>
-                            <div class="byline-meta">{{ $post->published_at->translatedFormat('d F Y') }} · {{ $post->reading_time }} dk okuma</div>
+                            <div class="text-sm font-semibold text-neutral-950 dark:text-neutral-50">Metehan Kıran</div>
+                            <div class="text-xs text-neutral-600 dark:text-neutral-400">{{ $post->published_at->translatedFormat('d F Y') }} · {{ $post->reading_time }} dk okuma</div>
                         </div>
                     </div>
-                    <div class="article-share">
-                        <button class="share-btn" type="button" aria-label="Twitter'da paylaş">𝕏</button>
-                        <button class="share-btn" type="button" aria-label="LinkedIn'de paylaş">in</button>
-                        <button class="share-btn" type="button" aria-label="Linki kopyala">⌘</button>
+                    <div class="flex gap-1.5">
+                        <button class="w-9 h-9 rounded-full bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 cursor-pointer text-[13px] text-neutral-950 dark:text-neutral-50 font-sans transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800 inline-flex items-center justify-center" type="button" aria-label="Twitter'da paylaş">𝕏</button>
+                        <button class="w-9 h-9 rounded-full bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 cursor-pointer text-[13px] text-neutral-950 dark:text-neutral-50 font-sans transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800 inline-flex items-center justify-center" type="button" aria-label="LinkedIn'de paylaş">in</button>
+                        <button class="w-9 h-9 rounded-full bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 cursor-pointer text-[13px] text-neutral-950 dark:text-neutral-50 font-sans transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800 inline-flex items-center justify-center" type="button" aria-label="Linki kopyala">
+                            <i data-lucide="link" class="w-3.5 h-3.5"></i>
+                        </button>
                     </div>
                 </div>
             </div>
         </header>
 
+        {{-- Cover Image --}}
         @if($post->cover_image)
-            <div class="container-narrow" style="margin-bottom:48px;">
-                <div style="aspect-ratio:16/9;border-radius:12px;overflow:hidden;">
-                    <img src="{{ Storage::url($post->cover_image) }}" alt="{{ $post->title }}" style="width:100%;height:100%;object-fit:cover;">
+            <div class="max-w-[920px] mx-auto px-6 lg:px-12 mb-12 mt-12">
+                <div class="aspect-video rounded-xl overflow-hidden">
+                    <img src="{{ Storage::url($post->cover_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
                 </div>
             </div>
         @endif
 
-        <div class="container-narrow article-body">
-            <div class="prose-article">
+        {{-- Body --}}
+        <div class="max-w-[920px] mx-auto px-6 lg:px-12 mt-14">
+            <div class="text-[17px] leading-[1.75] max-w-[680px] text-neutral-950 dark:text-neutral-50
+                [&>p]:mb-6 [&>p]:opacity-[0.92]
+                [&>h2]:mt-14 [&>h2]:mb-4 [&>h2]:text-[26px] [&>h2]:font-semibold [&>h2]:tracking-tight [&>h2]:scroll-mt-24
+                [&>ul]:pl-5 [&>ul]:list-disc [&>li]:mb-2 [&>li]:opacity-[0.92]
+                [&>ol]:pl-5 [&>ol]:list-decimal
+                [&>code]:font-mono [&>code]:text-[13px] [&>code]:bg-neutral-100 dark:[&>code]:bg-neutral-900 [&>code]:px-1.5 [&>code]:py-0.5 [&>code]:rounded
+                [&>pre]:bg-neutral-100 dark:[&>pre]:bg-neutral-900 [&>pre]:border [&>pre]:border-neutral-200 dark:[&>pre]:border-neutral-800 [&>pre]:px-5 [&>pre]:py-[18px] [&>pre]:rounded-xl [&>pre]:overflow-x-auto [&>pre]:my-7
+                [&>pre>code]:bg-transparent [&>pre>code]:p-0 [&>pre>code]:text-[13px] [&>pre>code]:leading-relaxed
+                [&>blockquote]:my-7 [&>blockquote]:px-6 [&>blockquote]:py-4 [&>blockquote]:border-l-[3px] [&>blockquote]:border-neutral-950 dark:[&>blockquote]:border-neutral-50 [&>blockquote]:text-[19px] [&>blockquote]:leading-relaxed [&>blockquote]:font-serif [&>blockquote]:italic [&>blockquote]:opacity-90
+                [&>a]:underline [&>a]:underline-offset-2">
                 {!! $post->body !!}
             </div>
         </div>
 
-        <footer class="article-footer">
-            <div class="container-narrow">
+        {{-- Footer --}}
+        <footer class="mt-16 pt-12 border-t border-neutral-200 dark:border-neutral-800">
+            <div class="max-w-[920px] mx-auto px-6 lg:px-12">
                 @if($post->tags->isNotEmpty())
-                    <div class="article-tags-row">
-                        <div class="eyebrow-sm">Etiketler</div>
-                        <div class="tag-list">
+                    <div class="flex items-center gap-4 mb-12">
+                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase">Etiketler</div>
+                        <div class="flex flex-wrap gap-1.5">
                             @foreach($post->tags as $tag)
-                                <span class="chip">{{ $tag->name }}</span>
+                                <span class="inline-block text-[11px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 rounded-full font-medium text-neutral-950 dark:text-neutral-50">{{ $tag->name }}</span>
                             @endforeach
                         </div>
                     </div>
                 @endif
-                <div class="article-cta" id="newsletter">
-                    <h3>Bu yazıdan hoşlandın mı?</h3>
-                    <p>Ayda 1-2 yazı. Email'ine düşüversin.</p>
+
+                {{-- Newsletter CTA --}}
+                <div class="bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-10 text-center">
+                    <h3 class="m-0 text-[26px] font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">Bu yazıdan hoşlandın mı?</h3>
+                    <p class="mt-2 mb-6 text-neutral-600 dark:text-neutral-400">Ayda 1-2 yazı. Email'ine düşüversin.</p>
                     @if(session('success'))
-                        <p style="font-size:13px;color:var(--success);">{{ session('success') }}</p>
+                        <p class="text-[13px] text-green-600 dark:text-green-400">{{ session('success') }}</p>
                     @endif
-                    <form action="{{ route('newsletter.subscribe') }}" method="POST">
+                    <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex gap-2 max-w-[400px] mx-auto">
                         @csrf
-                        <input class="input" name="email" type="email" placeholder="email@adres" required />
-                        @error('email')
-                            <p style="font-size:12px;color:red;margin:4px 0 0;">{{ $message }}</p>
-                        @enderror
-                        <button type="submit" class="btn btn-primary">Abone ol →</button>
+                        <input class="flex-1 px-3.5 py-2.5 text-sm font-sans bg-white dark:bg-neutral-950 text-neutral-950 dark:text-neutral-50 border border-neutral-200 dark:border-neutral-800 rounded-lg outline-none transition-colors focus:border-neutral-950 dark:focus:border-neutral-50 placeholder:text-neutral-400 dark:placeholder:text-neutral-600" name="email" type="email" placeholder="email@adres" required />
+                        <button type="submit" class="inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-medium rounded-lg bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85 cursor-pointer border-none font-sans shrink-0">Abone ol <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></button>
                     </form>
+                    @error('email')
+                        <p class="text-xs text-red-500 mt-2">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
         </footer>
     </article>
 
+    {{-- Related Posts --}}
     @if($relatedPosts->isNotEmpty())
-        <section><div class="container">
-            <div class="section-head"><h2>Sıradakiler</h2><a href="{{ route('blog') }}" class="link-arrow">Tüm yazılar →</a></div>
-            <div class="grid-3">
-                @foreach($relatedPosts as $related)
-                    <a href="{{ route('blog.show', $related) }}" class="card">
-                        <div class="card-image">
+        <section class="py-10 lg:py-[60px]">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="flex justify-between items-baseline mb-7">
+                    <h2 class="m-0 text-2xl font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">Sıradakiler</h2>
+                    <a href="{{ route('blog') }}" class="text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors">Tüm yazılar →</a>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    @foreach($relatedPosts as $related)
+                        <a href="{{ route('blog.show', $related) }}" class="block p-6 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600">
                             @if($related->cover_image)
-                                <img src="{{ Storage::url($related->cover_image) }}" alt="{{ $related->title }}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+                                <div class="aspect-[16/10] rounded-lg mb-4 overflow-hidden border border-neutral-200 dark:border-neutral-800">
+                                    <img src="{{ Storage::url($related->cover_image) }}" alt="{{ $related->title }}" class="w-full h-full object-cover">
+                                </div>
+                            @else
+                                <div class="aspect-[16/10] rounded-lg mb-4 bg-gradient-to-br from-neutral-200 dark:from-neutral-800 to-neutral-100 dark:to-neutral-900 border border-neutral-200 dark:border-neutral-800"></div>
                             @endif
-                        </div>
-                        <div class="card-title-row"><h3 class="card-title">{{ $related->title }}</h3></div>
-                        <div class="card-desc">{{ $related->reading_time }} dk · {{ $related->category->name }}</div>
-                    </a>
-                @endforeach
+                            <h3 class="m-0 text-base font-semibold text-neutral-950 dark:text-neutral-50">{{ $related->title }}</h3>
+                            <div class="text-[13px] text-neutral-600 dark:text-neutral-400 mt-1.5">{{ $related->reading_time }} dk · {{ $related->category->name }}</div>
+                        </a>
+                    @endforeach
+                </div>
             </div>
-        </div></section>
+        </section>
     @endif
 @endsection

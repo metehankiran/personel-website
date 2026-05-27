@@ -47,7 +47,7 @@ it('displays skill level pips correctly', function () {
 
     $response = $this->get(route('stack'));
 
-    $response->assertSee('stack-pip on', escape: false);
+    $response->assertSee('bg-neutral-950 dark:bg-neutral-50', escape: false);
 });
 
 it('displays multiple skill groups in order', function () {
