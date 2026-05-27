@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\LanguageLevel;
 use App\Models\Language;
 use Database\Seeders\LanguageSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,7 +12,13 @@ test('language can be created with valid attributes', function () {
 
     expect($language)->toBeInstanceOf(Language::class)
         ->and($language->name)->toBeString()
-        ->and($language->level)->toBeString();
+        ->and($language->level)->toBeInstanceOf(LanguageLevel::class);
+});
+
+test('language level is cast to enum', function () {
+    $language = Language::factory()->create(['level' => LanguageLevel::Native]);
+
+    expect($language->fresh()->level)->toBe(LanguageLevel::Native);
 });
 
 test('languages are ordered by sort_order', function () {

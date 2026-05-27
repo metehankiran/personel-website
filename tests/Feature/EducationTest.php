@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\EducationDegree;
 use App\Models\Education;
 use Database\Seeders\EducationSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,9 +13,15 @@ test('education can be created with valid attributes', function () {
 
     expect($education)->toBeInstanceOf(Education::class)
         ->and($education->school)->toBeString()
-        ->and($education->degree)->toBeString()
+        ->and($education->degree)->toBeInstanceOf(EducationDegree::class)
         ->and($education->field)->toBeString()
         ->and($education->start_date)->toBeInstanceOf(Carbon::class);
+});
+
+test('education degree is cast to enum', function () {
+    $education = Education::factory()->create(['degree' => EducationDegree::Bachelor]);
+
+    expect($education->fresh()->degree)->toBe(EducationDegree::Bachelor);
 });
 
 test('education end_date is nullable for ongoing studies', function () {
@@ -23,10 +30,16 @@ test('education end_date is nullable for ongoing studies', function () {
     expect($education->end_date)->toBeNull();
 });
 
-test('education description is nullable', function () {
-    $education = Education::factory()->create(['description' => null]);
+test('education gpa is nullable', function () {
+    $education = Education::factory()->create(['gpa' => null]);
 
-    expect($education->description)->toBeNull();
+    expect($education->gpa)->toBeNull();
+});
+
+test('education gpa stores freeform string', function () {
+    $education = Education::factory()->create(['gpa' => '3.25/4']);
+
+    expect($education->fresh()->gpa)->toBe('3.25/4');
 });
 
 test('educations are ordered by sort_order', function () {

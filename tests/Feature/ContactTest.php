@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ContactSubject;
 use App\Models\Contact;
 use Database\Seeders\ContactSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,7 +13,7 @@ test('contact can be created with valid attributes', function () {
     expect($contact)->toBeInstanceOf(Contact::class)
         ->and($contact->name)->toBeString()
         ->and($contact->email)->toBeString()
-        ->and($contact->subject)->toBeString()
+        ->and($contact->subject)->toBeInstanceOf(ContactSubject::class)
         ->and($contact->message)->toBeString()
         ->and($contact->is_read)->toBeBool();
 });
@@ -35,6 +36,12 @@ test('contact phone is nullable', function () {
     $contact = Contact::factory()->create(['phone' => null]);
 
     expect($contact->phone)->toBeNull();
+});
+
+test('contact subject is cast to enum', function () {
+    $contact = Contact::factory()->create(['subject' => ContactSubject::ProjectInquiry]);
+
+    expect($contact->fresh()->subject)->toBe(ContactSubject::ProjectInquiry);
 });
 
 test('contact factory can create read state', function () {
