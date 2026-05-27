@@ -19,12 +19,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::unguard();
 
-        View::composer(
-            ['components.site-header', 'components.site-footer', 'layouts.app', 'pages.home', 'pages.cv'],
-            function ($view) {
-                $view->with('general', app(GeneralSettings::class));
-                $view->with('social', app(SocialSettings::class));
-            }
-        );
+        View::composer('*', function ($view) {
+            $view->with('general', app(GeneralSettings::class));
+            $view->with('social', app(SocialSettings::class));
+        });
     }
 }
