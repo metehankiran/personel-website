@@ -24,6 +24,28 @@ class GeneralSettings extends Settings
 
     public ?string $cv_path;
 
+    public ?string $author_title;
+
+    public ?string $author_location;
+
+    public ?string $bio;
+
+    public ?string $hero_title;
+
+    public ?string $hero_subtitle;
+
+    public ?string $availability_status;
+
+    public ?array $homepage_stats;
+
+    public ?string $footer_text;
+
+    public ?string $kvkk_page_slug;
+
+    public ?string $cookie_policy_slug;
+
+    public ?string $google_maps_url;
+
     public static function group(): string
     {
         return 'general';
