@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             LanguageSeeder::class,
             EducationSeeder::class,
             BookmarkSeeder::class,
+            PostSeeder::class,
         ]);
     }
 }
