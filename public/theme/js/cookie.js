@@ -5,28 +5,43 @@
   const KEY = 'mk-cookie-consent';
   let stored = null;
   try { stored = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
-  if (stored && stored.ts) return; // already decided
+  if (stored && stored.ts) return;
 
   const cfg = window.mkCookieConfig || {};
   const banner = document.createElement('div');
-  banner.className = 'cookie-banner';
+  banner.className = 'fixed left-4 right-4 sm:left-6 sm:right-6 bottom-4 sm:bottom-6 z-[90]';
   banner.setAttribute('role', 'dialog');
   banner.setAttribute('aria-labelledby', 'cookie-title');
   banner.setAttribute('aria-describedby', 'cookie-body');
+
+  banner.style.animation = 'cookieIn .25s cubic-bezier(.2,.9,.3,1)';
+
   banner.innerHTML = `
-    <div class="cookie-card">
-      <div class="cookie-icon" aria-hidden="true">🍪</div>
-      <div class="cookie-text">
-        <div id="cookie-title" class="cookie-title">Çerez tercihleri</div>
-        <p id="cookie-body" class="cookie-body">Site, deneyimi geliştirmek için zorunlu çerezleri kullanır. <a href="${cfg.cookiePolicyUrl || '#'}">Çerez Politikası</a> ve <a href="${cfg.kvkkUrl || '#'}">KVKK Aydınlatma Metni</a> hakkında bilgi alabilirsiniz.</p>
+    <div class="max-w-5xl mx-auto bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] px-5 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">
+      <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3.5">
+        <div id="cookie-title" class="flex items-center gap-2 text-sm font-semibold text-neutral-950 dark:text-neutral-50 whitespace-nowrap">
+          <i data-lucide="cookie" class="w-4 h-4 text-neutral-400 dark:text-neutral-500"></i>
+          Çerez tercihleri
+        </div>
+        <p id="cookie-body" class="m-0 text-[13px] leading-relaxed text-neutral-500 dark:text-neutral-400">Site, deneyimi geliştirmek için zorunlu çerezleri kullanır.
+          <a href="${cfg.cookiePolicyUrl || '#'}" class="underline hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors">Çerez Politikası</a> ve
+          <a href="${cfg.kvkkUrl || '#'}" class="underline hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors">KVKK Aydınlatma Metni</a>
+        </p>
       </div>
-      <div class="cookie-actions">
-        <button type="button" class="btn btn-secondary btn-sm" data-cookie="reject">Sadece zorunlu</button>
-        <button type="button" class="btn btn-primary btn-sm" data-cookie="accept">Tümünü kabul et</button>
+      <div class="flex gap-2 flex-shrink-0 w-full sm:w-auto">
+        <button type="button" data-cookie="reject"
+          class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2.5 text-[13px] font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 bg-transparent text-neutral-950 dark:text-neutral-50 hover:opacity-80 transition-opacity cursor-pointer">
+          Reddet
+        </button>
+        <button type="button" data-cookie="accept"
+          class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2.5 text-[13px] font-medium rounded-lg bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 hover:opacity-80 transition-opacity cursor-pointer">
+          Kabul et
+        </button>
       </div>
     </div>
   `;
   document.body.appendChild(banner);
+  if (typeof lucide !== 'undefined') lucide.createIcons({ nodes: [banner] });
 
   function decide(accepted) {
     try {
@@ -36,16 +51,25 @@
         ts: new Date().toISOString()
       }));
     } catch (e) {}
-    banner.classList.add('cookie-out');
-    setTimeout(() => banner.remove(), 250);
+    banner.style.animation = 'cookieOut .2s ease-in forwards';
+    setTimeout(function () { banner.remove(); }, 250);
     if (accepted && typeof window.mkEnableAnalytics === 'function') {
       window.mkEnableAnalytics();
     }
   }
 
-  banner.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-cookie]');
+  banner.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-cookie]');
     if (!b) return;
     decide(b.getAttribute('data-cookie') === 'accept');
   });
+
+  if (!document.getElementById('cookie-keyframes')) {
+    var style = document.createElement('style');
+    style.id = 'cookie-keyframes';
+    style.textContent =
+      '@keyframes cookieIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }' +
+      '@keyframes cookieOut { to { opacity: 0; transform: translateY(16px); } }';
+    document.head.appendChild(style);
+  }
 })();
