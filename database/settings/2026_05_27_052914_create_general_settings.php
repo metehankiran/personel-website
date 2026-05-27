@@ -6,9 +6,9 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('general.site_title', 'Metehan Kıran');
+        $this->migrator->add('general.site_title', config('app.name', 'Personel Website'));
         $this->migrator->add('general.site_description', '');
-        $this->migrator->add('general.author_name', 'Metehan Kıran');
+        $this->migrator->add('general.author_name', '');
         $this->migrator->add('general.author_email', '');
         $this->migrator->add('general.author_phone', '');
         $this->migrator->add('general.author_address', '');
