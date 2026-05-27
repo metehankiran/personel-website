@@ -19,5 +19,9 @@ class DatabaseSeeder extends Seeder
             'name' => 'Root User',
             'email' => 'root@personel-website.test',
         ]);
+
+        $this->call([
+            ContactSeeder::class,
+        ]);
     }
 }
