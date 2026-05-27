@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Contracts\View\View;
 
 class BlogController extends Controller
@@ -13,6 +14,7 @@ class BlogController extends Controller
     {
         return view('pages.blog.index', [
             'posts' => Post::with(['category', 'tags'])->published()->latest('published_at')->get(),
+            'tags' => Tag::ordered()->get(),
         ]);
     }
 
@@ -20,6 +22,16 @@ class BlogController extends Controller
     {
         $post->load(['category', 'tags']);
 
-        return view('pages.blog.show', ['post' => $post]);
+        $relatedPosts = Post::with('category')
+            ->published()
+            ->where('id', '!=', $post->id)
+            ->latest('published_at')
+            ->limit(3)
+            ->get();
+
+        return view('pages.blog.show', [
+            'post' => $post,
+            'relatedPosts' => $relatedPosts,
+        ]);
     }
 }
