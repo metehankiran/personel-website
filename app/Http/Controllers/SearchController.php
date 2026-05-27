@@ -26,7 +26,6 @@ class SearchController extends Controller
         return response()->json($items->values());
     }
 
-    /** @return Collection<int, array<string, string>> */
     private function staticPages(): Collection
     {
         return collect([
@@ -43,7 +42,6 @@ class SearchController extends Controller
         ]);
     }
 
-    /** @return Collection<int, array<string, string>> */
     private function dynamicPages(): Collection
     {
         return Page::published()->get()->map(fn (Page $page) => [
@@ -55,7 +53,6 @@ class SearchController extends Controller
         ]);
     }
 
-    /** @return Collection<int, array<string, string>> */
     private function projects(): Collection
     {
         return Project::ordered()->get()->map(fn (Project $project) => [
@@ -67,7 +64,6 @@ class SearchController extends Controller
         ]);
     }
 
-    /** @return Collection<int, array<string, string>> */
     private function posts(): Collection
     {
         return Post::published()->latest('published_at')->get()->map(fn (Post $post) => [
@@ -79,7 +75,6 @@ class SearchController extends Controller
         ]);
     }
 
-    /** @return Collection<int, array<string, string>> */
     private function quickAccess(): Collection
     {
         $general = app(GeneralSettings::class);
