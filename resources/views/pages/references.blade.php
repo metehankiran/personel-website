@@ -34,7 +34,7 @@
             @if($brands->isNotEmpty())
                 <div class="mt-20">
                     <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-5">Birlikte çalıştığım markalar</div>
-                    <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-px bg-neutral-200 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden">
+                    <div class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-6 gap-px bg-neutral-200 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 overflow-hidden">
                         @foreach($brands as $brand)
                             @if($brand->url)
                                 <a href="{{ $brand->url }}" class="aspect-[3/1] bg-white dark:bg-neutral-950 flex items-center justify-center overflow-hidden hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors" target="_blank" rel="noopener">

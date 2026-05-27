@@ -26,9 +26,9 @@
                     @if($general->hero_subtitle)
                         <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-7 max-w-[540px]">{{ $general->hero_subtitle }}</p>
                     @endif
-                    <div class="mt-8 flex flex-wrap gap-3">
-                        <a href="{{ $link('contact') }}" class="inline-flex items-center gap-2 px-5 py-3.5 text-sm font-medium rounded-xl bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85">İletişime geç <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
-                        <a href="{{ $link('projects') }}" class="inline-flex items-center gap-2 px-5 py-3.5 text-sm font-medium rounded-xl bg-transparent text-neutral-950 dark:text-neutral-50 border border-neutral-200 dark:border-neutral-800 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600">Projeleri gör</a>
+                    <div class="mt-8 flex gap-3">
+                        <a href="{{ $link('contact') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3.5 text-sm font-medium rounded-xl bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85 whitespace-nowrap">İletişime geç <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                        <a href="{{ $link('projects') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3.5 text-sm font-medium rounded-xl bg-transparent text-neutral-950 dark:text-neutral-50 border border-neutral-200 dark:border-neutral-800 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600 whitespace-nowrap">Projeleri gör</a>
                     </div>
                 </div>
 
@@ -175,9 +175,9 @@
                         <h2 class="m-0 text-[26px] sm:text-[32px] font-medium tracking-tighter leading-[1.1] text-white dark:text-neutral-950">Bir proje fikrin var mı?</h2>
                         <p class="mt-2 text-sm text-neutral-400 dark:text-neutral-500 leading-relaxed">Konuşalım. Genelde 24 saat içinde dönerim.</p>
                     </div>
-                    <div class="flex flex-wrap gap-2.5 shrink-0">
-                        <a href="{{ $link('contact') }}" class="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium rounded-xl bg-white dark:bg-neutral-950 text-neutral-950 dark:text-neutral-50 transition-opacity hover:opacity-90">İletişime geç <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
-                        <a href="mailto:{{ $general->author_email ?? '' }}" class="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium rounded-xl bg-transparent text-white dark:text-neutral-950 border border-white/20 dark:border-neutral-950/20 transition-colors hover:bg-white/10 dark:hover:bg-neutral-950/10">
+                    <div class="flex gap-2.5 w-full sm:w-auto">
+                        <a href="{{ $link('contact') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-medium rounded-xl bg-white dark:bg-neutral-950 text-neutral-950 dark:text-neutral-50 transition-opacity hover:opacity-90 whitespace-nowrap">İletişime geç <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                        <a href="mailto:{{ $general->author_email ?? '' }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-medium rounded-xl bg-transparent text-white dark:text-neutral-950 border border-white/20 dark:border-neutral-950/20 transition-colors hover:bg-white/10 dark:hover:bg-neutral-950/10 whitespace-nowrap">
                             <i data-lucide="mail" class="w-4 h-4"></i> Email gönder
                         </a>
                     </div>

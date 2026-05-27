@@ -13,7 +13,7 @@
 @endphp
 
 <header class="sticky top-0 z-40 bg-white/[0.93] dark:bg-neutral-950/[0.93] backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800" role="banner">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-4 lg:py-5 flex items-center justify-between gap-4 lg:gap-8">
+    <div class="max-w-7xl mx-auto px-6 xl:px-12 py-4 xl:py-5 flex items-center justify-between gap-4 xl:gap-8">
 
         {{-- Brand --}}
         <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0">
@@ -27,7 +27,7 @@
         </a>
 
         {{-- Desktop Navigation --}}
-        <nav class="hidden lg:flex gap-1 items-center" aria-label="Ana menü">
+        <nav class="hidden xl:flex gap-1 items-center" aria-label="Ana menü">
             <div>
                 <a href="{{ route('home') }}" @class([$navLinkClass, $navLinkActive => request()->routeIs('home')])><i data-lucide="home" class="w-3.5 h-3.5"></i> Ana sayfa</a>
             </div>
@@ -86,17 +86,28 @@
             <div>
                 <a href="{{ $link('cv') }}" @class([$navLinkClass, $navLinkActive => request()->routeIs('cv')])><i data-lucide="file-text" class="w-3.5 h-3.5"></i> CV</a>
             </div>
-            <div>
-                <a href="{{ $link('contact') }}" @class([$navLinkClass, $navLinkActive => request()->routeIs('contact')])><i data-lucide="mail" class="w-3.5 h-3.5"></i> İletişim</a>
-            </div>
         </nav>
 
         {{-- Right Section --}}
-        <div class="flex items-center gap-2 lg:gap-3 shrink-0">
-            {{-- Theme Toggle --}}
-            <button type="button" data-theme-toggle
-                class="w-9 h-9 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-950 dark:text-neutral-50 text-sm inline-flex items-center justify-center shrink-0 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600 cursor-pointer"
-                aria-label="Tema değiştir" title="Tema değiştir">☾</button>
+        <div class="flex items-center gap-2 xl:gap-3 shrink-0">
+            {{-- Theme Toggle (radio pill) --}}
+            <div class="inline-flex items-center rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 p-0.5 shrink-0" role="radiogroup" aria-label="Tema">
+                <button type="button" data-theme-set="light"
+                    class="theme-radio w-8 h-8 rounded-md inline-flex items-center justify-center text-sm transition-all cursor-pointer"
+                    aria-label="Açık tema" title="Açık tema">
+                    <i data-lucide="sun" class="w-3.5 h-3.5"></i>
+                </button>
+                <button type="button" data-theme-set="system"
+                    class="theme-radio w-8 h-8 rounded-md inline-flex items-center justify-center text-sm transition-all cursor-pointer"
+                    aria-label="Sistem teması" title="Sistem teması">
+                    <i data-lucide="monitor" class="w-3.5 h-3.5"></i>
+                </button>
+                <button type="button" data-theme-set="dark"
+                    class="theme-radio w-8 h-8 rounded-md inline-flex items-center justify-center text-sm transition-all cursor-pointer"
+                    aria-label="Koyu tema" title="Koyu tema">
+                    <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+                </button>
+            </div>
 
             {{-- Search Trigger (Desktop) --}}
             <button type="button" class="search-trigger hidden sm:inline-flex items-center gap-2.5 px-3 py-[7px] min-w-[220px] bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-neutral-600 dark:text-neutral-400 text-[13px] font-sans transition-colors hover:border-neutral-400 dark:hover:border-neutral-600 cursor-pointer"
@@ -113,11 +124,13 @@
             </button>
 
             {{-- Contact CTA (Desktop) --}}
-            <a href="{{ $link('contact') }}" class="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium rounded-lg bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85">İletişim</a>
+            <a href="{{ $link('contact') }}" class="hidden md:inline-flex items-center gap-1.5 px-4 py-2 text-[13px] font-medium rounded-lg bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85">
+                <i data-lucide="mail" class="w-3.5 h-3.5"></i> İletişim
+            </a>
 
             {{-- Hamburger (Mobile) --}}
             <button type="button" id="mobile-menu-toggle"
-                class="lg:hidden inline-flex items-center justify-center w-9 h-9 rounded-lg border border-neutral-200 dark:border-neutral-800 text-neutral-950 dark:text-neutral-50 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900 cursor-pointer"
+                class="xl:hidden inline-flex items-center justify-center w-9 h-9 rounded-lg border border-neutral-200 dark:border-neutral-800 text-neutral-950 dark:text-neutral-50 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900 cursor-pointer"
                 aria-label="Menü" aria-expanded="false" aria-controls="mobile-menu">
                 <i data-lucide="menu" class="w-5 h-5" id="menu-icon-open"></i>
                 <i data-lucide="x" class="w-5 h-5 hidden" id="menu-icon-close"></i>
@@ -126,7 +139,7 @@
     </div>
 
     {{-- Mobile Menu --}}
-    <div id="mobile-menu" class="lg:hidden max-h-0 overflow-hidden transition-all duration-300 ease-in-out border-t border-transparent">
+    <div id="mobile-menu" class="xl:hidden max-h-0 overflow-hidden transition-all duration-300 ease-in-out border-t border-transparent">
         <nav class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-1" aria-label="Mobil menü">
             <a href="{{ route('home') }}" @class([$mobileNavClass, $mobileNavActive => request()->routeIs('home')])>
                 <span class="flex items-center gap-2"><i data-lucide="home" class="w-4 h-4"></i> Ana sayfa</span>

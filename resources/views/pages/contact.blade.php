@@ -40,9 +40,12 @@
 
                         @if($social->github_url)
                             <a href="{{ $social->github_url }}" class="py-5 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center transition-all hover:pl-1 group" target="_blank" rel="noopener">
-                                <div>
-                                    <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">GitHub</div>
-                                    <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ str_replace('https://', '', $social->github_url) }}</div>
+                                <div class="flex items-center gap-3">
+                                    <x-social-icon platform="github" class="w-5 h-5 text-neutral-400 dark:text-neutral-600" />
+                                    <div>
+                                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">GitHub</div>
+                                        <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ str_replace('https://', '', $social->github_url) }}</div>
+                                    </div>
                                 </div>
                                 <span class="text-neutral-400 dark:text-neutral-600 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
                                     <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
@@ -52,9 +55,12 @@
 
                         @if($social->linkedin_url)
                             <a href="{{ $social->linkedin_url }}" class="py-5 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center transition-all hover:pl-1 group" target="_blank" rel="noopener">
-                                <div>
-                                    <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">LinkedIn</div>
-                                    <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ str_replace('https://', '', $social->linkedin_url) }}</div>
+                                <div class="flex items-center gap-3">
+                                    <x-social-icon platform="linkedin" class="w-5 h-5 text-neutral-400 dark:text-neutral-600" />
+                                    <div>
+                                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">LinkedIn</div>
+                                        <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ str_replace('https://', '', $social->linkedin_url) }}</div>
+                                    </div>
                                 </div>
                                 <span class="text-neutral-400 dark:text-neutral-600 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
                                     <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
@@ -64,9 +70,12 @@
 
                         @if($social->twitter_url)
                             <a href="{{ $social->twitter_url }}" class="py-5 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center transition-all hover:pl-1 group" target="_blank" rel="noopener">
-                                <div>
-                                    <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">Twitter</div>
-                                    <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ str_replace('https://', '', $social->twitter_url) }}</div>
+                                <div class="flex items-center gap-3">
+                                    <x-social-icon platform="twitter" class="w-5 h-5 text-neutral-400 dark:text-neutral-600" />
+                                    <div>
+                                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">Twitter / X</div>
+                                        <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ str_replace('https://', '', $social->twitter_url) }}</div>
+                                    </div>
                                 </div>
                                 <span class="text-neutral-400 dark:text-neutral-600 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
                                     <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
@@ -76,9 +85,12 @@
 
                         @if($social->instagram_url)
                             <a href="{{ $social->instagram_url }}" class="py-5 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center transition-all hover:pl-1 group" target="_blank" rel="noopener">
-                                <div>
-                                    <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">Instagram</div>
-                                    <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ str_replace('https://', '', $social->instagram_url) }}</div>
+                                <div class="flex items-center gap-3">
+                                    <x-social-icon platform="instagram" class="w-5 h-5 text-neutral-400 dark:text-neutral-600" />
+                                    <div>
+                                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">Instagram</div>
+                                        <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ str_replace('https://', '', $social->instagram_url) }}</div>
+                                    </div>
                                 </div>
                                 <span class="text-neutral-400 dark:text-neutral-600 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
                                     <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
@@ -138,14 +150,17 @@
 
                     <div>
                         <label for="contact-subject" class="block text-xs text-neutral-500 mb-1.5 tracking-wide">Konu</label>
+                        <div class="relative">
                         <select id="contact-subject" name="subject"
-                            class="w-full px-3.5 py-2.5 text-sm font-sans bg-white dark:bg-neutral-950 text-neutral-950 dark:text-neutral-50 border border-neutral-200 dark:border-neutral-800 rounded-lg outline-none transition-colors focus:border-neutral-950 dark:focus:border-neutral-50"
+                            class="w-full appearance-none px-3.5 py-2.5 pr-9 text-sm font-sans bg-white dark:bg-neutral-950 text-neutral-950 dark:text-neutral-50 border border-neutral-200 dark:border-neutral-800 rounded-lg outline-none transition-colors focus:border-neutral-950 dark:focus:border-neutral-50"
                             required>
                             <option value="">Seçiniz</option>
                             @foreach($subjects as $subject)
                                 <option value="{{ $subject->value }}" {{ old('subject') === $subject->value ? 'selected' : '' }}>{{ $subject->getLabel() }}</option>
                             @endforeach
                         </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none"></i>
+                        </div>
                         @error('subject') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
 

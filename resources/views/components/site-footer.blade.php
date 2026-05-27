@@ -52,17 +52,17 @@
                 @endif
                 @if($social->github_url)
                     <a href="{{ $social->github_url }}" target="_blank" rel="noopener" class="{{ $footerLinkClass }} inline-flex items-center gap-1.5">
-                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> GitHub
+                        <x-social-icon platform="github" class="w-3.5 h-3.5" /> GitHub
                     </a>
                 @endif
                 @if($social->linkedin_url)
                     <a href="{{ $social->linkedin_url }}" target="_blank" rel="noopener" class="{{ $footerLinkClass }} inline-flex items-center gap-1.5">
-                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> LinkedIn
+                        <x-social-icon platform="linkedin" class="w-3.5 h-3.5" /> LinkedIn
                     </a>
                 @endif
                 @if($social->twitter_url)
                     <a href="{{ $social->twitter_url }}" target="_blank" rel="noopener" class="{{ $footerLinkClass }} inline-flex items-center gap-1.5">
-                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> Twitter
+                        <x-social-icon platform="twitter" class="w-3.5 h-3.5" /> Twitter
                     </a>
                 @endif
             </div>
@@ -70,7 +70,7 @@
     </div>
 
     {{-- Footer Bottom --}}
-    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row justify-between gap-2 text-xs text-neutral-500">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 py-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-row justify-between gap-2 text-xs text-neutral-500">
         <span>© {{ now()->year }} {{ $general->author_name }}</span>
         <span>{{ $general->author_location ?? '' }}</span>
     </div>
