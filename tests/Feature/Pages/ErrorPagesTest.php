@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
+
 it('serves a custom 404 page for unknown routes', function () {
     $this->get('/this-route-does-not-exist')
         ->assertNotFound()

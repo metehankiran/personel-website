@@ -51,6 +51,7 @@ it('submits contact form successfully', function () {
         'phone' => '+90 555 000 00 00',
         'subject' => ContactSubject::ProjectInquiry->value,
         'message' => 'Merhaba, bir proje hakkında konuşmak istiyorum.',
+        'kvkk_consent' => '1',
     ])->assertRedirect()
         ->assertSessionHas('success');
 

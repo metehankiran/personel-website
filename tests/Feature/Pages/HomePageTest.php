@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Settings\GeneralSettings;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
+
 it('renders the home page with a 200 status', function () {
     $this->get(route('home'))
         ->assertOk()
@@ -22,18 +27,25 @@ it('loads the theme stylesheet and scripts from the public theme directory', fun
     $response->assertSee(asset('theme/js/main.js'), escape: false);
 });
 
-it('renders the hero section content', function () {
-    $response = $this->get(route('home'));
+it('renders dynamic hero content from settings', function () {
+    $settings = app(GeneralSettings::class);
+    $settings->hero_title = 'Bağımsız <em>full-stack</em> developer.';
+    $settings->availability_status = 'Yeni proje alıyor';
+    $settings->save();
 
-    $response->assertSee('full-stack', escape: false);
-    $response->assertSee('Bağımsız', escape: false);
+    $this->get(route('home'))
+        ->assertSee('full-stack', escape: false)
+        ->assertSee('Yeni proje alıyor', escape: false);
 });
 
-it('marks the home navigation link as active', function () {
-    $response = $this->get(route('home'));
+it('renders homepage stats from settings', function () {
+    $settings = app(GeneralSettings::class);
+    $settings->homepage_stats = [
+        ['label' => 'Tecrübe', 'value' => '5+ yıl'],
+    ];
+    $settings->save();
 
-    $response->assertSeeInOrder([
-        'nav-link active',
-        'Ana sayfa',
-    ], escape: false);
+    $this->get(route('home'))
+        ->assertSee('Tecrübe', escape: false)
+        ->assertSee('5+ yıl', escape: false);
 });

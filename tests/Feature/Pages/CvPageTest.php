@@ -8,6 +8,7 @@ use App\Models\Education;
 use App\Models\Experience;
 use App\Models\Language;
 use App\Models\Skill;
+use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -19,9 +20,13 @@ it('renders the cv page', function () {
 });
 
 it('shows cv hero content', function () {
+    $settings = app(GeneralSettings::class);
+    $settings->author_name = 'Test Author';
+    $settings->save();
+
     $this->get(route('cv'))
         ->assertSee('CV', escape: false)
-        ->assertSee('Metehan Kıran', escape: false);
+        ->assertSee('Test Author', escape: false);
 });
 
 it('displays experiences from database', function () {
