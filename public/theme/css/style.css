@@ -263,6 +263,8 @@ section:first-of-type { padding-top: 80px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
 .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.services-grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+.services-grid .service-card { flex: 0 1 calc(33.333% - 14px); min-width: 280px; }
 
 /* Cards */
 .card {
@@ -785,6 +787,7 @@ section:first-of-type { padding-top: 80px; }
   .footer-bottom { padding: 20px 24px; }
   .split-2, .split-content, .split-cv, .stack-section { grid-template-columns: 1fr; gap: 32px; }
   .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .services-grid .service-card { flex: 0 1 100%; }
   .grid-2 { grid-template-columns: 1fr; gap: 24px; }
   .h1, .h1-xl { font-size: 44px; }
   .h1-md { font-size: 38px; }

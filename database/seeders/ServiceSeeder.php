@@ -37,6 +37,33 @@ class ServiceSeeder extends Seeder
                 'badge' => null,
                 'sort_order' => 3,
             ],
+            [
+                'title' => 'API Geliştirme',
+                'description' => 'Mobil uygulama veya üçüncü parti entegrasyonlar için RESTful API tasarım ve geliştirme.',
+                'features' => ['REST API tasarımı', 'Üçüncü parti entegrasyon', 'API dokümantasyonu', 'Rate limiting + auth'],
+                'pricing' => 'Proje bazlı',
+                'duration' => '4 hafta',
+                'badge' => null,
+                'sort_order' => 4,
+            ],
+            [
+                'title' => 'DevOps & Altyapı',
+                'description' => 'Uygulamanı production\'a taşırım. CI/CD, container, monitoring — hepsi dahil.',
+                'features' => ['Docker + CI/CD pipeline', 'Sunucu kurulum + hardening', 'Zero-downtime deployment', 'Monitoring + alerting'],
+                'pricing' => 'Proje bazlı',
+                'duration' => '1 hafta',
+                'badge' => null,
+                'sort_order' => 5,
+            ],
+            [
+                'title' => 'SEO & Performans',
+                'description' => 'Sitenin arama motorlarında görünürlüğünü ve teknik performansını artırırım.',
+                'features' => ['Teknik SEO audit', 'Core Web Vitals optimizasyonu', 'Yapılandırılmış veri (Schema.org)', 'Sayfa hızı iyileştirme'],
+                'pricing' => 'Proje bazlı',
+                'duration' => '2 hafta',
+                'badge' => null,
+                'sort_order' => 6,
+            ],
         ];
 
         foreach ($services as $service) {

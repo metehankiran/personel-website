@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use App\Models\Service;
 use Illuminate\Contracts\View\View;
 
 class PageController extends Controller
@@ -21,7 +22,9 @@ class PageController extends Controller
 
     public function services(): View
     {
-        return view('pages.services');
+        return view('pages.services', [
+            'services' => Service::ordered()->get(),
+        ]);
     }
 
     public function cv(): View
