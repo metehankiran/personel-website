@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\LanguageLevel;
 use App\Models\Language;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,7 +18,7 @@ class LanguageFactory extends Factory
     {
         return [
             'name' => fake()->randomElement(['Turkish', 'English', 'German', 'French', 'Spanish']),
-            'level' => fake()->randomElement(['Native', 'Fluent', 'Advanced', 'Intermediate', 'Beginner']),
+            'level' => fake()->randomElement(LanguageLevel::cases()),
             'sort_order' => fake()->numberBetween(0, 10),
         ];
     }

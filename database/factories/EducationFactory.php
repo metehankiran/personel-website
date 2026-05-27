@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\EducationDegree;
 use App\Models\Education;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,9 +20,9 @@ class EducationFactory extends Factory
 
         return [
             'school' => fake()->company().' University',
-            'degree' => fake()->randomElement(["Bachelor's", "Master's", "Associate's", 'PhD']),
+            'degree' => fake()->randomElement(EducationDegree::cases()),
             'field' => fake()->randomElement(['Computer Science', 'Software Engineering', 'Information Systems', 'Mathematics']),
-            'description' => fake()->paragraph(),
+            'gpa' => fake()->randomElement(['3.25/4', '3.50/4', '85/100', null]),
             'start_date' => $startDate,
             'end_date' => fake()->dateTimeBetween($startDate, 'now'),
             'sort_order' => fake()->numberBetween(0, 10),

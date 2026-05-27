@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('school');
             $table->string('degree');
             $table->string('field');
-            $table->text('description')->nullable();
+            $table->string('gpa')->nullable();
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->integer('sort_order')->default(0);

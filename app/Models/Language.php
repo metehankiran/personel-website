@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\LanguageLevel;
 use Database\Factories\LanguageFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,6 +12,13 @@ class Language extends Model
 {
     /** @use HasFactory<LanguageFactory> */
     use HasFactory;
+
+    protected function casts(): array
+    {
+        return [
+            'level' => LanguageLevel::class,
+        ];
+    }
 
     public function scopeOrdered(Builder $query): Builder
     {
