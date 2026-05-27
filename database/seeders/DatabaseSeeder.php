@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             EducationSeeder::class,
             BookmarkSeeder::class,
             PostSeeder::class,
+            ProjectSeeder::class,
         ]);
     }
 }
