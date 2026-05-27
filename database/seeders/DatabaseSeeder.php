@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             SkillSeeder::class,
             LanguageSeeder::class,
             EducationSeeder::class,
+            BookmarkSeeder::class,
         ]);
     }
 }
