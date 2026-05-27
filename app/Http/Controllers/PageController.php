@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Page;
 use Illuminate\Contracts\View\View;
 
 class PageController extends Controller
@@ -23,16 +24,6 @@ class PageController extends Controller
         return view('pages.services');
     }
 
-    public function references(): View
-    {
-        return view('pages.references');
-    }
-
-    public function stack(): View
-    {
-        return view('pages.stack');
-    }
-
     public function cv(): View
     {
         return view('pages.cv');
@@ -43,8 +34,8 @@ class PageController extends Controller
         return view('pages.contact');
     }
 
-    public function bookmarks(): View
+    public function show(Page $page): View
     {
-        return view('pages.bookmarks');
+        return view('pages.page', ['page' => $page]);
     }
 }
