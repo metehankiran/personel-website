@@ -4,16 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', config('app.name'))</title>
+    <meta name="description" content="@yield('meta_description', $seo->meta_description ?? config('app.name') . ' — Bağımsız full-stack developer.')">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="@yield('title', config('app.name'))">
+    <meta property="og:description" content="@yield('meta_description', $seo->meta_description ?? config('app.name') . ' — Bağımsız full-stack developer.')">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="tr_TR">
+    <meta name="twitter:card" content="summary_large_image">
 
     <link rel="icon" href="{{ asset('theme/favicon.svg') }}" type="image/svg+xml">
-
-    <script>
-        window.mkSearchUrl = '{{ route("search.index") }}';
-        window.mkCookieConfig = {
-            cookiePolicyUrl: '{{ $general->cookie_policy_slug ? route("pages.show", $general->cookie_policy_slug) : "#" }}',
-            kvkkUrl: '{{ $general->kvkk_page_slug ? route("pages.show", $general->kvkk_page_slug) : "#" }}'
-        };
-    </script>
+    <link rel="canonical" href="{{ url()->current() }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -28,6 +28,16 @@
 
     <x-site-footer />
 
+    <script src="{{ asset('theme/js/main.js') }}"></script>
+    <script>window.mkSearchUrl = '{{ route("search.index") }}';</script>
+    <script src="{{ asset('theme/js/search.js') }}" defer></script>
+    <script>
+        window.mkCookieConfig = {
+            cookiePolicyUrl: '{{ $general->cookie_policy_slug ? route("pages.show", $general->cookie_policy_slug) : "#" }}',
+            kvkkUrl: '{{ $general->kvkk_page_slug ? route("pages.show", $general->kvkk_page_slug) : "#" }}'
+        };
+    </script>
+    <script src="{{ asset('theme/js/cookie.js') }}" defer></script>
     @stack('scripts')
 </body>
 </html>

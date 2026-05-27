@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Settings\GeneralSettings;
+use App\Settings\SeoSettings;
 use App\Settings\SocialSettings;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\View;
@@ -21,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('*', function ($view) {
             $view->with('general', app(GeneralSettings::class));
+            $view->with('seo', app(SeoSettings::class));
             $view->with('social', app(SocialSettings::class));
         });
     }
