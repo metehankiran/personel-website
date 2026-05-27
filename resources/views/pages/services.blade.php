@@ -19,8 +19,18 @@
                         @endforeach
                     </div>
                     <div class="service-divider">
-                        <div class="service-eyebrow" style="margin-bottom:4px;">Başlangıç</div>
-                        <div style="font-size:18px;font-weight:600;margin-bottom:16px;">{{ $service->duration ?? $service->pricing }}</div>
+                        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;">
+                            <div>
+                                <div class="service-eyebrow" style="margin-bottom:4px;">Fiyatlandırma</div>
+                                <div style="font-size:18px;font-weight:600;">{{ $service->pricing }}</div>
+                            </div>
+                            @if($service->duration)
+                                <div style="text-align:right;">
+                                    <div class="service-eyebrow" style="margin-bottom:4px;">Süre</div>
+                                    <div style="font-size:18px;font-weight:600;">{{ $service->duration }}</div>
+                                </div>
+                            @endif
+                        </div>
                         <a href="{{ route('contact') }}" class="btn btn-block btn-sm" style="background:var(--fg);color:var(--bg);">Konuşalım →</a>
                     </div>
                 </div>
