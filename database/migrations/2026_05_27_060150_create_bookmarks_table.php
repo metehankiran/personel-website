@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::create('bookmarks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained('bookmark_categories')->cascadeOnDelete();
-            $table->string('title');
             $table->string('url');
             $table->string('description')->nullable();
             $table->integer('sort_order')->default(0);

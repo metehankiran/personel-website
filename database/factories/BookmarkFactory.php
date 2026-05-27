@@ -18,7 +18,6 @@ class BookmarkFactory extends Factory
     {
         return [
             'category_id' => BookmarkCategory::factory(),
-            'title' => fake()->domainName(),
             'url' => fake()->url(),
             'description' => fake()->sentence(),
             'sort_order' => fake()->numberBetween(0, 10),

@@ -19,7 +19,6 @@ test('bookmark can be created with a category', function () {
     $bookmark = Bookmark::factory()->for($category, 'category')->create();
 
     expect($bookmark)->toBeInstanceOf(Bookmark::class)
-        ->and($bookmark->title)->toBeString()
         ->and($bookmark->url)->toBeString()
         ->and($bookmark->category_id)->toBe($category->id);
 });
@@ -53,14 +52,14 @@ test('categories are ordered by sort_order', function () {
 
 test('bookmarks are ordered by sort_order', function () {
     $category = BookmarkCategory::factory()->create();
-    Bookmark::factory()->for($category, 'category')->create(['sort_order' => 3, 'title' => 'Third']);
-    Bookmark::factory()->for($category, 'category')->create(['sort_order' => 1, 'title' => 'First']);
-    Bookmark::factory()->for($category, 'category')->create(['sort_order' => 2, 'title' => 'Second']);
+    Bookmark::factory()->for($category, 'category')->create(['sort_order' => 3, 'url' => 'https://third.com']);
+    Bookmark::factory()->for($category, 'category')->create(['sort_order' => 1, 'url' => 'https://first.com']);
+    Bookmark::factory()->for($category, 'category')->create(['sort_order' => 2, 'url' => 'https://second.com']);
 
     $bookmarks = Bookmark::ordered()->get();
 
-    expect($bookmarks->pluck('title')->toArray())
-        ->toBe(['First', 'Second', 'Third']);
+    expect($bookmarks->pluck('url')->toArray())
+        ->toBe(['https://first.com', 'https://second.com', 'https://third.com']);
 });
 
 test('bookmark description is nullable', function () {
