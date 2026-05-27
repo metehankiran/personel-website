@@ -17,7 +17,12 @@ class SkillFactory extends Factory
     {
         return [
             'name' => fake()->randomElement(['Backend', 'Frontend', 'DevOps', 'Tools']),
-            'items' => fake()->randomElements(['PHP', 'Node.js', 'Vue.js', 'React', 'Docker', 'Git', 'Laravel', 'Tailwind'], 3),
+            'description' => fake()->sentence(),
+            'items' => [
+                ['name' => 'PHP', 'description' => fake()->sentence(4), 'level' => fake()->numberBetween(1, 5)],
+                ['name' => 'Laravel', 'description' => fake()->sentence(4), 'level' => fake()->numberBetween(1, 5)],
+                ['name' => 'Docker', 'description' => fake()->sentence(4), 'level' => fake()->numberBetween(1, 5)],
+            ],
             'sort_order' => fake()->numberBetween(0, 10),
         ];
     }

@@ -14,15 +14,18 @@ test('skill can be created with valid attributes', function () {
         ->and($skill->items)->toBeArray();
 });
 
-test('skill items are stored as json array', function () {
-    $skill = Skill::factory()->create([
-        'name' => 'Backend',
-        'items' => ['PHP', '.NET Core', 'Node.js'],
-    ]);
+test('skill items store structured data with level', function () {
+    $items = [
+        ['name' => 'Laravel', 'description' => 'Ana çerçevem.', 'level' => 5],
+        ['name' => 'Node.js', 'description' => 'Real-time.', 'level' => 3],
+    ];
+
+    $skill = Skill::factory()->create(['name' => 'Backend', 'items' => $items]);
 
     $fresh = $skill->fresh();
 
-    expect($fresh->items)->toBe(['PHP', '.NET Core', 'Node.js']);
+    expect($fresh->items)->toBe($items)
+        ->and($fresh->items[0]['level'])->toBe(5);
 });
 
 test('skills are ordered by sort_order', function () {
