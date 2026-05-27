@@ -40,6 +40,7 @@
     <x-site-footer />
 
     <script src="{{ asset('theme/js/main.js') }}"></script>
+    <script>window.mkSearchUrl = '{{ route("search.index") }}';</script>
     <script src="{{ asset('theme/js/search.js') }}" defer></script>
     <script>
         window.mkCookieConfig = {

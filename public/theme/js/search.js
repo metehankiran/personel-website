@@ -2,49 +2,23 @@
    ─ Open: Cmd/Ctrl+K, "/" hotkey, or click search trigger
    ─ Close: Esc, click backdrop, click result
    ─ Keyboard nav: ↑↓ to move, Enter to open
-   ─ Mock data lives in MK_SEARCH_INDEX — replace with backend payload later
+   ─ Data fetched from backend via window.mkSearchUrl
    ────────────────────────────────────────────────── */
 
 (function () {
-  // ─── Mock search index (replace with backend data) ────
-  // Each item: { type, title, desc, url, tags? }
-  const MK_SEARCH_INDEX = [
-    // Pages
-    { type: 'Sayfa', title: 'Ana sayfa', desc: 'Hero, öne çıkan proje ve özet', url: 'index.html' },
-    { type: 'Sayfa', title: 'Hakkımda', desc: 'Biyografi, zaman çizelgesi', url: 'hakkimda.html' },
-    { type: 'Sayfa', title: 'Projeler', desc: 'Tüm freelance işler', url: 'projeler.html' },
-    { type: 'Sayfa', title: 'Hizmetler', desc: 'Çalışma şekilleri ve fiyatlandırma', url: 'hizmetler.html' },
-    { type: 'Sayfa', title: 'Stack', desc: 'Kullandığım teknolojiler', url: 'stack.html' },
-    { type: 'Sayfa', title: 'Referanslar', desc: 'Müşteri yorumları ve markalar', url: 'referanslar.html' },
-    { type: 'Sayfa', title: 'Blog', desc: 'Teknik makaleler', url: 'blog.html' },
-    { type: 'Sayfa', title: 'Notlar', desc: 'Kısa düşünceler, now-page', url: 'notlar.html' },
-    { type: 'Sayfa', title: 'Uses', desc: 'Setup ve araçlar', url: 'uses.html' },
-    { type: 'Sayfa', title: 'CV', desc: 'Özgeçmiş, PDF indir', url: 'cv.html' },
-    { type: 'Sayfa', title: 'İletişim', desc: 'Email, sosyal, form', url: 'iletisim.html' },
+  // ─── Dynamic search index (fetched from backend) ────
+  var MK_SEARCH_INDEX = [];
+  var indexLoaded = false;
 
-    // Projects
-    { type: 'Proje', title: 'Karavela', desc: 'Multi-tenant e-ticaret SaaS', url: 'projeler.html#karavela', tags: ['saas','laravel','vue'] },
-    { type: 'Proje', title: 'Flotaki', desc: 'Filo yönetim CRM', url: 'projeler.html#flotaki', tags: ['crm','dotnet'] },
-    { type: 'Proje', title: 'Rezerv', desc: 'Restoran rezervasyon API', url: 'projeler.html#rezerv', tags: ['api','laravel','redis'] },
-    { type: 'Proje', title: 'Atelye', desc: 'Mimarlık ofisi sitesi', url: 'projeler.html#atelye', tags: ['web','nuxt'] },
-    { type: 'Proje', title: 'Tezgah', desc: 'Mobil pazaryeri API', url: 'projeler.html#tezgah', tags: ['api','laravel'] },
-    { type: 'Proje', title: 'Patika', desc: 'E-eğitim platformu', url: 'projeler.html#patika', tags: ['saas','vue','s3'] },
-
-    // Blog posts
-    { type: 'Yazı', title: "Laravel'de gerçekten lazım olan paketler", desc: 'Her projede kurduğum 7 paket', url: 'blog.html', tags: ['laravel'] },
-    { type: 'Yazı', title: '.NET Core ile API yazarken yaptığım 5 hata', desc: 'Laravel arka planından gelirken', url: 'blog.html', tags: ['dotnet'] },
-    { type: 'Yazı', title: 'Vue 3 Composition API: pratiğe geçince', desc: 'Bir yıl sonra notlar', url: 'blog.html', tags: ['vue'] },
-    { type: 'Yazı', title: 'Multi-tenant SaaS: tek veritabanı ya da kiracı başına?', desc: 'Karavela kararı', url: 'blog.html', tags: ['mimari','saas'] },
-    { type: 'Yazı', title: 'Freelance ilk yılım — açık rakamlarla', desc: '12 ay, 18 müşteri', url: 'blog.html', tags: ['freelance'] },
-    { type: 'Yazı', title: "Production'da Docker: faydalı 6 pattern", desc: 'Geliştirme dışında Docker', url: 'blog.html', tags: ['devops','docker'] },
-
-    // Quick actions
-    { type: 'Eylem', title: 'Email gönder', desc: 'merhaba@metehankiran.dev', url: 'mailto:merhaba@metehankiran.dev' },
-    { type: 'Eylem', title: 'CV indir', desc: 'PDF olarak özgeçmiş', url: 'cv.html' },
-    { type: 'Eylem', title: 'GitHub', desc: 'github.com/metehankiran', url: 'https://github.com/' },
-    { type: 'Eylem', title: 'LinkedIn', desc: 'in/metehankiran', url: 'https://linkedin.com/' },
-    { type: 'Eylem', title: 'Tema değiştir', desc: 'Açık ↔ koyu mod', url: '#toggle-theme' },
-  ];
+  function loadIndex() {
+    if (indexLoaded) return Promise.resolve();
+    var url = window.mkSearchUrl;
+    if (!url) return Promise.resolve();
+    return fetch(url, { headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' } })
+      .then(function (r) { return r.json(); })
+      .then(function (data) { MK_SEARCH_INDEX = data; indexLoaded = true; })
+      .catch(function () {});
+  }
   window.MK_SEARCH_INDEX = MK_SEARCH_INDEX;
 
   // ─── Inject keyframe animation ────────────────────
@@ -91,8 +65,7 @@
   // ─── Search ranking ────────────────────────────────
   function rank(query) {
     if (!query) {
-      // Default: show grouped quick set (a few of each type)
-      const wanted = ['Sayfa', 'Proje', 'Yazı', 'Eylem'];
+      const wanted = ['Sayfa', 'Proje', 'Yazı', 'Hızlı erişim'];
       const out = [];
       for (const t of wanted) {
         MK_SEARCH_INDEX.filter(i => i.type === t).slice(0, 4).forEach(i => out.push({ item: i, score: 1 }));
@@ -106,7 +79,6 @@
       if (item.title.toLowerCase() === q) score += 100;
       if (item.title.toLowerCase().startsWith(q)) score += 60;
       if (hay.includes(q)) score += 30;
-      // word-by-word
       q.split(/\s+/).forEach(part => { if (part && hay.includes(part)) score += 5; });
       return { item, score };
     }).filter(r => r.score > 0);
@@ -136,28 +108,34 @@
       input.setAttribute('aria-activedescendant', '');
       return;
     }
-    // Group by type
     const groups = {};
     currentResults.forEach((r, i) => {
       (groups[r.item.type] ||= []).push({ ...r, i });
     });
+    var groupIcons = { 'Sayfa': 'compass', 'Proje': 'folder-open', 'Yazı': 'pen-line', 'Hızlı erişim': 'zap' };
     let html = '';
     Object.keys(groups).forEach(type => {
-      html += '<div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase px-3 pt-3.5 pb-1.5">' + escapeHtml(type) + '</div>';
+      var gIcon = groupIcons[type] || 'file';
+      html += '<div class="flex items-center gap-1.5 text-[11px] text-neutral-500 tracking-[1.2px] uppercase px-3 pt-3.5 pb-1.5">'
+        + '<i data-lucide="' + escapeHtml(gIcon) + '" class="w-3.5 h-3.5"></i>'
+        + escapeHtml(type) + '</div>';
       groups[type].forEach(r => {
         const id = 'sp-r-' + r.i;
         const activeClass = r.i === cursor ? ' bg-neutral-100 dark:bg-neutral-900' : '';
         const arrowOpacity = r.i === cursor ? 'opacity-100 text-neutral-600 dark:text-neutral-400' : 'opacity-0 text-neutral-400';
-        html += '<button type="button" class="spotlight-item grid grid-cols-[1fr_auto] gap-x-4 items-center w-full px-3 py-2.5 border-none bg-transparent rounded-lg text-left cursor-pointer font-sans text-neutral-950 dark:text-neutral-50' + activeClass + '"'
+        html += '<button type="button" class="spotlight-item flex items-center gap-3 w-full px-3 py-2.5 border-none bg-transparent rounded-lg text-left cursor-pointer font-sans text-neutral-950 dark:text-neutral-50' + activeClass + '"'
           + ' id="' + id + '" role="option" aria-selected="' + (r.i === cursor) + '"'
           + ' data-idx="' + r.i + '" data-url="' + escapeHtml(r.item.url) + '">'
-          + '<span class="text-sm font-medium col-span-1">' + highlight(r.item.title, q) + '</span>'
-          + '<span class="text-xs text-neutral-600 dark:text-neutral-400 col-[1] row-[2] mt-0.5 overflow-hidden text-ellipsis whitespace-nowrap">' + highlight(r.item.desc, q) + '</span>'
-          + '<span class="col-[2] row-span-2 text-sm ' + arrowOpacity + '" aria-hidden="true">↵</span>'
+          + '<div class="flex-1 min-w-0">'
+          + '<div class="text-sm font-medium">' + highlight(r.item.title, q) + '</div>'
+          + '<div class="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5 overflow-hidden text-ellipsis whitespace-nowrap">' + highlight(r.item.desc, q) + '</div>'
+          + '</div>'
+          + '<span class="text-sm shrink-0 ' + arrowOpacity + '" aria-hidden="true">↵</span>'
           + '</button>';
       });
     });
     resultsEl.innerHTML = html;
+    if (typeof lucide !== 'undefined') lucide.createIcons({ nodes: [resultsEl] });
     var active = resultsEl.querySelector('.spotlight-item[aria-selected="true"]');
     if (active) {
       input.setAttribute('aria-activedescendant', active.id);
@@ -173,7 +151,7 @@
     document.body.style.overflow = 'hidden';
     cursor = 0;
     input.value = '';
-    render();
+    loadIndex().then(function () { render(); });
     requestAnimationFrame(() => input.focus());
   }
   function close() {
@@ -190,16 +168,12 @@
     const url = r.item.url;
     if (url === '#toggle-theme') {
       close();
-      const btn = document.querySelector('[data-theme-toggle]');
+      var btn = document.querySelector('[data-theme-set]');
       if (btn) btn.click();
       return;
     }
     close();
-    if (/^https?:|^mailto:|^tel:/.test(url)) {
-      window.location.href = url;
-    } else {
-      window.location.href = url;
-    }
+    window.location.href = url;
   }
 
   // ─── Wire up ──────────────────────────────────────
@@ -239,7 +213,6 @@
     if (e.target.matches('[data-spotlight-close]')) close();
   });
 
-  // Global hotkeys: Cmd/Ctrl+K, "/"
   document.addEventListener('keydown', (e) => {
     const isShortcut = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k';
     const isSlash = e.key === '/' && modal.style.display === 'none' &&
@@ -248,7 +221,6 @@
     else if (isSlash) { e.preventDefault(); open(); }
   });
 
-  // Trigger button(s)
   document.addEventListener('click', (e) => {
     if (e.target.closest('[data-search-trigger]')) {
       e.preventDefault();
@@ -256,6 +228,5 @@
     }
   });
 
-  // Expose for debugging / external triggers
   window.MKSearch = { open, close };
 })();
