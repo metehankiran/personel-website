@@ -10,7 +10,6 @@
         <div class="grid-3" style="margin-top:56px;">
             @foreach($testimonials as $testimonial)
                 <div class="quote-card {{ $loop->first ? 'big' : '' }}">
-                    <div class="quote-mark">"</div>
                     <p class="quote-text">{{ $testimonial->body }}</p>
                     <div class="quote-author">
                         @if($testimonial->avatar)
@@ -29,13 +28,21 @@
                 <div class="eyebrow">Birlikte çalıştığım markalar</div>
                 <div class="logo-grid">
                     @foreach($brands as $brand)
-                        <div class="logo-cell">
+                        @if($brand->url)
+                            <a href="{{ $brand->url }}" class="logo-cell" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+                        @else
+                            <div class="logo-cell">
+                        @endif
                             @if($brand->logo)
-                                <img src="{{ Storage::url($brand->logo) }}" alt="{{ $brand->name }}" style="max-height:32px;">
+                                <img src="{{ Storage::url($brand->logo) }}" alt="{{ $brand->name }}" style="width:100%;height:100%;object-fit:cover;">
                             @else
                                 {{ $brand->name }}
                             @endif
-                        </div>
+                        @if($brand->url)
+                            </a>
+                        @else
+                            </div>
+                        @endif
                     @endforeach
                 </div>
             </div>
