@@ -14,5 +14,6 @@ return new class extends SettingsMigration
         $this->migrator->add('general.author_address', '');
         $this->migrator->add('general.logo_path', '');
         $this->migrator->add('general.favicon_path', '');
+        $this->migrator->add('general.cv_path', '');
     }
 };

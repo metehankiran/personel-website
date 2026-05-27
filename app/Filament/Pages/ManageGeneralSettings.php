@@ -54,6 +54,9 @@ class ManageGeneralSettings extends SettingsPage
                 TextInput::make('favicon_path')
                     ->label('Favicon Path')
                     ->maxLength(255),
+                TextInput::make('cv_path')
+                    ->label('CV File Path')
+                    ->maxLength(255),
             ]);
     }
 }

@@ -22,6 +22,8 @@ class GeneralSettings extends Settings
 
     public ?string $favicon_path;
 
+    public ?string $cv_path;
+
     public static function group(): string
     {
         return 'general';
