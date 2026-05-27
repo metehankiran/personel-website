@@ -22,6 +22,15 @@ class ProjectController extends Controller
     {
         $project->load('category');
 
-        return view('pages.projects.show', ['project' => $project]);
+        $relatedProjects = Project::with('category')
+            ->where('id', '!=', $project->id)
+            ->ordered()
+            ->limit(3)
+            ->get();
+
+        return view('pages.projects.show', [
+            'project' => $project,
+            'relatedProjects' => $relatedProjects,
+        ]);
     }
 }
