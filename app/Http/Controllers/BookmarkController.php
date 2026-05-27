@@ -12,7 +12,7 @@ class BookmarkController extends Controller
     public function __invoke(): View
     {
         return view('pages.bookmarks', [
-            'categories' => BookmarkCategory::with('bookmarks')->ordered()->get(),
+            'categories' => BookmarkCategory::with(['bookmarks' => fn ($q) => $q->ordered()])->ordered()->get(),
         ]);
     }
 }
