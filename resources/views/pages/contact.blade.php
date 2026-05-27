@@ -28,6 +28,9 @@
                     @if($social->instagram_url)
                         <a href="{{ $social->instagram_url }}" class="contact-link" target="_blank" rel="noopener"><div><div class="contact-link-key">Instagram</div><div class="contact-link-val">{{ str_replace('https://', '', $social->instagram_url) }}</div></div><span class="contact-link-icon">↗</span></a>
                     @endif
+                    @if($general->google_maps_url)
+                        <a href="{{ $general->google_maps_url }}" class="contact-link" target="_blank" rel="noopener"><div><div class="contact-link-key">Harita</div><div class="contact-link-val">{{ $general->author_location ?? 'Konum' }}</div></div><span class="contact-link-icon">📍</span></a>
+                    @endif
                 </div>
             </div>
             <form class="form" action="{{ route('contact.send') }}" method="POST">
@@ -66,6 +69,15 @@
                     <textarea id="contact-message" name="message" rows="5" class="input" placeholder="Projeyi anlatabilir misin..." style="resize:vertical;" required>{{ old('message') }}</textarea>
                     @error('message') <p style="font-size:12px;color:red;margin:4px 0 0;">{{ $message }}</p> @enderror
                 </div>
+                @if($general->kvkk_page_slug)
+                    <div class="form-row">
+                        <label style="display:flex;align-items:start;gap:8px;font-size:13px;cursor:pointer;">
+                            <input type="checkbox" name="kvkk_consent" value="1" required style="margin-top:3px;" />
+                            <span><a href="{{ route('pages.show', $general->kvkk_page_slug) }}" target="_blank">KVKK Aydınlatma Metni</a>'ni okudum ve kabul ediyorum.</span>
+                        </label>
+                        @error('kvkk_consent') <p style="font-size:12px;color:red;margin:4px 0 0;">{{ $message }}</p> @enderror
+                    </div>
+                @endif
                 <button type="submit" class="btn btn-primary">Gönder →</button>
             </form>
         </div>

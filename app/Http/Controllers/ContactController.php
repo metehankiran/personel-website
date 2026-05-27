@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Enums\ContactSubject;
@@ -18,7 +20,10 @@ class ContactController extends Controller
             'phone' => ['nullable', 'string', 'max:50'],
             'subject' => ['required', Rule::enum(ContactSubject::class)],
             'message' => ['required', 'string', 'max:5000'],
+            'kvkk_consent' => ['accepted'],
         ]);
+
+        unset($validated['kvkk_consent']);
 
         Contact::create($validated);
 
