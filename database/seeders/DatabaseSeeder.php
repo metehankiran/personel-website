@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
             BookmarkSeeder::class,
             PostSeeder::class,
             ProjectSeeder::class,
+            TestimonialSeeder::class,
+            BrandSeeder::class,
         ]);
     }
 }
