@@ -87,7 +87,7 @@
                         <a href="{{ route('projects.show', $project) }}" class="block p-6 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600">
                             @if($project->cover_image)
                                 <div class="aspect-[16/10] rounded-lg mb-4 overflow-hidden border border-neutral-200 dark:border-neutral-800">
-                                    <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
+                                    <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" loading="lazy" class="w-full h-full object-cover">
                                 </div>
                             @else
                                 <div class="aspect-[16/10] rounded-lg mb-4 bg-gradient-to-br from-neutral-200 dark:from-neutral-800 to-neutral-100 dark:to-neutral-900 border border-neutral-200 dark:border-neutral-800"></div>
@@ -150,7 +150,7 @@
                             </p>
                             <div class="mt-6 pt-4 border-t border-neutral-200 dark:border-neutral-800 flex items-center gap-3">
                                 @if($testimonial->avatar)
-                                    <img src="{{ Storage::url($testimonial->avatar) }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover" width="40" height="40">
+                                    <img src="{{ Storage::url($testimonial->avatar) }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover" width="40" height="40" loading="lazy">
                                 @endif
                                 <div>
                                     <div class="text-sm font-semibold text-neutral-950 dark:text-neutral-50">{{ $testimonial->name }}</div>

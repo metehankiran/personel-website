@@ -69,7 +69,7 @@
             @if($project->cover_image && $project->stats && count($project->stats) <= 5)
                 <div class="mt-16 grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-8 items-stretch">
                     <div class="aspect-[16/10] rounded-2xl overflow-hidden">
-                        <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
+                        <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover" loading="lazy">
                     </div>
                     <div class="flex flex-col gap-4 justify-center">
                         @foreach($project->stats as $stat)
@@ -82,7 +82,7 @@
                 </div>
             @elseif($project->cover_image && $project->stats)
                 <div class="mt-16 aspect-video rounded-2xl overflow-hidden">
-                    <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
+                    <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover" loading="lazy">
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-8">
                     @foreach($project->stats as $stat)
@@ -94,7 +94,7 @@
                 </div>
             @elseif($project->cover_image)
                 <div class="mt-16 aspect-video rounded-2xl overflow-hidden">
-                    <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
+                    <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover" loading="lazy">
                 </div>
             @elseif($project->stats)
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-16">
@@ -140,7 +140,7 @@
                         <a href="{{ route('projects.show', $related) }}" class="block p-6 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600">
                             @if($related->cover_image)
                                 <div class="aspect-[16/10] rounded-lg mb-4 overflow-hidden border border-neutral-200 dark:border-neutral-800">
-                                    <img src="{{ Storage::url($related->cover_image) }}" alt="{{ $related->title }}" class="w-full h-full object-cover">
+                                    <img src="{{ Storage::url($related->cover_image) }}" alt="{{ $related->title }}" class="w-full h-full object-cover" loading="lazy">
                                 </div>
                             @else
                                 <div class="aspect-[16/10] rounded-lg mb-4 bg-gradient-to-br from-neutral-200 dark:from-neutral-800 to-neutral-100 dark:to-neutral-900 border border-neutral-200 dark:border-neutral-800"></div>

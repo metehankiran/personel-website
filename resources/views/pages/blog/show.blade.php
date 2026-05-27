@@ -46,7 +46,7 @@
         @if($post->cover_image)
             <div class="max-w-[920px] mx-auto px-6 lg:px-12 mb-12 mt-12">
                 <div class="aspect-video rounded-xl overflow-hidden">
-                    <img src="{{ Storage::url($post->cover_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
+                    <img src="{{ Storage::url($post->cover_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover" loading="lazy">
                 </div>
             </div>
         @endif
@@ -114,7 +114,7 @@
                         <a href="{{ route('blog.show', $related) }}" class="block p-6 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600">
                             @if($related->cover_image)
                                 <div class="aspect-[16/10] rounded-lg mb-4 overflow-hidden border border-neutral-200 dark:border-neutral-800">
-                                    <img src="{{ Storage::url($related->cover_image) }}" alt="{{ $related->title }}" class="w-full h-full object-cover">
+                                    <img src="{{ Storage::url($related->cover_image) }}" alt="{{ $related->title }}" class="w-full h-full object-cover" loading="lazy">
                                 </div>
                             @else
                                 <div class="aspect-[16/10] rounded-lg mb-4 bg-gradient-to-br from-neutral-200 dark:from-neutral-800 to-neutral-100 dark:to-neutral-900 border border-neutral-200 dark:border-neutral-800"></div>

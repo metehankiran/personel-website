@@ -19,7 +19,7 @@
                         </p>
                         <div class="mt-6 pt-4 border-t border-neutral-200 dark:border-neutral-800 flex items-center gap-3">
                             @if($testimonial->avatar)
-                                <img src="{{ Storage::url($testimonial->avatar) }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover" width="40" height="40">
+                                <img src="{{ Storage::url($testimonial->avatar) }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover" width="40" height="40" loading="lazy">
                             @endif
                             <div>
                                 <div class="text-sm font-semibold text-neutral-950 dark:text-neutral-50">{{ $testimonial->name }}</div>
@@ -42,7 +42,7 @@
                                 <div class="aspect-[3/1] bg-white dark:bg-neutral-950 flex items-center justify-center overflow-hidden">
                             @endif
                                 @if($brand->logo)
-                                    <img src="{{ Storage::url($brand->logo) }}" alt="{{ $brand->name }}" class="w-full h-full object-cover">
+                                    <img src="{{ Storage::url($brand->logo) }}" alt="{{ $brand->name }}" class="w-full h-full object-cover" loading="lazy">
                                 @else
                                     <span class="text-[15px] font-medium text-neutral-600 dark:text-neutral-400 font-serif px-4 text-center">{{ $brand->name }}</span>
                                 @endif
