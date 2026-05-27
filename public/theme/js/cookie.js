@@ -7,6 +7,7 @@
   try { stored = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
   if (stored && stored.ts) return; // already decided
 
+  const cfg = window.mkCookieConfig || {};
   const banner = document.createElement('div');
   banner.className = 'cookie-banner';
   banner.setAttribute('role', 'dialog');
@@ -17,7 +18,7 @@
       <div class="cookie-icon" aria-hidden="true">🍪</div>
       <div class="cookie-text">
         <div id="cookie-title" class="cookie-title">Çerez tercihleri</div>
-        <p id="cookie-body" class="cookie-body">Site, deneyimi geliştirmek için zorunlu çerezleri kullanır. İstersen anonim ziyaretçi istatistikleri toplamamıza da izin verebilirsin.</p>
+        <p id="cookie-body" class="cookie-body">Site, deneyimi geliştirmek için zorunlu çerezleri kullanır. <a href="${cfg.cookiePolicyUrl || '#'}">Çerez Politikası</a> ve <a href="${cfg.kvkkUrl || '#'}">KVKK Aydınlatma Metni</a> hakkında bilgi alabilirsiniz.</p>
       </div>
       <div class="cookie-actions">
         <button type="button" class="btn btn-secondary btn-sm" data-cookie="reject">Sadece zorunlu</button>

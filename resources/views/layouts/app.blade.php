@@ -26,6 +26,12 @@
 
     <script src="{{ asset('theme/js/main.js') }}"></script>
     <script src="{{ asset('theme/js/search.js') }}" defer></script>
+    <script>
+        window.mkCookieConfig = {
+            cookiePolicyUrl: '{{ $general->cookie_policy_slug ? route("pages.show", $general->cookie_policy_slug) : "#" }}',
+            kvkkUrl: '{{ $general->kvkk_page_slug ? route("pages.show", $general->kvkk_page_slug) : "#" }}'
+        };
+    </script>
     <script src="{{ asset('theme/js/cookie.js') }}" defer></script>
     @stack('scripts')
 </body>

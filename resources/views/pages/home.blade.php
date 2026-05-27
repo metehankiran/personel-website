@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Metehan Kıran — Full-stack Developer')
+@section('title', $general->author_name . ' — ' . ($general->author_title ?? 'Developer'))
 
 @php
     $link = fn (string $name): string => Route::has($name) ? route($name) : '#';
@@ -10,20 +10,27 @@
     <section><div class="container">
         <div class="split-2 split-hero">
             <div>
-                <div class="eyebrow"><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:6px;height:6px;border-radius:3px;background:var(--success);"></span>Yeni proje alıyor</span></div>
-                <h1 class="h1-xl">Bağımsız <em>full-stack</em> developer.<br/><span class="dim">Ürünleri sıfırdan teslim ederim.</span></h1>
-                <p class="lede" style="max-width:540px;margin-top:28px;">5 yıldır Laravel, Vue ve .NET Core ile çalışıyorum. E-ticaretten kurumsal CRM'lere — küçük ekiplerle ya da tek başıma.</p>
+                @if($general->availability_status)
+                    <div class="eyebrow"><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:6px;height:6px;border-radius:3px;background:var(--success);"></span>{{ $general->availability_status }}</span></div>
+                @endif
+                @if($general->hero_title)
+                    <h1 class="h1-xl">{!! $general->hero_title !!}</h1>
+                @endif
+                @if($general->hero_subtitle)
+                    <p class="lede" style="max-width:540px;margin-top:28px;">{{ $general->hero_subtitle }}</p>
+                @endif
                 <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;">
                     <a href="{{ $link('contact') }}" class="btn btn-primary">İletişime geç →</a>
                     <a href="{{ $link('projects') }}" class="btn btn-secondary">Projeleri gör</a>
                 </div>
             </div>
-            <div class="def-stack">
-                <div class="def-row"><span class="def-key">Tecrübe</span><span class="def-val">5+ yıl</span></div>
-                <div class="def-row"><span class="def-key">Lokasyon</span><span class="def-val">İstanbul, TR</span></div>
-                <div class="def-row"><span class="def-key">Müsaitlik</span><span class="def-val">Ocak 2026</span></div>
-                <div class="def-row"><span class="def-key">Çalıştığım</span><span class="def-val">40+ müşteri</span></div>
-            </div>
+            @if($general->homepage_stats)
+                <div class="def-stack">
+                    @foreach($general->homepage_stats as $stat)
+                        <div class="def-row"><span class="def-key">{{ $stat['label'] }}</span><span class="def-val">{{ $stat['value'] }}</span></div>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div></section>
 

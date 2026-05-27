@@ -6,8 +6,8 @@
         <a href="{{ route('home') }}" class="brand">
             <span class="brand-mark"></span>
             <span class="brand-text">
-                <span class="brand-name">Metehan Kıran</span>
-                <span class="brand-role">full-stack developer</span>
+                <span class="brand-name">{{ $general->author_name }}</span>
+                <span class="brand-role">{{ $general->author_title ?? 'developer' }}</span>
             </span>
         </a>
         <nav class="nav" aria-label="Ana menü">

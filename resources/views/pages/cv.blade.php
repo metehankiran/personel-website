@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'CV — Metehan Kıran')
+@section('title', 'CV — ' . $general->author_name)
 
 @section('content')
     <section><div class="container-narrow">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:48px;flex-wrap:wrap;margin-bottom:56px;">
             <div>
                 <div class="eyebrow">CV</div>
-                <h1 class="h1-md">Metehan Kıran</h1>
-                <p style="margin:12px 0 0;font-size:18px;color:var(--dim);">Full-stack developer · İstanbul, TR</p>
+                <h1 class="h1-md">{{ $general->author_name }}</h1>
+                <p style="margin:12px 0 0;font-size:18px;color:var(--dim);">{{ $general->author_title ?? 'Developer' }} · {{ $general->author_location ?? '' }}</p>
             </div>
             @if($cvPath)
                 <a href="{{ Storage::url($cvPath) }}" class="btn btn-primary" download>↓ CV İndir</a>
@@ -17,7 +17,7 @@
         <div style="display:flex;flex-direction:column;gap:56px;">
             <div class="split-cv">
                 <div class="eyebrow-sm">Özet</div>
-                <p style="margin:0;font-size:16px;line-height:1.7;opacity:0.92;">5 yıllık deneyime sahip bağımsız full-stack developer. Laravel, Vue.js ve .NET Core ekosistemlerinde uzmanlaştım. 40+ müşteriyle — KOBİ'lerden kurumsal şirketlere — production-hazır ürünler teslim ettim.</p>
+                <p style="margin:0;font-size:16px;line-height:1.7;opacity:0.92;">{{ $general->bio ?? '' }}</p>
             </div>
 
             @if($experiences->isNotEmpty())

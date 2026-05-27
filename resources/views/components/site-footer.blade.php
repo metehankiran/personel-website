@@ -4,8 +4,10 @@
 <footer class="site-footer" role="contentinfo">
     <div class="footer-inner">
         <div>
-            <div class="footer-brand"><span class="brand-mark"></span><span>Metehan Kıran</span></div>
-            <p class="footer-text">Bağımsız full-stack developer. Laravel, Vue ve .NET Core ile ürünler inşa ediyorum. İstanbul'dan, dünyanın her yerine.</p>
+            <div class="footer-brand"><span class="brand-mark"></span><span>{{ $general->author_name }}</span></div>
+            @if($general->footer_text)
+                <p class="footer-text">{{ $general->footer_text }}</p>
+            @endif
         </div>
         <div>
             <div class="footer-col-title">Site</div>
@@ -28,15 +30,23 @@
         <div>
             <div class="footer-col-title">Bağlan</div>
             <div class="footer-links">
-                <a href="mailto:merhaba@metehankiran.dev">Email</a>
-                <a href="#" rel="noopener">GitHub</a>
-                <a href="#" rel="noopener">LinkedIn</a>
-                <a href="#" rel="noopener">Twitter</a>
+                @if($general->author_email)
+                    <a href="mailto:{{ $general->author_email }}">Email</a>
+                @endif
+                @if($social->github_url)
+                    <a href="{{ $social->github_url }}" target="_blank" rel="noopener">GitHub</a>
+                @endif
+                @if($social->linkedin_url)
+                    <a href="{{ $social->linkedin_url }}" target="_blank" rel="noopener">LinkedIn</a>
+                @endif
+                @if($social->twitter_url)
+                    <a href="{{ $social->twitter_url }}" target="_blank" rel="noopener">Twitter</a>
+                @endif
             </div>
         </div>
     </div>
     <div class="footer-bottom">
-        <span>© {{ now()->year }} Metehan Kıran</span>
-        <span>İstanbul, Türkiye</span>
+        <span>© {{ now()->year }} {{ $general->author_name }}</span>
+        <span>{{ $general->author_location ?? '' }}</span>
     </div>
 </footer>
