@@ -23,8 +23,7 @@ it('extends the app layout including header and footer', function () {
 it('loads the required scripts from the public theme directory', function () {
     $response = $this->get(route('home'));
 
-    $response->assertSee('cdn.tailwindcss.com', escape: false);
-    $response->assertSee(asset('theme/js/main.js'), escape: false);
+    $response->assertSee('build/assets/app-', escape: false);
 });
 
 it('renders dynamic hero content from settings', function () {

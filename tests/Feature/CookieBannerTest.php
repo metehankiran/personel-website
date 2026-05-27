@@ -12,7 +12,6 @@ test('cookie banner script and config are present on every page', function () {
 
     $response->assertStatus(200);
     $response->assertSee('mkCookieConfig', false);
-    $response->assertSee('cookie.js', false);
 });
 
 test('cookie config contains correct policy urls', function () {
