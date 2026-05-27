@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Support\ImageGenerator;
 use Illuminate\Database\Seeder;
 
 class PostSeeder extends Seeder
@@ -19,7 +20,10 @@ class PostSeeder extends Seeder
             ->published()
             ->recycle($categories)
             ->create()
-            ->each(fn (Post $post) => $post->tags()->attach($tags->random(rand(1, 3))));
+            ->each(function (Post $post) use ($tags) {
+                $post->update(['cover_image' => ImageGenerator::cover($post->title)]);
+                $post->tags()->attach($tags->random(rand(1, 3)));
+            });
 
         Post::factory()
             ->count(2)

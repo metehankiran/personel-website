@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Project;
 use App\Models\ProjectCategory;
+use App\Support\ImageGenerator;
 use Illuminate\Database\Seeder;
 
 class ProjectSeeder extends Seeder
@@ -140,7 +141,10 @@ class ProjectSeeder extends Seeder
         ];
 
         foreach ($projects as $project) {
-            Project::create($project);
+            Project::create([
+                ...$project,
+                'cover_image' => ImageGenerator::cover($project['title']),
+            ]);
         }
     }
 }
