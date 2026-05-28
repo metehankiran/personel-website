@@ -14,7 +14,7 @@
             </div>
             <div style="margin-top:48px;font-size:13px;color:var(--sub);">
                 Hata kodu: <span class="mono" style="font-size:13px;">500 · INTERNAL_ERROR</span><br/>
-                Sürekli oluyorsa: <a href="mailto:merhaba@metehankiran.dev" style="color:var(--fg);text-decoration:underline;">merhaba@metehankiran.dev</a>
+                Sürekli oluyorsa: <a href="mailto:{{ config('site.author.email') }}" style="color:var(--fg);text-decoration:underline;">{{ config('site.author.email') }}</a>
             </div>
         </div>
     </section>
