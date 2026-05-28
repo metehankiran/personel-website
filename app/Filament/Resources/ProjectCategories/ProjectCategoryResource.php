@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Filament\Resources\ProjectCategories;
+
+use App\Filament\Resources\ProjectCategories\Pages\CreateProjectCategory;
+use App\Filament\Resources\ProjectCategories\Pages\EditProjectCategory;
+use App\Filament\Resources\ProjectCategories\Pages\ListProjectCategories;
+use App\Filament\Resources\ProjectCategories\Schemas\ProjectCategoryForm;
+use App\Filament\Resources\ProjectCategories\Tables\ProjectCategoriesTable;
+use App\Models\ProjectCategory;
+use BackedEnum;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+use UnitEnum;
+
+class ProjectCategoryResource extends Resource
+{
+    protected static ?string $model = ProjectCategory::class;
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFolder;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Portfolyo';
+
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $modelLabel = 'Proje Kategorisi';
+
+    protected static ?string $pluralModelLabel = 'Proje Kategorileri';
+
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static function form(Schema $schema): Schema
+    {
+        return ProjectCategoryForm::configure($schema);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return ProjectCategoriesTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListProjectCategories::route('/'),
+            'create' => CreateProjectCategory::route('/create'),
+            'edit' => EditProjectCategory::route('/{record}/edit'),
+        ];
+    }
+}
