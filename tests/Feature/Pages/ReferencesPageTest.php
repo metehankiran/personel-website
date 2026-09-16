@@ -51,3 +51,20 @@ it('displays testimonials in order', function () {
 
     $response->assertSeeInOrder(['Birinci', 'İkinci']);
 });
+
+it('features the first testimonial as a large quote', function () {
+    Testimonial::factory()->create(['name' => 'Öne Çıkan', 'sort_order' => 1]);
+    Testimonial::factory()->create(['name' => 'Sıradan', 'sort_order' => 2]);
+
+    $response = $this->get(route('references'));
+
+    expect(substr_count($response->getContent(), 'data-featured'))->toBe(1);
+    $response->assertSeeInOrder(['data-featured', 'Öne Çıkan', 'Sıradan'], escape: false);
+});
+
+it('falls back to initials when a testimonial has no avatar', function () {
+    Testimonial::factory()->create(['name' => 'Selin Akın', 'avatar' => null]);
+
+    $this->get(route('references'))
+        ->assertSee('>SA<', escape: false);
+});
