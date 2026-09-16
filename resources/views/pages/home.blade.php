@@ -74,37 +74,6 @@
         </div>
     </section>
 
-    {{-- Projects --}}
-    @if($projects->isNotEmpty())
-        <section class="py-10 lg:py-[60px]">
-            <div class="max-w-7xl mx-auto px-6 lg:px-12">
-                <div class="flex justify-between items-baseline mb-7">
-                    <h2 class="m-0 text-2xl font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">Projeler</h2>
-                    <a href="{{ $link('projects') }}" class="text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors">Tümünü gör →</a>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                    @foreach($projects as $project)
-                        <a href="{{ route('projects.show', $project) }}" class="block p-6 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600">
-                            @if($project->cover_image)
-                                <div class="aspect-[16/10] rounded-lg mb-4 overflow-hidden border border-neutral-200 dark:border-neutral-800">
-                                    <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" loading="lazy" class="w-full h-full object-cover">
-                                </div>
-                            @else
-                                <div class="aspect-[16/10] rounded-lg mb-4 bg-gradient-to-br from-neutral-200 dark:from-neutral-800 to-neutral-100 dark:to-neutral-900 border border-neutral-200 dark:border-neutral-800"></div>
-                            @endif
-                            <div class="flex justify-between items-baseline mb-1.5">
-                                <h3 class="m-0 text-base font-semibold text-neutral-950 dark:text-neutral-50">{{ $project->title }}</h3>
-                                <span class="text-xs text-neutral-600 dark:text-neutral-400 tabular-nums">{{ $project->year }}</span>
-                            </div>
-                            <div class="text-[13px] text-neutral-600 dark:text-neutral-400 leading-relaxed mb-3">{{ $project->description }}</div>
-                            <span class="inline-block text-[11px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded-full font-medium text-neutral-950 dark:text-neutral-50">{{ $project->category->name }}</span>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-    @endif
-
     {{-- Blog --}}
     @if($posts->isNotEmpty())
         <section class="py-10 lg:py-[60px]">
@@ -141,23 +110,34 @@
                     <h2 class="m-0 text-2xl font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">Müşteri Yorumları</h2>
                     <a href="{{ $link('references') }}" class="text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors">Tümünü gör →</a>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                    @foreach($testimonials as $testimonial)
-                        <div class="p-7 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 flex flex-col">
-                            <p class="m-0 flex-1 text-[15px] leading-relaxed opacity-95 text-neutral-950 dark:text-neutral-50">
-                                <span class="text-[48px] leading-none font-serif text-neutral-200 dark:text-neutral-800 float-left mr-2 -mt-1">"</span>
-                                {{ $testimonial->body }}
-                            </p>
-                            <div class="mt-6 pt-4 border-t border-neutral-200 dark:border-neutral-800 flex items-center gap-3">
-                                @if($testimonial->avatar)
-                                    <img src="{{ Storage::url($testimonial->avatar) }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover" width="40" height="40" loading="lazy">
-                                @endif
-                                <div>
-                                    <div class="text-sm font-semibold text-neutral-950 dark:text-neutral-50">{{ $testimonial->name }}</div>
-                                    <div class="text-xs text-neutral-600 dark:text-neutral-400 mt-0.5">{{ $testimonial->title }}{{ $testimonial->company ? ', '.$testimonial->company : '' }}</div>
-                                </div>
-                            </div>
-                        </div>
+            </div>
+
+            <div class="group relative overflow-hidden" data-marquee>
+                {{-- Edge fades: blurred + faded so cards dissolve at both sides --}}
+                <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 sm:w-40 backdrop-blur-sm bg-gradient-to-r from-white via-white/70 to-transparent dark:from-neutral-950 dark:via-neutral-950/70 [mask-image:linear-gradient(to_right,black_30%,transparent)]"></div>
+                <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 sm:w-40 backdrop-blur-sm bg-gradient-to-l from-white via-white/70 to-transparent dark:from-neutral-950 dark:via-neutral-950/70 [mask-image:linear-gradient(to_left,black_30%,transparent)]"></div>
+
+                <div class="flex w-max gap-5 px-6 lg:px-12 animate-marquee motion-reduce:animate-none group-hover:[animation-play-state:paused]">
+                    @foreach([0, 1] as $copy)
+                        @foreach($testimonials as $testimonial)
+                            <figure @if($copy === 1) aria-hidden="true" @endif class="m-0 w-[320px] sm:w-[380px] shrink-0 p-7 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.12)] dark:shadow-none flex flex-col">
+                                <blockquote class="m-0 flex-1 text-[15px] leading-relaxed text-neutral-800 dark:text-neutral-100">
+                                    <span class="text-[48px] leading-none font-serif text-neutral-200 dark:text-neutral-700 float-left mr-2 -mt-1">"</span>
+                                    {{ $testimonial->body }}
+                                </blockquote>
+                                <figcaption class="mt-6 pt-4 border-t border-neutral-100 dark:border-neutral-800 flex items-center gap-3">
+                                    @if($testimonial->avatar)
+                                        <img src="{{ Storage::url($testimonial->avatar) }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover" width="40" height="40" loading="lazy">
+                                    @else
+                                        <span class="w-10 h-10 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-sm font-semibold inline-flex items-center justify-center">{{ Str::of($testimonial->name)->substr(0, 1)->upper() }}</span>
+                                    @endif
+                                    <div>
+                                        <div class="text-sm font-semibold text-neutral-950 dark:text-neutral-50">{{ $testimonial->name }}</div>
+                                        <div class="text-xs text-neutral-600 dark:text-neutral-400 mt-0.5">{{ $testimonial->title }}{{ $testimonial->company ? ', '.$testimonial->company : '' }}</div>
+                                    </div>
+                                </figcaption>
+                            </figure>
+                        @endforeach
                     @endforeach
                 </div>
             </div>
@@ -167,17 +147,30 @@
     {{-- CTA --}}
     <section class="pb-2">
         <div class="max-w-7xl mx-auto px-6 lg:px-12">
-            <div class="relative overflow-hidden rounded-2xl bg-neutral-950 dark:bg-neutral-50 text-center">
-                <div class="absolute inset-0 opacity-[0.07]" style="background-image:radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0);background-size:24px 24px;"></div>
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[150px] bg-gradient-to-b from-white/10 dark:from-neutral-950/10 to-transparent rounded-full blur-3xl"></div>
-                <div class="relative px-8 sm:px-12 py-10 sm:py-12 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="relative overflow-hidden rounded-2xl bg-neutral-950 text-white isolate" data-cta>
+                {{-- Animated colour glows --}}
+                <div aria-hidden="true" class="absolute -top-32 -left-24 w-[420px] h-[420px] rounded-full bg-violet-500/60 blur-3xl animate-cta-glow motion-reduce:animate-none"></div>
+                <div aria-hidden="true" class="absolute -bottom-40 right-[10%] w-[460px] h-[460px] rounded-full bg-orange-400/50 blur-3xl animate-cta-glow [animation-delay:-4s] motion-reduce:animate-none"></div>
+                <div aria-hidden="true" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[260px] rounded-full bg-sky-400/40 blur-3xl animate-cta-glow [animation-delay:-8s] motion-reduce:animate-none"></div>
+                {{-- Dot grid + subtle noise so the gradient doesn't band --}}
+                <div aria-hidden="true" class="absolute inset-0 opacity-[0.12]" style="background-image:radial-gradient(circle at 1px 1px, #fff 1px, transparent 0);background-size:22px 22px;"></div>
+                <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-br from-neutral-950/40 via-transparent to-neutral-950/60"></div>
+
+                <div class="relative px-8 sm:px-12 py-12 sm:py-16 flex flex-col sm:flex-row items-center justify-between gap-8">
                     <div class="text-left sm:flex-1">
-                        <h2 class="m-0 text-[26px] sm:text-[32px] font-medium tracking-tighter leading-[1.1] text-white dark:text-neutral-950">Bir proje fikrin var mı?</h2>
-                        <p class="mt-2 text-sm text-neutral-400 dark:text-neutral-500 leading-relaxed">Konuşalım. Genelde 24 saat içinde dönerim.</p>
+                        <span class="inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[1.6px] text-white/70 mb-4">
+                            <span class="relative flex w-2 h-2">
+                                <span class="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-75 animate-ping motion-reduce:animate-none"></span>
+                                <span class="relative inline-flex w-2 h-2 rounded-full bg-emerald-400"></span>
+                            </span>
+                            Yeni projelere açığım
+                        </span>
+                        <h2 class="m-0 text-[30px] sm:text-[40px] font-medium tracking-tighter leading-[1.05] text-white text-balance">Bir proje fikrin var mı? <span class="text-white/60">Birlikte hayata geçirelim.</span></h2>
+                        <p class="mt-3 text-[15px] text-white/70 leading-relaxed max-w-[480px]">Konuşalım. Genelde 24 saat içinde dönerim.</p>
                     </div>
                     <div class="flex gap-2.5 w-full sm:w-auto">
-                        <a href="{{ $link('contact') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-medium rounded-xl bg-white dark:bg-neutral-950 text-neutral-950 dark:text-neutral-50 transition-opacity hover:opacity-90 whitespace-nowrap">İletişime geç <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
-                        <a href="mailto:{{ $general->author_email ?? '' }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-medium rounded-xl bg-transparent text-white dark:text-neutral-950 border border-white/20 dark:border-neutral-950/20 transition-colors hover:bg-white/10 dark:hover:bg-neutral-950/10 whitespace-nowrap">
+                        <a href="{{ $link('contact') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold rounded-xl bg-white text-neutral-950 shadow-[0_8px_30px_-8px_rgba(255,255,255,0.5)] transition-transform hover:-translate-y-0.5 whitespace-nowrap">İletişime geç <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                        <a href="mailto:{{ $general->author_email ?? '' }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-medium rounded-xl bg-white/10 backdrop-blur text-white border border-white/20 transition-colors hover:bg-white/20 whitespace-nowrap">
                             <i data-lucide="mail" class="w-4 h-4"></i> Email gönder
                         </a>
                     </div>
