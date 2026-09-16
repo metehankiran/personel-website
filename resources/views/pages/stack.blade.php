@@ -15,19 +15,23 @@
                         <div class="lg:sticky lg:top-24">
                             <h2 class="m-0 text-[28px] font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">{{ $skill->name }}</h2>
                             @if($skill->description)
-                                <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed m-0 mt-2">{{ $skill->description }}</p>
+                                <p class="m-0 mt-2 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">{{ $skill->description }}</p>
                             @endif
                         </div>
                         <div>
                             @foreach($skill->items as $item)
-                                <div class="grid grid-cols-[1fr_60px] sm:grid-cols-[160px_1fr_100px] gap-3 sm:gap-6 items-center py-5 border-b border-neutral-200 dark:border-neutral-800 first:border-t">
+                                @php
+                                    $since = isset($item['since']) && $item['since'] !== '' ? (int) $item['since'] : null;
+                                    $years = $since !== null ? max(0, now()->year - $since) : null;
+                                @endphp
+                                <div class="grid grid-cols-[1fr_auto] sm:grid-cols-[160px_1fr_auto] gap-3 sm:gap-6 items-center py-5 border-b border-neutral-200 dark:border-neutral-800 first:border-t">
                                     <span class="text-base font-semibold text-neutral-950 dark:text-neutral-50">{{ $item['name'] }}</span>
-                                    <span class="text-sm text-neutral-600 dark:text-neutral-400 hidden sm:block">{{ $item['description'] }}</span>
-                                    <div class="flex gap-1">
-                                        @for($i = 1; $i <= 5; $i++)
-                                            <span class="w-4 h-1 rounded-sm {{ $i <= $item['level'] ? 'bg-neutral-950 dark:bg-neutral-50' : 'bg-neutral-200 dark:bg-neutral-800' }}"></span>
-                                        @endfor
-                                    </div>
+                                    <span class="text-sm text-neutral-600 dark:text-neutral-400 hidden sm:block">{{ $item['description'] ?? '' }}</span>
+                                    @if($years !== null)
+                                        <span class="font-mono text-xs text-neutral-500 tabular-nums whitespace-nowrap" title="{{ $since }}">{{ $years === 0 ? 'Yeni' : $years.' yıl' }}</span>
+                                    @else
+                                        <span></span>
+                                    @endif
                                 </div>
                             @endforeach
                         </div>

@@ -24,8 +24,8 @@ it('displays skill groups from database', function () {
         'name' => 'Backend',
         'description' => 'Asıl evim.',
         'items' => [
-            ['name' => 'Laravel', 'description' => 'Ana çerçevem.', 'level' => 5],
-            ['name' => 'Node.js', 'description' => 'Real-time.', 'level' => 3],
+            ['name' => 'Laravel', 'description' => 'Ana çerçevem.', 'since' => 2019],
+            ['name' => 'Node.js', 'description' => 'Real-time.', 'since' => null],
         ],
     ]);
 
@@ -37,17 +37,43 @@ it('displays skill groups from database', function () {
         ->assertSee('Node.js', escape: false);
 });
 
-it('displays skill level pips correctly', function () {
+it('shows years of experience for items with a start year', function () {
     Skill::factory()->create([
         'name' => 'Test',
         'items' => [
-            ['name' => 'Tool', 'description' => 'Desc', 'level' => 3],
+            ['name' => 'Tool', 'description' => 'Desc', 'since' => now()->year - 7],
         ],
     ]);
 
-    $response = $this->get(route('stack'));
+    $this->get(route('stack'))
+        ->assertSee('7 yıl', escape: false);
+});
 
-    $response->assertSee('bg-neutral-950 dark:bg-neutral-50', escape: false);
+it('labels items started this year as new', function () {
+    Skill::factory()->create([
+        'name' => 'Test',
+        'items' => [
+            ['name' => 'Tool', 'description' => 'Desc', 'since' => now()->year],
+        ],
+    ]);
+
+    $this->get(route('stack'))
+        ->assertSee('Yeni', escape: false);
+});
+
+it('renders items without a start year and never shows level pips', function () {
+    Skill::factory()->create([
+        'name' => 'Test',
+        'items' => [
+            ['name' => 'Tool', 'description' => 'Desc'],
+        ],
+    ]);
+
+    $this->get(route('stack'))
+        ->assertOk()
+        ->assertSee('Tool', escape: false)
+        ->assertDontSee('yıl', escape: false)
+        ->assertDontSee('w-4 h-1 rounded-sm', escape: false);
 });
 
 it('displays multiple skill groups in order', function () {

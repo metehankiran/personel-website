@@ -32,8 +32,8 @@ test('skill can be created with items', function () {
             'name' => 'Backend',
             'description' => 'Sunucu tarafı yetenekler.',
             'items' => [
-                ['name' => 'PHP', 'description' => 'Ana dilim', 'level' => 5],
-                ['name' => 'Laravel', 'description' => 'Ana çerçevem', 'level' => 5],
+                ['name' => 'PHP', 'description' => 'Ana dilim', 'since' => 2017],
+                ['name' => 'Laravel', 'description' => 'Ana çerçevem', 'since' => 2019],
             ],
         ])
         ->call('create')
@@ -44,7 +44,7 @@ test('skill can be created with items', function () {
     expect($skill)->not->toBeNull();
     expect($skill->items)->toHaveCount(2);
     expect($skill->items[0]['name'])->toBe('PHP');
-    expect($skill->items[0]['level'])->toBe(5);
+    expect($skill->items[0]['since'])->toBe(2017);
 });
 
 test('name is required', function () {

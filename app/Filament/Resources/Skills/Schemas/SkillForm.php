@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Skills\Schemas;
 
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -46,17 +45,14 @@ class SkillForm
                                 ->maxLength(255)
                                 ->placeholder('Ana çerçevem'),
 
-                            Select::make('level')
-                                ->label('Seviye')
-                                ->options([
-                                    1 => '1 — Başlangıç',
-                                    2 => '2 — Temel',
-                                    3 => '3 — Orta',
-                                    4 => '4 — İleri',
-                                    5 => '5 — Uzman',
-                                ])
-                                ->required()
-                                ->native(false),
+                            TextInput::make('since')
+                                ->label('Başlangıç Yılı')
+                                ->numeric()
+                                ->integer()
+                                ->minValue(1990)
+                                ->maxValue(fn (): int => now()->year)
+                                ->placeholder((string) now()->year)
+                                ->helperText('Stack sayfasında kaç yıldır kullandığın olarak gösterilir. Boş bırakılabilir.'),
                         ])
                         ->columns(3)
                         ->minItems(1)
