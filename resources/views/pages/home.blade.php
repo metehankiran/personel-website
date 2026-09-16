@@ -89,7 +89,7 @@
                                 <h3 class="m-0 text-lg font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">{{ $post->title }}</h3>
                                 <div class="flex items-center gap-3 shrink-0">
                                     <span class="inline-block text-[11px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 rounded-full font-medium text-neutral-950 dark:text-neutral-50">{{ $post->category->name }}</span>
-                                    <span class="text-xs text-neutral-500 tabular-nums">{{ $post->published_at->format('d M Y') }}</span>
+                                    <span class="text-xs text-neutral-500 tabular-nums">{{ $post->published_at->translatedFormat('d M Y') }}</span>
                                 </div>
                             </div>
                             @if($post->excerpt)
@@ -127,7 +127,7 @@
                                 </blockquote>
                                 <figcaption class="mt-6 pt-4 border-t border-neutral-100 dark:border-neutral-800 flex items-center gap-3">
                                     @if($testimonial->avatar)
-                                        <img src="{{ Storage::url($testimonial->avatar) }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover" width="40" height="40" loading="lazy">
+                                        <x-image :src="$testimonial->avatar" fallback="avatar" :alt="$testimonial->name" class="w-10 h-10 rounded-full object-cover" width="40" height="40" />
                                     @else
                                         <span class="w-10 h-10 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-sm font-semibold inline-flex items-center justify-center">{{ Str::of($testimonial->name)->substr(0, 1)->upper() }}</span>
                                     @endif

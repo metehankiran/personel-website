@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Models\Post;
 use App\Models\Project;
 use App\Models\Testimonial;
 use App\Settings\GeneralSettings;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -73,4 +75,20 @@ it('renders the call-to-action block', function () {
     $this->get(route('home'))
         ->assertSee('Bir proje fikrin var mı?', escape: false)
         ->assertSee('data-cta', escape: false);
+});
+
+it('shows post dates with Turkish month names', function () {
+    Post::factory()->published()->create([
+        'published_at' => Carbon::create(2026, 9, 16, 12),
+    ]);
+
+    $this->get(route('home'))
+        ->assertSee('16 Eyl 2026', escape: false)
+        ->assertDontSee('16 Sep 2026', escape: false);
+});
+
+it('runs in the Istanbul timezone with Turkish as the default locale', function () {
+    expect(config('app.timezone'))->toBe('Europe/Istanbul')
+        ->and(config('app.locale'))->toBe('tr')
+        ->and(config('app.fallback_locale'))->toBe('tr');
 });
