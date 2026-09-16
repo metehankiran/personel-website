@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Enums\ContactSubject;
+use App\Mail\ContactMessageReceived;
 use App\Models\Contact;
 use App\Settings\GeneralSettings;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
@@ -25,7 +28,16 @@ class ContactForm extends Component
 
     public bool $kvkk_consent = false;
 
+    /**
+     * Honeypot: hidden from humans, bots tend to fill it.
+     */
+    public string $website = '';
+
     public bool $sent = false;
+
+    private const int MAX_ATTEMPTS = 3;
+
+    private const int DECAY_SECONDS = 600;
 
     /**
      * @return array<string, array<int, mixed>>
@@ -59,18 +71,50 @@ class ContactForm extends Component
 
     public function send(): void
     {
+        $this->resetErrorBag('form');
+
+        if (RateLimiter::tooManyAttempts($this->rateLimitKey(), self::MAX_ATTEMPTS)) {
+            $this->addError('form', 'Çok fazla deneme yaptın. Lütfen birkaç dakika sonra tekrar dene.');
+
+            return;
+        }
+
         $validated = $this->validate();
+
+        if ($this->website !== '') {
+            $this->finish();
+
+            return;
+        }
 
         unset($validated['kvkk_consent']);
 
-        Contact::create([
+        $contact = Contact::create([
             ...$validated,
             'phone' => $validated['phone'] !== '' ? $validated['phone'] : null,
         ]);
 
-        $this->reset(['name', 'email', 'phone', 'subject', 'message', 'kvkk_consent']);
+        RateLimiter::hit($this->rateLimitKey(), self::DECAY_SECONDS);
+
+        $ownerEmail = app(GeneralSettings::class)->author_email;
+
+        if (filled($ownerEmail)) {
+            Mail::to($ownerEmail)->send(new ContactMessageReceived($contact));
+        }
+
+        $this->finish();
+    }
+
+    private function finish(): void
+    {
+        $this->reset(['name', 'email', 'phone', 'subject', 'message', 'kvkk_consent', 'website']);
 
         $this->sent = true;
+    }
+
+    private function rateLimitKey(): string
+    {
+        return 'contact-form:'.request()->ip();
     }
 
     public function startOver(): void

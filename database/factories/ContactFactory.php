@@ -19,7 +19,7 @@ class ContactFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->safeEmail(),
-            'phone' => fake()->phoneNumber(),
+            'phone' => '+90 5'.fake()->numerify('## ### ## ##'),
             'subject' => fake()->randomElement(ContactSubject::cases()),
             'message' => fake()->paragraphs(3, true),
             'is_read' => false,

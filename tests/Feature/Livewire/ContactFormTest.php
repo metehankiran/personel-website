@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 use App\Enums\ContactSubject;
 use App\Livewire\ContactForm;
+use App\Mail\ContactMessageReceived;
 use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
@@ -111,4 +113,84 @@ it('shows validation messages in Turkish', function () {
         ->assertSee('Mesaj alanı zorunludur.')
         ->assertSee('KVKK onayı alanı kabul edilmelidir.')
         ->assertDontSee('validation.');
+});
+
+it('emails the site owner when a message is sent', function () {
+    Mail::fake();
+
+    $settings = app(GeneralSettings::class);
+    $settings->author_email = 'owner@example.com';
+    $settings->save();
+
+    Livewire::test(ContactForm::class)
+        ->set('name', 'Test User')
+        ->set('email', 'sender@example.com')
+        ->set('subject', ContactSubject::Consulting->value)
+        ->set('message', 'Danışmanlık almak istiyorum.')
+        ->call('send')
+        ->assertHasNoErrors();
+
+    Mail::assertQueued(ContactMessageReceived::class, function (ContactMessageReceived $mail): bool {
+        return $mail->hasTo('owner@example.com')
+            && $mail->hasReplyTo('sender@example.com')
+            && $mail->contact->email === 'sender@example.com';
+    });
+});
+
+it('does not try to email when no owner address is configured', function () {
+    Mail::fake();
+
+    $settings = app(GeneralSettings::class);
+    $settings->author_email = '';
+    $settings->save();
+
+    Livewire::test(ContactForm::class)
+        ->set('name', 'Test User')
+        ->set('email', 'sender@example.com')
+        ->set('subject', ContactSubject::Other->value)
+        ->set('message', 'Merhaba.')
+        ->call('send')
+        ->assertHasNoErrors()
+        ->assertSet('sent', true);
+
+    Mail::assertNothingQueued();
+});
+
+it('silently drops submissions that fill the honeypot field', function () {
+    Mail::fake();
+
+    Livewire::test(ContactForm::class)
+        ->set('name', 'Bot')
+        ->set('email', 'bot@example.com')
+        ->set('subject', ContactSubject::Other->value)
+        ->set('message', 'Buy now!')
+        ->set('website', 'https://spam.example')
+        ->call('send')
+        ->assertHasNoErrors()
+        ->assertSet('sent', true);
+
+    $this->assertDatabaseCount('contacts', 0);
+    Mail::assertNothingQueued();
+});
+
+it('rate limits repeated submissions from the same client', function () {
+    Mail::fake();
+
+    $submit = fn () => Livewire::test(ContactForm::class)
+        ->set('name', 'Test User')
+        ->set('email', 'sender@example.com')
+        ->set('subject', ContactSubject::Other->value)
+        ->set('message', 'Merhaba.')
+        ->call('send');
+
+    foreach (range(1, 3) as $attempt) {
+        $submit()->assertHasNoErrors();
+    }
+
+    $submit()
+        ->assertHasErrors(['form'])
+        ->assertSee('Çok fazla deneme')
+        ->assertSet('sent', false);
+
+    $this->assertDatabaseCount('contacts', 3);
 });

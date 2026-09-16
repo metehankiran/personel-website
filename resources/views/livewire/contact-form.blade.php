@@ -23,6 +23,21 @@
                 <h3 class="text-[22px] font-semibold text-neutral-950 dark:text-neutral-50 m-0">Hızlıca yaz</h3>
 
                 <div>
+                    @error('form')
+                        <div class="flex items-start gap-2 text-sm text-red-600 dark:text-red-400 rounded-lg border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/40 px-3.5 py-2.5" role="alert">
+                            <svg class="w-4 h-4 mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                {{-- Honeypot: keep out of the tab order and off-screen; real users never see it --}}
+                <div class="absolute -left-[9999px] top-auto w-px h-px overflow-hidden" aria-hidden="true">
+                    <label for="contact-website">Web sitesi</label>
+                    <input id="contact-website" type="text" name="website" wire:model="website" tabindex="-1" autocomplete="off" />
+                </div>
+
+                <div>
                     <label for="contact-name" class="block text-xs text-neutral-500 mb-1.5 tracking-wide">Adın</label>
                     <input id="contact-name" type="text" name="name" wire:model="name" autocomplete="name"
                         class="{{ $inputClasses }} @error('name') {{ $errorInput }} @enderror"
