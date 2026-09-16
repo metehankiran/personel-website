@@ -32,7 +32,7 @@
                             @else
                                 <div class="{{ $brandClasses }}" title="{{ $brand->name }}">
                             @endif
-                                @if($brand->logo)
+                                @if(\App\Support\Images::exists($brand->logo))
                                     <img src="{{ Storage::url($brand->logo) }}" alt="{{ $brand->name }}" class="max-h-10 w-auto max-w-[70%] object-contain grayscale opacity-60 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100" loading="lazy">
                                 @else
                                     <span class="text-[15px] font-medium font-serif text-neutral-500 dark:text-neutral-400 text-center transition-colors group-hover:text-neutral-950 dark:group-hover:text-neutral-50">{{ $brand->name }}</span>
@@ -56,7 +56,7 @@
                     </blockquote>
                     <figcaption class="relative mt-10 flex items-center gap-4">
                         @if($featured->avatar)
-                            <img src="{{ Storage::url($featured->avatar) }}" alt="{{ $featured->name }}" class="w-14 h-14 rounded-full object-cover ring-4 ring-white dark:ring-neutral-950" width="56" height="56" loading="lazy">
+                            <x-image :src="$featured->avatar" fallback="avatar" :alt="$featured->name" class="w-14 h-14 rounded-full object-cover ring-4 ring-white dark:ring-neutral-950" width="56" height="56" />
                         @else
                             <span class="w-14 h-14 rounded-full bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 text-base font-semibold inline-flex items-center justify-center ring-4 ring-white dark:ring-neutral-950">{{ $initials($featured->name) }}</span>
                         @endif
@@ -77,7 +77,7 @@
                             <blockquote class="m-0 flex-1 text-[15px] leading-relaxed text-neutral-800 dark:text-neutral-100">{{ $testimonial->body }}</blockquote>
                             <figcaption class="mt-6 pt-4 border-t border-neutral-100 dark:border-neutral-800 flex items-center gap-3">
                                 @if($testimonial->avatar)
-                                    <img src="{{ Storage::url($testimonial->avatar) }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover" width="40" height="40" loading="lazy">
+                                    <x-image :src="$testimonial->avatar" fallback="avatar" :alt="$testimonial->name" class="w-10 h-10 rounded-full object-cover" width="40" height="40" />
                                 @else
                                     <span class="w-10 h-10 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-sm font-semibold inline-flex items-center justify-center">{{ $initials($testimonial->name) }}</span>
                                 @endif

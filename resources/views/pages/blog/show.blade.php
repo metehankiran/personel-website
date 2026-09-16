@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('title', $post->title . ' — Metehan Kıran')
+@section('meta_description', $post->excerpt ?? '')
+@section('og_type', 'article')
+@section('og_image', \App\Support\Images::og($post->cover_image))
 
 @section('content')
     <article>
@@ -46,7 +49,7 @@
         @if($post->cover_image)
             <div class="max-w-[920px] mx-auto px-6 lg:px-12 mb-12 mt-12">
                 <div class="aspect-video rounded-xl overflow-hidden">
-                    <img src="{{ Storage::url($post->cover_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover" loading="lazy">
+                    <x-image :src="$post->cover_image" fallback="cover" :alt="$post->title" class="w-full h-full object-cover" />
                 </div>
             </div>
         @endif
@@ -112,13 +115,9 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                     @foreach($relatedPosts as $related)
                         <a href="{{ route('blog.show', $related) }}" class="block p-6 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600">
-                            @if($related->cover_image)
-                                <div class="aspect-[16/10] rounded-lg mb-4 overflow-hidden border border-neutral-200 dark:border-neutral-800">
-                                    <img src="{{ Storage::url($related->cover_image) }}" alt="{{ $related->title }}" class="w-full h-full object-cover" loading="lazy">
-                                </div>
-                            @else
-                                <div class="aspect-[16/10] rounded-lg mb-4 bg-gradient-to-br from-neutral-200 dark:from-neutral-800 to-neutral-100 dark:to-neutral-900 border border-neutral-200 dark:border-neutral-800"></div>
-                            @endif
+                            <div class="aspect-[16/10] rounded-lg mb-4 overflow-hidden border border-neutral-200 dark:border-neutral-800">
+                                <x-image :src="$related->cover_image" fallback="cover" :alt="$related->title" class="w-full h-full object-cover" />
+                            </div>
                             <h3 class="m-0 text-base font-semibold text-neutral-950 dark:text-neutral-50">{{ $related->title }}</h3>
                             <div class="text-[13px] text-neutral-600 dark:text-neutral-400 mt-1.5">{{ $related->reading_time }} dk · {{ $related->category->name }}</div>
                         </a>

@@ -8,9 +8,11 @@
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="@yield('title', config('app.name'))">
     <meta property="og:description" content="@yield('meta_description', $seo->meta_description ?? config('app.name') . ' — Bağımsız full-stack developer.')">
-    <meta property="og:type" content="website">
+    <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:locale" content="tr_TR">
+    <meta property="og:image" content="@yield('og_image', \App\Support\Images::og($seo->og_image_path ?? null))">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="@yield('og_image', \App\Support\Images::og($seo->og_image_path ?? null))">
 
     <link rel="icon" href="{{ asset('theme/favicon.svg') }}" type="image/svg+xml">
     <link rel="canonical" href="{{ url()->current() }}">

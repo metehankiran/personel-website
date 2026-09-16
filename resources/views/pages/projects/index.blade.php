@@ -21,13 +21,9 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-12">
                 @foreach($projects as $project)
                     <a href="{{ route('projects.show', $project) }}" class="block p-6 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600 {{ $loop->first ? 'sm:col-span-2' : '' }}" data-filter-target="proj" data-filter-value="{{ $project->category->name }}">
-                        @if($project->cover_image)
-                            <div class="{{ $loop->first ? 'aspect-[16/7]' : 'aspect-[16/10]' }} rounded-lg mb-4 overflow-hidden border border-neutral-200 dark:border-neutral-800">
-                                <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover" loading="lazy">
-                            </div>
-                        @else
-                            <div class="{{ $loop->first ? 'aspect-[16/7]' : 'aspect-[16/10]' }} rounded-lg mb-4 bg-gradient-to-br from-neutral-200 dark:from-neutral-800 to-neutral-100 dark:to-neutral-900 border border-neutral-200 dark:border-neutral-800"></div>
-                        @endif
+                        <div class="{{ $loop->first ? 'aspect-[16/7]' : 'aspect-[16/10]' }} rounded-lg mb-4 overflow-hidden border border-neutral-200 dark:border-neutral-800">
+                            <x-image :src="$project->cover_image" fallback="cover" :alt="$project->title" class="w-full h-full object-cover" />
+                        </div>
                         <div class="flex justify-between items-baseline mb-1.5">
                             <h3 class="m-0 {{ $loop->first ? 'text-[22px]' : 'text-base' }} font-semibold text-neutral-950 dark:text-neutral-50">{{ $project->title }}</h3>
                             <span class="text-xs text-neutral-600 dark:text-neutral-400 tabular-nums">{{ $project->year }}</span>
