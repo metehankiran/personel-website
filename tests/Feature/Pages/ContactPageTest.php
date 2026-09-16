@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\ContactSubject;
 use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -42,35 +41,4 @@ it('shows the contact form with required fields', function () {
         ->assertSee('name="email"', escape: false)
         ->assertSee('name="subject"', escape: false)
         ->assertSee('name="message"', escape: false);
-});
-
-it('submits contact form successfully', function () {
-    $this->post(route('contact.send'), [
-        'name' => 'Test User',
-        'email' => 'test@example.com',
-        'phone' => '+90 555 000 00 00',
-        'subject' => ContactSubject::ProjectInquiry->value,
-        'message' => 'Merhaba, bir proje hakkında konuşmak istiyorum.',
-        'kvkk_consent' => '1',
-    ])->assertRedirect()
-        ->assertSessionHas('success');
-
-    $this->assertDatabaseHas('contacts', [
-        'email' => 'test@example.com',
-        'subject' => 'project_inquiry',
-    ]);
-});
-
-it('validates contact form fields', function () {
-    $this->post(route('contact.send'), [])
-        ->assertSessionHasErrors(['name', 'email', 'subject', 'message']);
-});
-
-it('validates contact subject is a valid enum', function () {
-    $this->post(route('contact.send'), [
-        'name' => 'Test',
-        'email' => 'test@example.com',
-        'subject' => 'invalid_subject',
-        'message' => 'Test mesaj',
-    ])->assertSessionHasErrors('subject');
 });

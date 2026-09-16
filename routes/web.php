@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BookmarkController;
-use App\Http\Controllers\ContactController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProjectController;
@@ -18,7 +17,6 @@ Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/services', [PageController::class, 'services'])->name('services');
 Route::get('/cv', [PageController::class, 'cv'])->name('cv');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
-Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
 Route::get('/references', ReferenceController::class)->name('references');
 Route::get('/stack', SkillController::class)->name('stack');
