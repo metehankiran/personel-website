@@ -20,8 +20,9 @@
                             </span>
                         </div>
                     @endif
-                    @if($general->hero_title)
-                        <h1 class="text-[44px] sm:text-[56px] lg:text-[72px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0 [&>em]:italic [&>em]:font-normal">{!! $general->hero_title !!}</h1>
+                    @php($heroTitle = \App\Support\InlineHtml::from($general->hero_title))
+                    @if($heroTitle !== '')
+                        <h1 class="text-[44px] sm:text-[56px] lg:text-[72px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0 [&_em]:italic [&_em]:font-normal">{!! $heroTitle !!}</h1>
                     @endif
                     @if($general->hero_subtitle)
                         <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-7 max-w-[540px]">{{ $general->hero_subtitle }}</p>
