@@ -4,12 +4,22 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Bookmark;
+use App\Models\BookmarkCategory;
+use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Education;
+use App\Models\Experience;
 use App\Models\Faq;
+use App\Models\Language;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Project;
+use App\Models\Service;
+use App\Models\Skill;
 use App\Models\Tag;
+use App\Models\Testimonial;
+use App\Models\TimelineEntry;
 use App\Settings\GeneralSettings;
 use App\Support\Images;
 use App\Support\Seo;
@@ -17,6 +27,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Spatie\LaravelSettings\Models\SettingsProperty;
 
 /**
  * Files that crawlers and feed readers fetch instead of people: sitemap.xml, robots.txt, llms.txt and feed.xml.
@@ -121,12 +132,40 @@ class SeoController extends Controller
         ];
 
         return collect(self::STATIC_PAGES)
-            ->map(fn (array $page): array => $entry(Seo::route($page[0]), null, $page[1], $page[2]))
-            ->when(Faq::published()->exists(), fn (Collection $entries): Collection => $entries->push($entry(Seo::route('faq'), Faq::published()->max('updated_at') ? Carbon::parse(Faq::published()->max('updated_at')) : null, 'monthly', '0.6')))
+            ->map(fn (array $page): array => $entry(Seo::route($page[0]), $this->staticPageModified($page[0]), $page[1], $page[2]))
+            ->when(Faq::published()->exists(), fn (Collection $entries): Collection => $entries->push($entry(Seo::route('faq'), $this->latest(Faq::published()->max('updated_at')), 'monthly', '0.6')))
             ->concat(Post::published()->latest('published_at')->get()->map(fn (Post $post): array => $entry(Seo::route('blog.show', $post), $post->updated_at, 'monthly', '0.7')))
             ->concat(Project::ordered()->get()->map(fn (Project $project): array => $entry(Seo::route('projects.show', $project), $project->updated_at, 'monthly', '0.7')))
             ->concat(Category::withPublishedPosts()->get()->map(fn (Category $category): array => $entry(Seo::route('blog.category', $category), $category->updated_at, 'weekly', '0.4')))
             ->concat(Tag::withPublishedPosts()->get()->map(fn (Tag $tag): array => $entry(Seo::route('blog.tag', $tag), $tag->updated_at, 'weekly', '0.3')))
             ->concat(Page::published()->get()->map(fn (Page $page): array => $entry(Seo::route('pages.show', $page), $page->updated_at, 'yearly', '0.3')));
+    }
+
+    /**
+     * A static page is as fresh as the newest thing it shows: its records, and for pages
+     * built from the panel's settings, the last time those were saved.
+     */
+    private function staticPageModified(string $route): ?Carbon
+    {
+        $settings = fn (string $group): ?string => SettingsProperty::query()->where('group', $group)->max('updated_at');
+
+        return $this->latest(...match ($route) {
+            'home' => [Post::published()->max('updated_at'), Testimonial::max('updated_at'), $settings('general')],
+            'about' => [TimelineEntry::max('updated_at'), $settings('about')],
+            'services' => [Service::max('updated_at')],
+            'projects' => [Project::max('updated_at')],
+            'references' => [Testimonial::max('updated_at'), Brand::max('updated_at')],
+            'stack' => [Skill::max('updated_at')],
+            'blog' => [Post::published()->max('updated_at')],
+            'cv' => [Experience::max('updated_at'), Education::max('updated_at'), Language::max('updated_at'), Skill::max('updated_at')],
+            'contact' => [$settings('general')],
+            'bookmarks' => [Bookmark::max('updated_at'), BookmarkCategory::max('updated_at')],
+            default => [],
+        });
+    }
+
+    private function latest(?string ...$timestamps): ?Carbon
+    {
+        return collect($timestamps)->filter()->map(fn (string $timestamp): Carbon => Carbon::parse($timestamp))->max();
     }
 }

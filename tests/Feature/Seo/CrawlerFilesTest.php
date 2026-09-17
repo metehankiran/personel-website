@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\Tag;
+use App\Models\Testimonial;
+use App\Models\TimelineEntry;
+use App\Settings\AboutSettings;
 use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
@@ -119,4 +123,63 @@ it('answers /favicon.ico with the configured favicon instead of an empty file', 
 
 it('keeps the search results page out of the sitemap', function () {
     expect($this->get('/sitemap.xml')->getContent())->not->toContain('<loc>https://example.test/ara');
+});
+
+/**
+ * The <lastmod> of one sitemap entry, or null when the entry carries none.
+ */
+function sitemapLastmod(string $path): ?string
+{
+    $xml = simplexml_load_string(test()->get('/sitemap.xml')->getContent());
+
+    foreach ($xml->url as $url) {
+        if ((string) $url->loc === 'https://example.test'.$path) {
+            return isset($url->lastmod) ? (string) $url->lastmod : null;
+        }
+    }
+
+    throw new RuntimeException("{$path} is not in the sitemap.");
+}
+
+it('dates static pages by their freshest content', function () {
+    $this->travelTo('2026-02-01 10:00:00');
+    Post::factory()->published()->for(Category::factory())->create(['published_at' => now()->subDay()]);
+    Testimonial::factory()->create();
+
+    $this->travelTo('2026-03-01 10:00:00');
+    $newerPost = Post::factory()->published()->for(Category::factory())->create(['published_at' => now()->subDay()]);
+    Post::factory()->for(Category::factory())->create(['is_published' => false]);
+
+    $this->travelTo('2026-04-01 10:00:00');
+    $brand = Brand::factory()->create();
+
+    $this->travelTo('2026-05-01 10:00:00');
+    Post::factory()->for(Category::factory())->create(['is_published' => false]);
+
+    expect(sitemapLastmod('/blog'))->toBe($newerPost->updated_at->toAtomString())
+        ->and(sitemapLastmod('/referanslar'))->toBe($brand->updated_at->toAtomString());
+});
+
+it('dates the about page by its timeline or its settings, whichever changed last', function () {
+    // Settings rows are written while the database is set up, so they start out as "now".
+    $this->travelTo(now()->addDay()->startOfSecond());
+    $entry = TimelineEntry::factory()->create();
+
+    expect(sitemapLastmod('/hakkimda'))->toBe($entry->updated_at->toAtomString());
+
+    $this->travelTo(now()->addDay());
+    $about = app(AboutSettings::class);
+    $about->heading = 'Yeni başlık';
+    $about->save();
+
+    expect(sitemapLastmod('/hakkimda'))->toBe(now()->toAtomString());
+});
+
+it('leaves a static page undated when it has no content', function () {
+    expect(sitemapLastmod('/projeler'))->toBeNull()
+        ->and(sitemapLastmod('/teknolojiler'))->toBeNull();
+
+    $project = Project::factory()->create();
+
+    expect(sitemapLastmod('/projeler'))->toBe($project->updated_at->toAtomString());
 });
