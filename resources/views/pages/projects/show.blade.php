@@ -35,37 +35,19 @@
                 {{-- Definition Stack --}}
                 <div class="flex flex-col gap-5 pb-2">
                     @if($project->client)
-                        <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
-                            <span class="text-xs text-neutral-500 tracking-[1.2px] uppercase">Müşteri</span>
-                            <span class="text-sm font-medium text-neutral-950 dark:text-neutral-50">{{ $project->client }}</span>
-                        </div>
+                        <x-detail-row label="Müşteri" :value="$project->client" />
                     @endif
-                    <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
-                        <span class="text-xs text-neutral-500 tracking-[1.2px] uppercase">Yıl</span>
-                        <span class="text-sm font-medium text-neutral-950 dark:text-neutral-50">{{ $project->year }}</span>
-                    </div>
+                    <x-detail-row label="Yıl" :value="$project->year" />
                     @if($project->duration)
-                        <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
-                            <span class="text-xs text-neutral-500 tracking-[1.2px] uppercase">Süre</span>
-                            <span class="text-sm font-medium text-neutral-950 dark:text-neutral-50">{{ $project->duration }}</span>
-                        </div>
+                        <x-detail-row label="Süre" :value="$project->duration" />
                     @endif
                     @if($project->role)
-                        <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
-                            <span class="text-xs text-neutral-500 tracking-[1.2px] uppercase">Rolüm</span>
-                            <span class="text-sm font-medium text-neutral-950 dark:text-neutral-50">{{ $project->role }}</span>
-                        </div>
+                        <x-detail-row label="Rolüm" :value="$project->role" />
                     @endif
-                    <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
-                        <span class="text-xs text-neutral-500 tracking-[1.2px] uppercase">Stack</span>
-                        <span class="text-sm font-medium text-neutral-950 dark:text-neutral-50">{{ implode(' · ', $project->stack) }}</span>
-                    </div>
+                    <x-detail-row label="Stack" :value="implode(' · ', $project->stack)" />
                     @if($project->extras)
                         @foreach($project->extras as $extra)
-                            <div class="flex justify-between border-b border-neutral-200 dark:border-neutral-800 pb-3">
-                                <span class="text-xs text-neutral-500 tracking-[1.2px] uppercase">{{ $extra['label'] }}</span>
-                                <span class="text-sm font-medium text-neutral-950 dark:text-neutral-50">{{ $extra['value'] }}</span>
-                            </div>
+                            <x-detail-row :label="$extra['label']" :value="$extra['value']" />
                         @endforeach
                     @endif
                 </div>

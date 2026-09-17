@@ -93,3 +93,20 @@ it('still renders projects whose extras and stats were saved as a key value map 
 
     expect($project->fresh()->extras)->toBe([['label' => 'Müşteri', 'value' => 'Karavela A.Ş.']]);
 });
+
+it('turns a url in the project details into a short link', function () {
+    $project = Project::factory()->for(ProjectCategory::factory(), 'category')->create([
+        'extras' => [
+            ['label' => 'Github', 'value' => 'https://github.com/ada/personel-website'],
+            ['label' => 'Ekip', 'value' => '3 kişi'],
+        ],
+    ]);
+
+    $html = $this->get(route('projects.show', $project))->assertOk()->getContent();
+
+    expect($html)->toContain('<a href="https://github.com/ada/personel-website" target="_blank" rel="noopener"')
+        ->toContain('github.com/ada/personel-website</a>')
+        ->not->toContain('>https://github.com/ada/personel-website</a>')
+        ->and($html)->toContain('3 kişi')
+        ->and(substr_count($html, 'data-detail-row'))->toBeGreaterThanOrEqual(4);
+});
