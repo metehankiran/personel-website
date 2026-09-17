@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Category;
 use App\Models\Education;
 use App\Models\Experience;
+use App\Models\Faq;
 use App\Models\Language;
 use App\Models\Post;
 use App\Models\Project;
@@ -245,4 +246,33 @@ it('keeps reviews to the references page and never aggregates them', function ()
 
     expect(allSchemaNodes(route('home'))->where('@type', 'Review'))->toBeEmpty()
         ->and($this->get(route('references'))->getContent())->not->toContain('AggregateRating');
+});
+
+it('points voice assistants at the headline and summary of a post', function () {
+    $post = Post::factory()->published()->for(Category::factory())->create(['excerpt' => 'Kısa özet.']);
+
+    $html = $this->get(route('blog.show', $post))->getContent();
+
+    expect(schemaNodes(route('blog.show', $post))['BlogPosting']['speakable'])->toBe([
+        '@type' => 'SpeakableSpecification',
+        'cssSelector' => ['[data-speakable="headline"]', '[data-speakable="summary"]'],
+    ])
+        ->and($html)->toContain('data-speakable="headline"')->toContain('data-speakable="summary"');
+});
+
+it('drops the summary selector when a post has no excerpt', function () {
+    $post = Post::factory()->published()->for(Category::factory())->create(['excerpt' => null]);
+
+    expect(schemaNodes(route('blog.show', $post))['BlogPosting']['speakable']['cssSelector'])->toBe(['[data-speakable="headline"]'])
+        ->and($this->get(route('blog.show', $post))->getContent())->not->toContain('data-speakable="summary"');
+});
+
+it('points voice assistants at the questions and answers of the faq page', function () {
+    Faq::factory()->create(['is_published' => true]);
+
+    expect(schemaNodes(route('faq'))['FAQPage']['speakable'])->toBe([
+        '@type' => 'SpeakableSpecification',
+        'cssSelector' => ['[data-speakable="question"]', '[data-speakable="answer"]'],
+    ])
+        ->and($this->get(route('faq'))->getContent())->toContain('data-speakable="question"')->toContain('data-speakable="answer"');
 });

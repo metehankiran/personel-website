@@ -211,6 +211,7 @@ class Schema
             'articleSection' => $post->category?->name,
             'keywords' => $post->tags->pluck('name')->all(),
             'wordCount' => Str::wordCount(strip_tags((string) $post->body)),
+            'speakable' => static::speakable(['headline', ...(filled($post->excerpt) ? ['summary'] : [])]),
             'author' => static::personReference(),
             'publisher' => static::personReference(),
         ];
@@ -254,6 +255,7 @@ class Schema
 
         return [
             '@type' => 'FAQPage',
+            'speakable' => static::speakable(['question', 'answer']),
             'mainEntity' => $faqs->values()->map(fn (Faq $faq): array => [
                 '@type' => 'Question',
                 'name' => $faq->question,
@@ -303,6 +305,20 @@ class Schema
                 ? ['@type' => 'Rating', 'ratingValue' => $testimonial->rating, 'bestRating' => 5, 'worstRating' => 1]
                 : null,
         ])->values()->all();
+    }
+
+    /**
+     * The parts of a page worth reading aloud, addressed by the data-speakable hooks in the views.
+     *
+     * @param  array<int, string>  $parts
+     * @return array<string, mixed>
+     */
+    private static function speakable(array $parts): array
+    {
+        return [
+            '@type' => 'SpeakableSpecification',
+            'cssSelector' => array_map(fn (string $part): string => '[data-speakable="'.$part.'"]', $parts),
+        ];
     }
 
     /**

@@ -22,10 +22,10 @@
                     <span class="inline-block text-[11px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 rounded-full font-medium text-neutral-950 dark:text-neutral-50">{{ $post->category->name }}</span>
                 </div>
 
-                <h1 class="m-0 max-w-4xl text-[36px] sm:text-[44px] lg:text-[56px] leading-[1.05] font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50">{{ $post->title }}</h1>
+                <h1 data-speakable="headline" class="m-0 max-w-4xl text-[36px] sm:text-[44px] lg:text-[56px] leading-[1.05] font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50">{{ $post->title }}</h1>
 
                 @if($post->excerpt)
-                    <p class="mt-6 text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-[720px] m-0 mt-6">{{ $post->excerpt }}</p>
+                    <p data-speakable="summary" class="mt-6 text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-[720px] m-0 mt-6">{{ $post->excerpt }}</p>
                 @endif
 
                 {{-- Byline --}}
