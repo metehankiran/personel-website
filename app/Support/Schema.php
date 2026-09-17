@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use App\Models\Education;
+use App\Models\Experience;
 use App\Models\Faq;
+use App\Models\Language;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\Service;
+use App\Models\Skill;
 use App\Settings\AboutSettings;
 use App\Settings\GeneralSettings;
 use App\Settings\SocialSettings;
@@ -23,6 +27,22 @@ use Illuminate\Support\Str;
 class Schema
 {
     private const string LANGUAGE = 'tr-TR';
+
+    /**
+     * Language names as typed in the panel (ascii-folded, lowercase) => BCP 47 code.
+     *
+     * @var array<string, string>
+     */
+    private const array LANGUAGE_CODES = [
+        'turkce' => 'tr', 'turkish' => 'tr',
+        'ingilizce' => 'en', 'english' => 'en',
+        'almanca' => 'de', 'german' => 'de',
+        'fransizca' => 'fr', 'french' => 'fr',
+        'ispanyolca' => 'es', 'spanish' => 'es',
+        'italyanca' => 'it', 'italian' => 'it',
+        'rusca' => 'ru', 'russian' => 'ru',
+        'arapca' => 'ar', 'arabic' => 'ar',
+    ];
 
     /**
      * Render nodes as a JSON-LD script tag; several nodes are wrapped in a @graph.
@@ -80,12 +100,59 @@ class Schema
             'jobTitle' => $general->author_title,
             'description' => $general->bio,
             'url' => Seo::siteUrl(),
-            'email' => filled($general->author_email) ? 'mailto:'.$general->author_email : null,
+            'email' => $general->author_email,
+            'telephone' => $general->author_phone,
             'image' => Images::exists($portrait) ? Seo::absolute(Images::url($portrait)) : null,
-            'address' => filled($general->author_location)
-                ? ['@type' => 'PostalAddress', 'addressLocality' => $general->author_location]
-                : null,
+            'address' => static::address($general->author_location),
             'sameAs' => array_values(array_column(app(SocialSettings::class)->profiles(), 'url')),
+            ...static::career(),
+        ];
+    }
+
+    /**
+     * "Kütahya, TR" becomes a locality and a country; anything without a trailing
+     * two-letter country code stays whole, since guessing would publish a wrong country.
+     *
+     * @return array<string, string>|null
+     */
+    private static function address(?string $location): ?array
+    {
+        if (blank($location)) {
+            return null;
+        }
+
+        [$locality, $country] = array_map(trim(...), explode(',', $location, 2)) + [1 => null];
+
+        return preg_match('/^[A-Z]{2}$/', (string) $country) === 1
+            ? ['@type' => 'PostalAddress', 'addressLocality' => $locality, 'addressCountry' => $country]
+            : ['@type' => 'PostalAddress', 'addressLocality' => trim($location)];
+    }
+
+    /**
+     * What the cv says about the person: skills, languages, schools and the jobs still held.
+     *
+     * @return array<string, array<int, mixed>>
+     */
+    private static function career(): array
+    {
+        $currentJobs = Experience::query()->whereNull('end_date')->ordered()->get();
+
+        return [
+            'knowsAbout' => Skill::ordered()->get()
+                ->flatMap(fn (Skill $skill): array => array_column($skill->items ?? [], 'name'))
+                ->filter()->unique()->values()->all(),
+            'knowsLanguage' => Language::ordered()->get()
+                ->map(fn (Language $language): array => [
+                    '@type' => 'Language',
+                    'name' => $language->name,
+                    'alternateName' => self::LANGUAGE_CODES[Str::lower(Str::ascii($language->name))] ?? null,
+                ])->all(),
+            'alumniOf' => Education::ordered()->get()
+                ->map(fn (Education $education): array => ['@type' => 'EducationalOrganization', 'name' => $education->school])->all(),
+            'worksFor' => $currentJobs
+                ->map(fn (Experience $job): array => ['@type' => 'Organization', 'name' => $job->company])->all(),
+            'hasOccupation' => $currentJobs
+                ->map(fn (Experience $job): array => ['@type' => 'Occupation', 'name' => $job->title])->all(),
         ];
     }
 

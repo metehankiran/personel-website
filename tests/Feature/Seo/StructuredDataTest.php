@@ -3,9 +3,13 @@
 declare(strict_types=1);
 
 use App\Models\Category;
+use App\Models\Education;
+use App\Models\Experience;
+use App\Models\Language;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\Service;
+use App\Models\Skill;
 use App\Models\Tag;
 use App\Settings\GeneralSettings;
 use App\Settings\SocialSettings;
@@ -34,9 +38,9 @@ beforeEach(function () {
 });
 
 /**
- * Every JSON-LD node on the page, flattened out of any @graph wrapper and keyed by @type.
+ * Every JSON-LD node on the page, flattened out of any @graph wrapper.
  */
-function schemaNodes(string $url): Collection
+function allSchemaNodes(string $url): Collection
 {
     $html = test()->get($url)->assertOk()->getContent();
 
@@ -48,8 +52,15 @@ function schemaNodes(string $url): Collection
 
             return $data['@graph'] ?? [$data];
         })
-        ->flatten(1)
-        ->keyBy('@type');
+        ->flatten(1);
+}
+
+/**
+ * The same nodes keyed by @type, for pages that carry one node of each kind.
+ */
+function schemaNodes(string $url): Collection
+{
+    return allSchemaNodes($url)->keyBy('@type');
 }
 
 it('describes the site and its owner on every page', function (string $route) {
@@ -69,7 +80,7 @@ it('describes the site and its owner on every page', function (string $route) {
         'name' => 'Ada Yazar',
         'jobTitle' => 'Full-stack Developer',
         'url' => 'https://example.test',
-        'email' => 'mailto:ada@example.test',
+        'email' => 'ada@example.test',
         'sameAs' => ['https://github.com/ada', 'https://linkedin.com/in/ada'],
     ]);
 })->with(['home', 'services', 'blog', 'contact']);
@@ -80,6 +91,50 @@ it('leaves empty fields out instead of printing nulls', function () {
     $general->save();
 
     expect(schemaNodes(route('home'))['Person'])->not->toHaveKey('email');
+});
+
+it('publishes the phone number and splits the location into locality and country', function () {
+    $general = app(GeneralSettings::class);
+    $general->author_phone = '+90 555 000 00 00';
+    $general->save();
+
+    expect(schemaNodes(route('home'))['Person'])->toMatchArray([
+        'telephone' => '+90 555 000 00 00',
+        'address' => ['@type' => 'PostalAddress', 'addressLocality' => 'Kütahya', 'addressCountry' => 'TR'],
+    ]);
+});
+
+it('keeps a location it cannot split as the locality', function (string $location) {
+    $general = app(GeneralSettings::class);
+    $general->author_location = $location;
+    $general->save();
+
+    expect(schemaNodes(route('home'))['Person']['address'])->toBe(['@type' => 'PostalAddress', 'addressLocality' => $location]);
+})->with(['Kütahya', 'Kütahya, Türkiye']);
+
+it('lists the skills, languages, schools and current work of the person', function () {
+    Skill::factory()->create(['sort_order' => 1, 'items' => [['name' => 'PHP', 'description' => null, 'since' => 2017], ['name' => 'Laravel', 'description' => null, 'since' => 2019]]]);
+    Skill::factory()->create(['sort_order' => 2, 'items' => [['name' => 'Laravel', 'description' => null, 'since' => 2019], ['name' => 'Vue 3', 'description' => null, 'since' => 2020]]]);
+    Language::factory()->create(['name' => 'İngilizce', 'sort_order' => 1]);
+    Language::factory()->create(['name' => 'Klingonca', 'sort_order' => 2]);
+    Education::factory()->create(['school' => 'Anadolu Üniversitesi']);
+    Experience::factory()->current()->create(['title' => 'Takım Lideri', 'company' => 'Örnek A.Ş.']);
+    Experience::factory()->create(['title' => 'Stajyer', 'company' => 'Eski Şirket']);
+
+    $person = schemaNodes(route('home'))['Person'];
+
+    expect($person['knowsAbout'])->toBe(['PHP', 'Laravel', 'Vue 3'])
+        ->and($person['knowsLanguage'])->toBe([
+            ['@type' => 'Language', 'name' => 'İngilizce', 'alternateName' => 'en'],
+            ['@type' => 'Language', 'name' => 'Klingonca'],
+        ])
+        ->and($person['alumniOf'])->toBe([['@type' => 'EducationalOrganization', 'name' => 'Anadolu Üniversitesi']])
+        ->and($person['worksFor'])->toBe([['@type' => 'Organization', 'name' => 'Örnek A.Ş.']])
+        ->and($person['hasOccupation'])->toBe([['@type' => 'Occupation', 'name' => 'Takım Lideri']]);
+});
+
+it('leaves the career properties out when the cv is empty', function () {
+    expect(schemaNodes(route('home'))['Person'])->not->toHaveKeys(['knowsAbout', 'knowsLanguage', 'alumniOf', 'worksFor', 'hasOccupation']);
 });
 
 it('gives inner pages a breadcrumb trail and the home page none', function () {
