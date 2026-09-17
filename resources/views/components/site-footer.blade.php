@@ -4,10 +4,10 @@
 @endphp
 
 <footer class="border-t border-neutral-200 dark:border-neutral-800 mt-10" role="contentinfo">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-12 lg:pt-[60px] pb-8 lg:pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-8 lg:gap-12">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-12 lg:pt-[60px] pb-8 lg:pb-10 grid grid-cols-3 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-x-4 gap-y-8 sm:gap-8 lg:gap-12">
 
         {{-- Brand Column --}}
-        <div>
+        <div class="col-span-3 lg:col-span-1">
             <div class="flex items-center gap-2.5 mb-4">
                 <x-brand-mark logo class="w-6 h-6" logo-class="h-6 max-w-[110px]" />
                 <span class="text-sm font-semibold text-neutral-950 dark:text-neutral-50">{{ $general->author_name }}</span>
@@ -40,6 +40,7 @@
         </div>
 
         {{-- Social Links --}}
+        @if(filled($general->author_email) || $social->profiles() !== [])
         <div>
             <x-eyebrow size="sm" class="mb-3.5">Bağlan</x-eyebrow>
             <div class="flex flex-col gap-2.5">
@@ -55,6 +56,7 @@
                 @endforeach
             </div>
         </div>
+        @endif
     </div>
 
     {{-- Footer Bottom --}}

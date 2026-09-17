@@ -80,6 +80,11 @@ it('uses section headings for every block of the cv', function () {
 it('makes the group titles in the footer and the blog sidebar prominent', function () {
     Post::factory()->published()->for(Category::factory())->hasAttached(Tag::factory())->create();
 
+    // The footer contact column is only printed when there is something to contact.
+    $settings = app(GeneralSettings::class);
+    $settings->author_email = 'ada@example.test';
+    $settings->save();
+
     $blog = $this->get(route('blog'))->getContent();
 
     foreach (['Kategoriler', 'Etiketler', 'Site', 'Bağlan'] as $title) {
@@ -96,4 +101,13 @@ it('no longer uses the dim grey pattern for eyebrows and section labels in any p
         ->all();
 
     expect($offenders)->toBe([]);
+});
+
+it('puts the footer link columns side by side on small screens instead of stacking them', function () {
+    $footer = Str::after($this->get(route('home'))->getContent(), 'role="contentinfo"');
+
+    // Three link columns share a row from the smallest screen up; the brand block spans the row above them.
+    expect($footer)->toContain('grid grid-cols-3 lg:grid-cols-[1.5fr_1fr_1fr_1fr]')
+        ->toContain('col-span-3 lg:col-span-1')
+        ->not->toContain('grid-cols-1 sm:grid-cols-2');
 });
