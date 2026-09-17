@@ -148,3 +148,14 @@ it('keeps the text brand in the panel when no logo is uploaded', function () {
 
     expect($panel->getBrandLogo())->toBeNull()->and($panel->getDarkModeBrandLogo())->toBeNull();
 });
+
+it('tells the browser the logo size up front so the header does not shift', function () {
+    Storage::disk('public')->put('settings/logo.svg', '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60"></svg>');
+
+    $settings = app(GeneralSettings::class);
+    $settings->logo_path = 'settings/logo.svg';
+    $settings->logo_dark_path = null;
+    $settings->save();
+
+    expect($this->get(route('home'))->getContent())->toMatch('/<img data-site-logo[^>]*\\swidth="240" height="60"/');
+});

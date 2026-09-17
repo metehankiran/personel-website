@@ -31,14 +31,14 @@
                     <x-section-heading class="mb-6">Birlikte çalıştığım markalar</x-section-heading>
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-neutral-200 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden">
                         @foreach($brands as $brand)
-                            @php $brandClasses = 'group aspect-[5/2] bg-white dark:bg-neutral-950 flex items-center justify-center px-6 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-900'; @endphp
+                            @php $brandClasses = 'group aspect-[5/2] bg-white dark:bg-neutral-950 flex items-center justify-center px-6 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-900'; $logoSize = \App\Support\Images::dimensions($brand->logo); @endphp
                             @if($brand->url)
                                 <a href="{{ $brand->url }}" class="{{ $brandClasses }}" target="_blank" rel="noopener" title="{{ $brand->name }}">
                             @else
                                 <div class="{{ $brandClasses }}" title="{{ $brand->name }}">
                             @endif
                                 @if(\App\Support\Images::exists($brand->logo))
-                                    <img src="{{ Storage::url($brand->logo) }}" alt="{{ $brand->name }}" class="max-h-10 w-auto max-w-[70%] object-contain grayscale opacity-60 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100" loading="lazy">
+                                    <img src="{{ Storage::url($brand->logo) }}" alt="{{ $brand->name }}" @if($logoSize) width="{{ $logoSize['width'] }}" height="{{ $logoSize['height'] }}" @endif class="max-h-10 w-auto max-w-[70%] object-contain grayscale opacity-60 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100" loading="lazy">
                                 @else
                                     <span class="text-[15px] font-medium font-serif text-neutral-500 dark:text-neutral-400 text-center transition-colors group-hover:text-neutral-950 dark:group-hover:text-neutral-50">{{ $brand->name }}</span>
                                 @endif

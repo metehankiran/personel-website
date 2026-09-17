@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Models\Brand;
 use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
@@ -79,4 +81,12 @@ it('shows stars on featured and regular cards only when rated', function () {
     expect($html)->toContain('aria-label="5 üzerinden 5"')
         ->toContain('aria-label="5 üzerinden 4"')
         ->and(substr_count($html, 'role="img" aria-label="5 üzerinden'))->toBe(2);
+});
+
+it('prints brand logos with their size so the grid does not shift', function () {
+    Storage::fake('public');
+    Storage::disk('public')->putFileAs('brands', UploadedFile::fake()->image('acme.png', 320, 80), 'acme.png');
+    Brand::factory()->create(['name' => 'Acme', 'logo' => 'brands/acme.png']);
+
+    expect($this->get(route('references'))->getContent())->toMatch('/<img[^>]*alt="Acme"[^>]*\\swidth="320" height="80"/');
 });
