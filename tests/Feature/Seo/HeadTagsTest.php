@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 use App\Support\Seo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -68,6 +69,28 @@ it('keeps previews of unpublished content out of the index', function () {
         ->get(route('blog.show', $post))
         ->assertOk()
         ->assertSee('<meta name="robots" content="noindex, follow">', escape: false);
+});
+
+it('keeps category and tag listings without published posts out of the index', function () {
+    $draftOnly = Category::factory()->create();
+    Post::factory()->for($draftOnly)->create(['is_published' => false]);
+
+    foreach ([route('blog.category', Category::factory()->create()), route('blog.tag', Tag::factory()->create()), route('blog.category', $draftOnly)] as $url) {
+        $this->get($url)
+            ->assertOk()
+            ->assertSee('<meta name="robots" content="noindex, follow">', escape: false)
+            ->assertDontSee('content="index, follow"', escape: false);
+    }
+});
+
+it('lets category and tag listings with published posts be indexed', function () {
+    $category = Category::factory()->create();
+    $tag = Tag::factory()->create();
+    Post::factory()->published()->for($category)->hasAttached($tag)->create();
+
+    foreach ([route('blog.category', $category), route('blog.tag', $tag), route('blog')] as $url) {
+        $this->get($url)->assertSee('<meta name="robots" content="index, follow">', escape: false);
+    }
 });
 
 it('marks publish dates up so machines can read them', function () {

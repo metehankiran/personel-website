@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 
 class BlogController extends Controller
 {
@@ -15,8 +16,7 @@ class BlogController extends Controller
     {
         return view('pages.blog.index', [
             'posts' => Post::with(['category', 'tags'])->published()->latest('published_at')->get(),
-            'tags' => Tag::ordered()->get(),
-            'categories' => Category::ordered()->get(),
+            ...$this->sidebar(),
             'activeCategory' => null,
             'activeTag' => null,
         ]);
@@ -26,8 +26,7 @@ class BlogController extends Controller
     {
         return view('pages.blog.index', [
             'posts' => Post::with(['category', 'tags'])->published()->where('category_id', $category->id)->latest('published_at')->get(),
-            'tags' => Tag::ordered()->get(),
-            'categories' => Category::ordered()->get(),
+            ...$this->sidebar(activeCategory: $category),
             'activeCategory' => $category,
             'activeTag' => null,
         ]);
@@ -37,8 +36,7 @@ class BlogController extends Controller
     {
         return view('pages.blog.index', [
             'posts' => Post::with(['category', 'tags'])->published()->whereHas('tags', fn ($q) => $q->where('tags.id', $tag->id))->latest('published_at')->get(),
-            'tags' => Tag::ordered()->get(),
-            'categories' => Category::ordered()->get(),
+            ...$this->sidebar(activeTag: $tag),
             'activeCategory' => null,
             'activeTag' => $tag,
         ]);
@@ -61,5 +59,23 @@ class BlogController extends Controller
             'post' => $post,
             'relatedPosts' => $relatedPosts,
         ]);
+    }
+
+    /**
+     * Filters that lead somewhere: categories and tags with published posts, plus the one
+     * being viewed so its own listing never loses its highlighted pill.
+     *
+     * @return array{categories: Collection<int, Category>, tags: Collection<int, Tag>}
+     */
+    private function sidebar(?Category $activeCategory = null, ?Tag $activeTag = null): array
+    {
+        $withActive = fn (Collection $items, Category|Tag|null $active): Collection => $active === null || $items->contains($active)
+            ? $items
+            : $items->push($active)->sortBy('sort_order')->values();
+
+        return [
+            'categories' => $withActive(Category::withPublishedPosts()->ordered()->get(), $activeCategory),
+            'tags' => $withActive(Tag::withPublishedPosts()->ordered()->get(), $activeTag),
+        ];
     }
 }

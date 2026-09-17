@@ -72,6 +72,13 @@ it('builds descriptions from the content managed in the panel', function () {
         ->and(metaDescription(route('cv')))->toContain('On yıllık deneyime sahip');
 });
 
+it('leaves categories without published posts out of the blog description', function () {
+    Post::factory()->published()->for(Category::factory()->create(['name' => 'Mimari', 'sort_order' => 2]))->create();
+    Category::factory()->create(['name' => 'Boş Kategori', 'sort_order' => 1]);
+
+    expect(metaDescription(route('blog')))->toContain('Mimari')->not->toContain('Boş Kategori');
+});
+
 it('describes category and tag listings by their name', function () {
     $category = Category::factory()->create(['name' => 'Mimari']);
     Post::factory()->published()->for($category)->create();

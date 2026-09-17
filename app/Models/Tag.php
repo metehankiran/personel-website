@@ -22,4 +22,12 @@ class Tag extends Model
     {
         return $query->orderBy('sort_order');
     }
+
+    /**
+     * Only the ones a visitor would find something under.
+     */
+    public function scopeWithPublishedPosts(Builder $query): Builder
+    {
+        return $query->whereHas('posts', fn (Builder $posts) => $posts->published());
+    }
 }

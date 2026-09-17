@@ -2,6 +2,7 @@
 
 @section('title', ($activeCategory ? $activeCategory->name . ' — ' : ($activeTag ? $activeTag->name . ' — ' : '')) . 'Blog')
 @section('meta_description', $activeCategory ? $activeCategory->name.' kategorisindeki yazılar: çalışırken karşılaşılan problemler, denenen çözümler ve öğrenilenler.' : ($activeTag ? $activeTag->name.' etiketli yazılar: çalışırken karşılaşılan problemler, denenen çözümler ve öğrenilenler.' : 'Yazılım geliştirme üzerine yazılar'.($categories->isNotEmpty() ? ': '.$categories->take(5)->pluck('name')->join(', ') : '').'. Çalışırken karşılaşılan problemler ve öğrenilenler.'))
+@section('robots', ($activeCategory || $activeTag) && $posts->isEmpty() ? 'noindex, follow' : 'index, follow')
 
 @push('schema')
     {{ \App\Support\Schema::script(\App\Support\Schema::breadcrumbs(['Blog' => \App\Support\Seo::route('blog')])) }}

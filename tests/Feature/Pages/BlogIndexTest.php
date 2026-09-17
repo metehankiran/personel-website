@@ -70,12 +70,35 @@ it('filters posts by tag via url', function () {
 });
 
 it('shows category and tag links in sidebar', function () {
-    Category::factory()->create(['name' => 'Laravel', 'slug' => 'laravel']);
-    Tag::factory()->create(['name' => 'PHP', 'slug' => 'php']);
+    $category = Category::factory()->create(['name' => 'Laravel', 'slug' => 'laravel']);
+    $tag = Tag::factory()->create(['name' => 'PHP', 'slug' => 'php']);
+    Post::factory()->published()->for($category)->hasAttached($tag)->create();
 
     $this->get(route('blog'))
         ->assertSee(route('blog.category', 'laravel'), escape: false)
         ->assertSee(route('blog.tag', 'php'), escape: false);
+});
+
+it('hides categories and tags without published posts from the sidebar', function () {
+    $draftOnly = Category::factory()->create(['slug' => 'taslak-kategori']);
+    $draftTag = Tag::factory()->create(['slug' => 'taslak-etiket']);
+    Post::factory()->for($draftOnly)->hasAttached($draftTag)->create(['is_published' => false]);
+    Category::factory()->create(['slug' => 'bos-kategori']);
+    Tag::factory()->create(['slug' => 'bos-etiket']);
+
+    $this->get(route('blog'))
+        ->assertDontSee(route('blog.category', 'taslak-kategori'), escape: false)
+        ->assertDontSee(route('blog.category', 'bos-kategori'), escape: false)
+        ->assertDontSee(route('blog.tag', 'taslak-etiket'), escape: false)
+        ->assertDontSee(route('blog.tag', 'bos-etiket'), escape: false);
+});
+
+it('still shows the active category or tag on its own empty listing', function () {
+    $category = Category::factory()->create(['slug' => 'bos-kategori']);
+    $tag = Tag::factory()->create(['slug' => 'bos-etiket']);
+
+    $this->get(route('blog.category', $category))->assertSee(route('blog.category', 'bos-kategori'), escape: false);
+    $this->get(route('blog.tag', $tag))->assertSee(route('blog.tag', 'bos-etiket'), escape: false);
 });
 
 it('shows newsletter subscription form', function () {
