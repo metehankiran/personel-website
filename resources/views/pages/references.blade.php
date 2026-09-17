@@ -4,7 +4,7 @@
 @section('meta_description', 'Birlikte çalışılan markalar ve müşterilerin kendi sözleriyle yorumları. '.$general->author_name.' ile çalışmak nasıl, doğrudan onlardan okuyun.')
 
 @push('schema')
-    {{ \App\Support\Schema::script(\App\Support\Schema::breadcrumbs(['Referanslar' => \App\Support\Seo::route('references')])) }}
+    {{ \App\Support\Schema::script(...\App\Support\Schema::reviews($testimonials), ...[\App\Support\Schema::breadcrumbs(['Referanslar' => \App\Support\Seo::route('references')])]) }}
 @endpush
 
 @section('content')
@@ -60,6 +60,7 @@
             @if($featured)
                 <figure class="m-0 mt-20 relative rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 px-8 sm:px-14 py-12 sm:py-16 overflow-hidden" data-featured>
                     <span aria-hidden="true" class="absolute -top-6 left-6 sm:left-10 text-[180px] leading-none font-serif text-neutral-200/80 dark:text-neutral-800 select-none">"</span>
+                    <x-rating-stars :rating="$featured->rating" class="relative mb-6 [&>svg]:w-5 [&>svg]:h-5" />
                     <blockquote class="relative m-0 max-w-[900px] text-[24px] sm:text-[30px] lg:text-[36px] leading-[1.25] font-medium tracking-tight text-balance text-neutral-950 dark:text-neutral-50">
                         {{ $featured->body }}
                     </blockquote>
@@ -83,6 +84,7 @@
                     @foreach($others as $testimonial)
                         <figure class="m-0 break-inside-avoid flex flex-col p-7 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.12)] dark:shadow-none transition-colors hover:border-neutral-400 dark:hover:border-neutral-600">
                             <i data-lucide="quote" class="w-5 h-5 text-neutral-300 dark:text-neutral-700 mb-4"></i>
+                            <x-rating-stars :rating="$testimonial->rating" class="mb-3" />
                             <blockquote class="m-0 flex-1 text-[15px] leading-relaxed text-neutral-800 dark:text-neutral-100">{{ $testimonial->body }}</blockquote>
                             <figcaption class="mt-6 pt-4 border-t border-neutral-100 dark:border-neutral-800 flex items-center gap-3">
                                 @if($testimonial->avatar)

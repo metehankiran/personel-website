@@ -45,6 +45,12 @@ class TestimonialsTable
                     ->wrap()
                     ->toggleable(),
 
+                TextColumn::make('rating')
+                    ->label('Puan')
+                    ->placeholder('—')
+                    ->sortable()
+                    ->toggleable(),
+
                 TextColumn::make('created_at')
                     ->label('Oluşturulma')
                     ->dateTime()

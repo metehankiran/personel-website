@@ -96,3 +96,14 @@ it('runs in the Istanbul timezone with Turkish as the default locale', function 
         ->and(config('app.locale'))->toBe('tr')
         ->and(config('app.fallback_locale'))->toBe('tr');
 });
+
+it('shows stars on rated testimonials in the marquee', function () {
+    Testimonial::factory()->rated(4)->create();
+    Testimonial::factory()->create();
+
+    $html = $this->get(route('home'))->assertOk()->getContent();
+
+    // The marquee prints every card twice; the second copy is hidden from assistive tech as a whole.
+    expect(substr_count($html, 'aria-label="5 üzerinden 4"'))->toBe(2)
+        ->and(substr_count($html, 'role="img" aria-label="5 üzerinden'))->toBe(2);
+});

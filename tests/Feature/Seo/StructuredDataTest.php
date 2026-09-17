@@ -11,6 +11,7 @@ use App\Models\Project;
 use App\Models\Service;
 use App\Models\Skill;
 use App\Models\Tag;
+use App\Models\Testimonial;
 use App\Settings\GeneralSettings;
 use App\Settings\SocialSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -215,4 +216,33 @@ it('cannot be broken out of by content that contains a script tag', function () 
 
     expect($html)->not->toContain('</script><script>alert(1)')
         ->and(schemaNodes(route('blog.show', $post))['BlogPosting']['headline'])->toBe('Kötü </script><script>alert(1)</script> başlık');
+});
+
+it('publishes testimonials as reviews of the person', function () {
+    Testimonial::factory()->rated(4)->create(['name' => 'Selin Akın', 'title' => 'CEO', 'company' => 'Örnek A.Ş.', 'body' => 'Zamanında teslim etti.', 'sort_order' => 1]);
+    Testimonial::factory()->create(['name' => 'Mert Yıldız', 'title' => 'CTO', 'company' => null, 'body' => 'Tavsiye ederim.', 'sort_order' => 2]);
+
+    $reviews = allSchemaNodes(route('references'))->where('@type', 'Review')->values();
+
+    expect($reviews)->toHaveCount(2)
+        ->and($reviews[0])->toBe([
+            '@type' => 'Review',
+            'itemReviewed' => ['@id' => 'https://example.test#person'],
+            'author' => ['@type' => 'Person', 'name' => 'Selin Akın', 'jobTitle' => 'CEO', 'worksFor' => ['@type' => 'Organization', 'name' => 'Örnek A.Ş.']],
+            'reviewBody' => 'Zamanında teslim etti.',
+            'reviewRating' => ['@type' => 'Rating', 'ratingValue' => 4, 'bestRating' => 5, 'worstRating' => 1],
+        ])
+        ->and($reviews[1])->toBe([
+            '@type' => 'Review',
+            'itemReviewed' => ['@id' => 'https://example.test#person'],
+            'author' => ['@type' => 'Person', 'name' => 'Mert Yıldız', 'jobTitle' => 'CTO'],
+            'reviewBody' => 'Tavsiye ederim.',
+        ]);
+});
+
+it('keeps reviews to the references page and never aggregates them', function () {
+    Testimonial::factory()->rated(5)->count(2)->create();
+
+    expect(allSchemaNodes(route('home'))->where('@type', 'Review'))->toBeEmpty()
+        ->and($this->get(route('references'))->getContent())->not->toContain('AggregateRating');
 });

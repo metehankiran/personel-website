@@ -12,6 +12,16 @@ class Testimonial extends Model
     /** @use HasFactory<TestimonialFactory> */
     use HasFactory;
 
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'rating' => 'integer',
+        ];
+    }
+
     public function scopeOrdered(Builder $query): Builder
     {
         return $query->orderBy('sort_order');

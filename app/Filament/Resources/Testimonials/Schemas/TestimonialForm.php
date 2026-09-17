@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Testimonials\Schemas;
 
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
@@ -55,6 +56,12 @@ class TestimonialForm
                         ->maxLength(2000)
                         ->helperText('Referansın söylediği yorum metni.')
                         ->columnSpanFull(),
+
+                    Select::make('rating')
+                        ->label('Puan')
+                        ->options([5 => '5 yıldız', 4 => '4 yıldız', 3 => '3 yıldız', 2 => '2 yıldız', 1 => '1 yıldız'])
+                        ->placeholder('Puan yok')
+                        ->helperText('Yalnızca müşterinin gerçekten verdiği puanı gir. Boş bırakılırsa yıldız gösterilmez.'),
                 ]),
         ])->columns(1);
     }

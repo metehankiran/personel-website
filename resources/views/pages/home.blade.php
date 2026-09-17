@@ -127,6 +127,7 @@
                     @foreach([0, 1] as $copy)
                         @foreach($testimonials as $testimonial)
                             <figure @if($copy === 1) aria-hidden="true" @endif class="m-0 w-[320px] sm:w-[380px] shrink-0 p-7 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.12)] dark:shadow-none flex flex-col">
+                                <x-rating-stars :rating="$testimonial->rating" class="mb-3" />
                                 <blockquote class="m-0 flex-1 text-[15px] leading-relaxed text-neutral-800 dark:text-neutral-100">
                                     <span class="text-[48px] leading-none font-serif text-neutral-200 dark:text-neutral-700 float-left mr-2 -mt-1">"</span>
                                     {{ $testimonial->body }}

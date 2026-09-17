@@ -20,8 +20,16 @@ class TestimonialFactory extends Factory
             'title' => fake()->jobTitle(),
             'company' => fake()->company(),
             'body' => fake()->paragraph(),
+            'rating' => null,
             'avatar' => null,
             'sort_order' => fake()->numberBetween(0, 10),
         ];
+    }
+
+    public function rated(int $stars = 5): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'rating' => $stars,
+        ]);
     }
 }

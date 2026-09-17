@@ -38,6 +38,11 @@ test('testimonials are ordered by sort_order', function () {
         ->toBe(['First', 'Second', 'Third']);
 });
 
+test('rating is optional and stored as an integer', function () {
+    expect(Testimonial::factory()->create()->fresh()->rating)->toBeNull()
+        ->and(Testimonial::factory()->rated(4)->create()->fresh()->rating)->toBe(4);
+});
+
 test('testimonial seeder runs without errors', function () {
     $this->seed(TestimonialSeeder::class);
 

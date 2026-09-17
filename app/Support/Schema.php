@@ -12,6 +12,7 @@ use App\Models\Post;
 use App\Models\Project;
 use App\Models\Service;
 use App\Models\Skill;
+use App\Models\Testimonial;
 use App\Settings\AboutSettings;
 use App\Settings\GeneralSettings;
 use App\Settings\SocialSettings;
@@ -277,6 +278,31 @@ class Schema
             'inLanguage' => self::LANGUAGE,
             'creator' => static::personReference(),
         ];
+    }
+
+    /**
+     * One Review node per testimonial. Ratings are published only when the client gave one,
+     * and never rolled up into an AggregateRating.
+     *
+     * @param  Collection<int, Testimonial>  $testimonials
+     * @return array<int, array<string, mixed>>
+     */
+    public static function reviews(Collection $testimonials): array
+    {
+        return $testimonials->map(fn (Testimonial $testimonial): array => [
+            '@type' => 'Review',
+            'itemReviewed' => static::personReference(),
+            'author' => [
+                '@type' => 'Person',
+                'name' => $testimonial->name,
+                'jobTitle' => $testimonial->title,
+                'worksFor' => filled($testimonial->company) ? ['@type' => 'Organization', 'name' => $testimonial->company] : null,
+            ],
+            'reviewBody' => $testimonial->body,
+            'reviewRating' => $testimonial->rating
+                ? ['@type' => 'Rating', 'ratingValue' => $testimonial->rating, 'bestRating' => 5, 'worstRating' => 1]
+                : null,
+        ])->values()->all();
     }
 
     /**

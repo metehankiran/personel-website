@@ -68,3 +68,15 @@ it('falls back to initials when a testimonial has no avatar', function () {
     $this->get(route('references'))
         ->assertSee('>SA<', escape: false);
 });
+
+it('shows stars on featured and regular cards only when rated', function () {
+    Testimonial::factory()->rated(5)->create(['sort_order' => 1]);
+    Testimonial::factory()->rated(4)->create(['sort_order' => 2]);
+    Testimonial::factory()->create(['sort_order' => 3]);
+
+    $html = $this->get(route('references'))->assertOk()->getContent();
+
+    expect($html)->toContain('aria-label="5 üzerinden 5"')
+        ->toContain('aria-label="5 üzerinden 4"')
+        ->and(substr_count($html, 'role="img" aria-label="5 üzerinden'))->toBe(2);
+});

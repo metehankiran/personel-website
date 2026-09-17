@@ -66,6 +66,27 @@ test('testimonial can be created with avatar', function () {
     Storage::disk('public')->assertExists($testimonial->avatar);
 });
 
+test('testimonial can be created with a rating', function () {
+    Livewire::test(CreateTestimonial::class)
+        ->fillForm([
+            'name' => 'Ayşe Yıldız',
+            'title' => 'Product Manager',
+            'body' => 'Harika bir iş çıkardı.',
+            'rating' => 5,
+        ])
+        ->call('create')
+        ->assertHasNoFormErrors();
+
+    expect(Testimonial::firstWhere('name', 'Ayşe Yıldız')->rating)->toBe(5);
+});
+
+test('rating must be between one and five', function () {
+    Livewire::test(CreateTestimonial::class)
+        ->fillForm(['name' => 'Ayşe', 'title' => 'PM', 'body' => 'Yorum.', 'rating' => 6])
+        ->call('create')
+        ->assertHasFormErrors(['rating']);
+});
+
 test('name is required', function () {
     Livewire::test(CreateTestimonial::class)
         ->fillForm(['name' => null])
