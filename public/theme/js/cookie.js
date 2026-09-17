@@ -3,11 +3,32 @@
    ────────────────────────────────────────────────── */
 (function () {
   const KEY = 'mk-cookie-consent';
+  const cfg = window.mkCookieConfig || {};
   let stored = null;
   try { stored = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
-  if (stored && stored.ts) return;
 
-  const cfg = window.mkCookieConfig || {};
+  // Google Analytics is only ever loaded from here, after the visitor has consented.
+  let analyticsLoaded = false;
+  window.mkEnableAnalytics = function () {
+    if (analyticsLoaded || !cfg.analyticsId) return;
+    analyticsLoaded = true;
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', cfg.analyticsId, { anonymize_ip: true });
+
+    var tag = document.createElement('script');
+    tag.async = true;
+    tag.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(cfg.analyticsId);
+    document.head.appendChild(tag);
+  };
+
+  if (stored && stored.ts) {
+    // Returning visitor: honour the stored choice instead of asking again.
+    if (stored.analytics) window.mkEnableAnalytics();
+    return;
+  }
 
   // Only link to legal pages that actually exist; the URLs are null otherwise.
   const linkClass = 'underline hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors';

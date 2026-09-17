@@ -16,6 +16,9 @@
 
     <link rel="icon" href="{{ \App\Support\Images::url($general->favicon_path ?? null, 'favicon') }}">
     <link rel="canonical" href="{{ url()->current() }}">
+    @if(filled($seo->google_search_console_id))
+        <meta name="google-site-verification" content="{{ $seo->google_search_console_id }}">
+    @endif
 
     <script>
         (function () {
@@ -47,7 +50,8 @@
     <script>
         window.mkCookieConfig = {
             cookiePolicyUrl: @json(\App\Models\Page::publicUrl($general->cookie_policy_slug), JSON_UNESCAPED_SLASHES),
-            kvkkUrl: @json(\App\Models\Page::publicUrl($general->kvkk_page_slug), JSON_UNESCAPED_SLASHES)
+            kvkkUrl: @json(\App\Models\Page::publicUrl($general->kvkk_page_slug), JSON_UNESCAPED_SLASHES),
+            analyticsId: @json(filled($seo->google_analytics_id) ? $seo->google_analytics_id : null)
         };
     </script>
     <script src="{{ \App\Support\Assets::versioned('theme/js/cookie.js') }}" defer></script>
