@@ -14,16 +14,22 @@
             <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Sıkça sorulan sorular.</h1>
             <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[580px]">Birlikte çalışmaya başlamadan önce en çok merak edilenler. Aradığın yanıt burada yoksa doğrudan yazabilirsin.</p>
 
-            @if($faqs->isEmpty())
-                <x-empty-state class="mt-12" icon="circle-help" title="Henüz bir soru eklenmedi" description="Sık gelen sorular ve yanıtları burada yer alacak." action-label="Sorunu doğrudan sor" :action-url="route('contact')" />
-            @else
-                <x-faq-list :faqs="$faqs" class="mt-14" />
+            <div class="mt-14 grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10 lg:gap-16 items-start">
+                <div>
+                    @if($faqs->isEmpty())
+                        <x-empty-state icon="circle-help" title="Henüz bir soru eklenmedi" description="Sık gelen sorular ve yanıtları burada yer alacak." action-label="Sorunu doğrudan sor" :action-url="route('contact')" />
+                    @else
+                        <x-faq-list :faqs="$faqs" />
 
-                <div class="mt-14 flex flex-wrap items-center gap-x-6 gap-y-3">
-                    <span class="text-[15px] text-neutral-600 dark:text-neutral-400">Yanıtını bulamadın mı?</span>
-                    <a href="{{ route('contact') }}" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-[13px] font-medium rounded-lg bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85">Bana yaz <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+                        <div class="mt-14 flex flex-wrap items-center gap-x-6 gap-y-3">
+                            <span class="text-[15px] text-neutral-600 dark:text-neutral-400">Yanıtını bulamadın mı?</span>
+                            <a href="{{ route('contact') }}" class="inline-flex items-center gap-1.5 px-4 py-2.5 text-[13px] font-medium rounded-lg bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85">Bana yaz <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+                        </div>
+                    @endif
                 </div>
-            @endif
+
+                <x-pages-aside current="faq" :updated-at="$faqs->max('updated_at')" />
+            </div>
         </div>
     </section>
 @endsection

@@ -22,8 +22,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::unguard();
 
-        // Only the header and the static page sidebar list the pages, so they are not queried for every partial.
-        View::composer(['components.site-header', 'pages.page'], function ($view) {
+        // Only the header and the pages sidebar list the pages, so they are not queried for every partial.
+        View::composer(['components.site-header', 'components.pages-aside'], function ($view) {
             $view->with('menuPages', Page::published()
                 ->get(['title', 'slug'])
                 // Sort in PHP: database collations disagree on Turkish letters (SQLite orders bytewise).

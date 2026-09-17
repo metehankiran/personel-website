@@ -7,6 +7,7 @@ use App\Filament\Resources\Faqs\Pages\CreateFaq;
 use App\Filament\Resources\Faqs\Pages\EditFaq;
 use App\Filament\Resources\Faqs\Pages\ListFaqs;
 use App\Models\Faq;
+use App\Models\Page;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -38,6 +39,26 @@ it('uses a question heading for each entry', function () {
     Faq::factory()->create(['question' => 'Teslim süresi ne kadar?']);
 
     expect($this->get(route('faq'))->getContent())->toMatch('#<h3[^>]*>\s*Teslim süresi ne kadar\?\s*</h3>#u');
+});
+
+it('lists the other pages in a sidebar beside the questions, with the faq marked as current', function () {
+    $faq = Faq::factory()->create();
+    $page = Page::factory()->published()->create(['title' => 'Çerez Politikası']);
+    Page::factory()->create(['title' => 'Taslak Sayfa', 'is_published' => false]);
+
+    $html = $this->get(route('faq'))->assertOk()->getContent();
+    preg_match('#<aside[^>]*data-page-aside[^>]*>(.*?)</aside>#su', $html, $aside);
+
+    expect($html)->toContain('lg:grid-cols-[1fr_280px]')
+        ->and($aside[1] ?? '')->toContain(route('pages.show', $page))
+        ->toContain('Çerez Politikası')
+        ->not->toContain('Taslak Sayfa')
+        ->toMatch('#<a href="'.preg_quote(route('faq'), '#').'"[^>]*aria-current="page"#u')
+        ->toContain('<time datetime="'.$faq->updated_at->toDateString().'"');
+});
+
+it('keeps the sidebar next to the empty state', function () {
+    expect($this->get(route('faq'))->getContent())->toContain('data-page-aside')->not->toContain('Son güncelleme');
 });
 
 it('shows an empty state and no schema when there are no questions', function () {
