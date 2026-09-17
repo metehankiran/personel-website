@@ -6,7 +6,10 @@ use App\Livewire\NewsletterForm;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Settings\AboutSettings;
+use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
@@ -50,4 +53,36 @@ it('shows newsletter subscription form on post page', function () {
     $this->get(route('blog.show', $post))
         ->assertSeeLivewire(NewsletterForm::class)
         ->assertSee('Abone ol');
+});
+
+it('introduces the author under the post', function () {
+    $general = app(GeneralSettings::class);
+    $general->author_name = 'Ada Yazar';
+    $general->author_title = 'Full-stack Developer';
+    $general->bio = '<p>On yıldır Laravel ile ürün geliştiriyorum.</p>';
+    $general->save();
+
+    $post = Post::factory()->published()->for(Category::factory())->create();
+
+    $this->get(route('blog.show', $post))
+        ->assertSee('data-author-box', escape: false)
+        ->assertSee('Full-stack Developer')
+        ->assertSee('On yıldır Laravel ile ürün geliştiriyorum.')
+        ->assertSee('<a href="'.route('about').'" rel="author"', escape: false)
+        ->assertSee('images/default-avatar.svg', escape: false);
+});
+
+it('shows the uploaded portrait in the author box', function () {
+    Storage::fake('public');
+    Storage::disk('public')->put('settings/portre.jpg', 'jpg');
+
+    $about = app(AboutSettings::class);
+    $about->portrait_path = 'settings/portre.jpg';
+    $about->save();
+
+    $post = Post::factory()->published()->for(Category::factory())->create();
+
+    $html = $this->get(route('blog.show', $post))->getContent();
+
+    expect(Str::between($html, 'data-author-box', '</aside>'))->toContain('/storage/settings/portre.jpg');
 });

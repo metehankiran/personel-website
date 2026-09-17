@@ -97,6 +97,8 @@
         {{-- Footer --}}
         <footer class="mt-16 pt-12 border-t border-neutral-200 dark:border-neutral-800">
             <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <x-author-box class="max-w-[680px] mb-12" />
+
                 {{-- Newsletter CTA --}}
                 <livewire:newsletter-form />
             </div>
