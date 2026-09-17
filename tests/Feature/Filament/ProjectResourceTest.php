@@ -8,6 +8,7 @@ use App\Models\ProjectCategory;
 use App\Models\User;
 use Filament\Actions\DeleteAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
@@ -46,6 +47,42 @@ test('project can be created with all required fields', function () {
     expect($project)->not->toBeNull();
     expect($project->category_id)->toBe($category->id);
     expect($project->stack)->toBe(['Laravel', 'Vue 3', 'PostgreSQL']);
+});
+
+test('extras and stats are saved as ordered label and value pairs, the shape the project page reads', function () {
+    Livewire::test(CreateProject::class)
+        ->fillForm([
+            'title' => 'Karavela',
+            'slug' => 'karavela',
+            'category_id' => ProjectCategory::factory()->create()->id,
+            'description' => 'Multi-tenant e-ticaret SaaS.',
+            'year' => 2024,
+            'stack' => ['Laravel'],
+            'extras' => [['label' => 'Müşteri', 'value' => 'Karavela A.Ş.'], ['label' => 'Ekip', 'value' => '3 kişi']],
+            'stats' => [['label' => 'Uptime', 'value' => '99.97%']],
+        ])
+        ->call('create')
+        ->assertHasNoFormErrors();
+
+    $project = Project::firstWhere('slug', 'karavela');
+
+    expect($project->extras)->toBe([['label' => 'Müşteri', 'value' => 'Karavela A.Ş.'], ['label' => 'Ekip', 'value' => '3 kişi']])
+        ->and($project->stats)->toBe([['label' => 'Uptime', 'value' => '99.97%']]);
+
+    $this->get(route('projects.show', $project))->assertOk()->assertSeeInOrder(['Müşteri', 'Karavela A.Ş.', 'Ekip', '3 kişi']);
+});
+
+test('a project saved by the old key value field opens in the edit form and is rewritten as pairs', function () {
+    $project = Project::factory()->create();
+    DB::table('projects')->where('id', $project->id)->update(['extras' => json_encode(['Müşteri' => 'Karavela A.Ş.'])]);
+
+    Livewire::test(EditProject::class, ['record' => $project->getRouteKey()])
+        ->assertOk()
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    expect(json_decode(DB::table('projects')->where('id', $project->id)->value('extras'), true))
+        ->toBe([['label' => 'Müşteri', 'value' => 'Karavela A.Ş.']]);
 });
 
 test('title is required', function () {

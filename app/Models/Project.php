@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\LabelValueList;
 use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,9 +17,9 @@ class Project extends Model
     protected function casts(): array
     {
         return [
-            'extras' => 'array',
+            'extras' => LabelValueList::class,
             'stack' => 'array',
-            'stats' => 'array',
+            'stats' => LabelValueList::class,
         ];
     }
 

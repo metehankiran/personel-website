@@ -4,7 +4,8 @@ namespace App\Filament\Resources\Projects\Schemas;
 
 use App\Models\ProjectCategory;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Repeater\TableColumn;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
@@ -136,18 +137,33 @@ class ProjectForm
             Section::make('Ek Veri')
                 ->description('İsteğe bağlı anahtar-değer çiftleri ve istatistikler.')
                 ->schema([
-                    KeyValue::make('extras')
+                    // Pairs in a list, not a key value map: MySQL json columns do not keep the key order of a map.
+                    Repeater::make('extras')
                         ->label('Ekstra Bilgiler')
-                        ->keyLabel('Etiket')
-                        ->valueLabel('Değer')
-                        ->reorderable()
+                        ->table([
+                            TableColumn::make('Etiket')->markAsRequired(),
+                            TableColumn::make('Değer')->markAsRequired(),
+                        ])
+                        ->schema([
+                            TextInput::make('label')->label('Etiket')->required()->placeholder('Müşteri'),
+                            TextInput::make('value')->label('Değer')->required()->placeholder('Karavela A.Ş.'),
+                        ])
+                        ->addActionLabel('Bilgi ekle')
+                        ->defaultItems(0)
                         ->columnSpanFull(),
 
-                    KeyValue::make('stats')
+                    Repeater::make('stats')
                         ->label('İstatistikler')
-                        ->keyLabel('Metrik')
-                        ->valueLabel('Değer')
-                        ->reorderable()
+                        ->table([
+                            TableColumn::make('Metrik')->markAsRequired(),
+                            TableColumn::make('Değer')->markAsRequired(),
+                        ])
+                        ->schema([
+                            TextInput::make('label')->label('Metrik')->required()->placeholder('Aktif Kiracı'),
+                            TextInput::make('value')->label('Değer')->required()->placeholder('200+'),
+                        ])
+                        ->addActionLabel('İstatistik ekle')
+                        ->defaultItems(0)
                         ->columnSpanFull(),
                 ])
                 ->collapsed(),

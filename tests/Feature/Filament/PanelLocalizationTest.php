@@ -61,8 +61,10 @@ it('does not show the Filament promo widget on the dashboard', function () {
         ->not->toContain(FilamentInfoWidget::class);
 });
 
-it('labels the project stats key column in Turkish', function () {
+it('labels the project stats columns in Turkish', function () {
+    // The table header only renders once the repeater has a row.
     Livewire::test(CreateProject::class)
+        ->fillForm(['stats' => [['label' => 'Uptime', 'value' => '99.97%']]])
         ->assertSee('Metrik')
         ->assertDontSee('Metric');
 });

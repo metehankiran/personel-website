@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Project;
 use App\Models\ProjectCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 uses(RefreshDatabase::class);
 
@@ -66,4 +67,29 @@ it('shows related projects', function () {
 
     $this->get(route('projects.show', $main))
         ->assertSee('İlgili Proje', escape: false);
+});
+
+it('shows extra details stored as label and value pairs', function () {
+    $project = Project::factory()
+        ->for(ProjectCategory::factory(), 'category')
+        ->create(['extras' => [['label' => 'Müşteri', 'value' => 'Karavela A.Ş.']]]);
+
+    $this->get(route('projects.show', $project))->assertOk()->assertSeeInOrder(['Müşteri', 'Karavela A.Ş.']);
+});
+
+it('still renders projects whose extras and stats were saved as a key value map by the old panel field', function () {
+    $project = Project::factory()->for(ProjectCategory::factory(), 'category')->create();
+
+    DB::table('projects')->where('id', $project->id)->update([
+        'extras' => json_encode(['Müşteri' => 'Karavela A.Ş.']),
+        'stats' => json_encode(['Uptime' => '99.97%']),
+    ]);
+
+    $this->get(route('projects.show', $project))
+        ->assertOk()
+        ->assertSeeInOrder(['Müşteri', 'Karavela A.Ş.'])
+        ->assertSee('Uptime')
+        ->assertSee('99.97%');
+
+    expect($project->fresh()->extras)->toBe([['label' => 'Müşteri', 'value' => 'Karavela A.Ş.']]);
 });
