@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $post->title . ' — Metehan Kıran')
+@section('title', $post->title)
 @section('meta_description', $post->excerpt ?? '')
 @section('og_type', 'article')
 @section('og_image', \App\Support\Images::og($post->cover_image))
@@ -30,7 +30,7 @@
                             <span class="absolute inset-[7px] bg-white dark:bg-neutral-950 rounded-[13px]"></span>
                         </span>
                         <div>
-                            <div class="text-sm font-semibold text-neutral-950 dark:text-neutral-50">Metehan Kıran</div>
+                            <div class="text-sm font-semibold text-neutral-950 dark:text-neutral-50">{{ $general->author_name }}</div>
                             <div class="text-xs text-neutral-600 dark:text-neutral-400">{{ $post->published_at->translatedFormat('d F Y') }} · {{ $post->reading_time }} dk okuma</div>
                         </div>
                     </div>

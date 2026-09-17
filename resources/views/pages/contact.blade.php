@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'İletişim — ' . $general->site_title)
+@section('title', 'İletişim')
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">
@@ -38,76 +38,34 @@
                             </a>
                         @endif
 
-                        @if($social->github_url)
-                            <a href="{{ $social->github_url }}" class="py-5 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center transition-all hover:pl-1 group" target="_blank" rel="noopener">
+                        @foreach($social->profiles() as $platform => $profile)
+                            <a href="{{ $profile['url'] }}" class="py-5 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center transition-all hover:pl-1 group" target="_blank" rel="noopener">
                                 <div class="flex items-center gap-3">
-                                    <x-social-icon platform="github" class="w-5 h-5 text-neutral-400 dark:text-neutral-600" />
+                                    <x-social-icon :platform="$platform" class="w-5 h-5 text-neutral-400 dark:text-neutral-600" />
                                     <div>
-                                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">GitHub</div>
-                                        <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ str_replace('https://', '', $social->github_url) }}</div>
+                                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">{{ $profile['label'] }}</div>
+                                        <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ Str::of($profile['url'])->after('://')->rtrim('/') }}</div>
                                     </div>
                                 </div>
                                 <span class="text-neutral-400 dark:text-neutral-600 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
                                     <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
                                 </span>
                             </a>
-                        @endif
+                        @endforeach
 
-                        @if($social->linkedin_url)
-                            <a href="{{ $social->linkedin_url }}" class="py-5 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center transition-all hover:pl-1 group" target="_blank" rel="noopener">
-                                <div class="flex items-center gap-3">
-                                    <x-social-icon platform="linkedin" class="w-5 h-5 text-neutral-400 dark:text-neutral-600" />
-                                    <div>
-                                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">LinkedIn</div>
-                                        <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ str_replace('https://', '', $social->linkedin_url) }}</div>
-                                    </div>
-                                </div>
-                                <span class="text-neutral-400 dark:text-neutral-600 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
-                                    <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
-                                </span>
-                            </a>
-                        @endif
-
-                        @if($social->twitter_url)
-                            <a href="{{ $social->twitter_url }}" class="py-5 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center transition-all hover:pl-1 group" target="_blank" rel="noopener">
-                                <div class="flex items-center gap-3">
-                                    <x-social-icon platform="twitter" class="w-5 h-5 text-neutral-400 dark:text-neutral-600" />
-                                    <div>
-                                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">Twitter / X</div>
-                                        <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ str_replace('https://', '', $social->twitter_url) }}</div>
-                                    </div>
-                                </div>
-                                <span class="text-neutral-400 dark:text-neutral-600 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
-                                    <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
-                                </span>
-                            </a>
-                        @endif
-
-                        @if($social->instagram_url)
-                            <a href="{{ $social->instagram_url }}" class="py-5 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center transition-all hover:pl-1 group" target="_blank" rel="noopener">
-                                <div class="flex items-center gap-3">
-                                    <x-social-icon platform="instagram" class="w-5 h-5 text-neutral-400 dark:text-neutral-600" />
-                                    <div>
-                                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">Instagram</div>
-                                        <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ str_replace('https://', '', $social->instagram_url) }}</div>
-                                    </div>
-                                </div>
-                                <span class="text-neutral-400 dark:text-neutral-600 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
-                                    <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
-                                </span>
-                            </a>
-                        @endif
-
-                        @if($general->google_maps_url)
-                            <a href="{{ $general->google_maps_url }}" class="py-5 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center transition-all hover:pl-1 group" target="_blank" rel="noopener">
+                        @php($addressLine = $general->author_address ?: $general->author_location)
+                        @if($addressLine)
+                            <{{ $general->google_maps_url ? 'a' : 'div' }}
+                                @if($general->google_maps_url) href="{{ $general->google_maps_url }}" target="_blank" rel="noopener" @endif
+                                @class(['py-5 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center gap-4', 'transition-all hover:pl-1 group' => $general->google_maps_url])>
                                 <div>
-                                    <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">Harita</div>
-                                    <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ $general->author_location ?? 'Konum' }}</div>
+                                    <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-1">{{ $general->google_maps_url ? 'Adres · Haritada aç' : 'Adres' }}</div>
+                                    <div class="text-base font-medium text-neutral-950 dark:text-neutral-50">{{ $addressLine }}</div>
                                 </div>
-                                <span class="text-neutral-400 dark:text-neutral-600 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
+                                <span class="shrink-0 text-neutral-400 dark:text-neutral-600 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
                                     <i data-lucide="map-pin" class="w-5 h-5"></i>
                                 </span>
-                            </a>
+                            </{{ $general->google_maps_url ? 'a' : 'div' }}>
                         @endif
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $project->title . ' — Projeler — Metehan Kıran')
+@section('title', $project->title . ' — Projeler')
 @section('meta_description', $project->description ?? '')
 @section('og_image', \App\Support\Images::og($project->cover_image))
 

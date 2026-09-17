@@ -54,21 +54,11 @@
                         <i data-lucide="mail" class="w-3.5 h-3.5"></i> Email
                     </a>
                 @endif
-                @if($social->github_url)
-                    <a href="{{ $social->github_url }}" target="_blank" rel="noopener" class="{{ $footerLinkClass }} inline-flex items-center gap-1.5">
-                        <x-social-icon platform="github" class="w-3.5 h-3.5" /> GitHub
+                @foreach($social->profiles() as $platform => $profile)
+                    <a href="{{ $profile['url'] }}" target="_blank" rel="noopener" class="{{ $footerLinkClass }} inline-flex items-center gap-1.5">
+                        <x-social-icon :platform="$platform" class="w-3.5 h-3.5" /> {{ $profile['label'] }}
                     </a>
-                @endif
-                @if($social->linkedin_url)
-                    <a href="{{ $social->linkedin_url }}" target="_blank" rel="noopener" class="{{ $footerLinkClass }} inline-flex items-center gap-1.5">
-                        <x-social-icon platform="linkedin" class="w-3.5 h-3.5" /> LinkedIn
-                    </a>
-                @endif
-                @if($social->twitter_url)
-                    <a href="{{ $social->twitter_url }}" target="_blank" rel="noopener" class="{{ $footerLinkClass }} inline-flex items-center gap-1.5">
-                        <x-social-icon platform="twitter" class="w-3.5 h-3.5" /> Twitter
-                    </a>
-                @endif
+                @endforeach
             </div>
         </div>
     </div>

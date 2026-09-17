@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $page->title . ' — ' . $general->author_name)
+@section('title', $page->title)
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">

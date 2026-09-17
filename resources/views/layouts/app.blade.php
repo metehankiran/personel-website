@@ -1,13 +1,21 @@
+@php
+    // Pages declare only their own part of the title; the site title suffix is added here.
+    $siteTitle = $general->site_title ?: config('app.name');
+    $pageTitle = trim($__env->yieldContent('title'));
+    $fullTitle = trim($__env->yieldContent('full_title')) ?: ($pageTitle !== '' ? "{$pageTitle} — {$siteTitle}" : $siteTitle);
+    $metaDescription = trim($__env->yieldContent('meta_description')) ?: ($seo->meta_description ?: ($general->site_description ?: $siteTitle));
+@endphp
 <!doctype html>
 <html lang="tr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', config('app.name'))</title>
-    <meta name="description" content="@yield('meta_description', $seo->meta_description ?? config('app.name') . ' — Bağımsız full-stack developer.')">
+    <title>{{ $fullTitle }}</title>
+    <meta name="description" content="{{ $metaDescription }}">
     <meta name="robots" content="index, follow">
-    <meta property="og:title" content="@yield('title', config('app.name'))">
-    <meta property="og:description" content="@yield('meta_description', $seo->meta_description ?? config('app.name') . ' — Bağımsız full-stack developer.')">
+    <meta property="og:site_name" content="{{ $siteTitle }}">
+    <meta property="og:title" content="{{ $fullTitle }}">
+    <meta property="og:description" content="{{ $metaDescription }}">
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:locale" content="tr_TR">
     <meta property="og:image" content="@yield('og_image', \App\Support\Images::og($seo->og_image_path ?? null))">

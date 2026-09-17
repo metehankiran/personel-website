@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Projeler — Metehan Kıran')
+@section('title', 'Projeler')
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">

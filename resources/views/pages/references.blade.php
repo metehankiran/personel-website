@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Referanslar — Metehan Kıran')
+@section('title', 'Referanslar')
 
 @section('content')
     @php

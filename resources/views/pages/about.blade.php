@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Hakkımda — ' . $general->author_name)
+@section('title', 'Hakkımda')
 
 @php
     $link = fn (string $name): string => Route::has($name) ? route($name) : '#';
