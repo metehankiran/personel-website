@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Education;
 use App\Models\Experience;
+use App\Models\Faq;
 use App\Models\Language;
 use App\Models\Page;
 use App\Models\Post;
@@ -41,6 +42,7 @@ class PageController extends Controller
     {
         return view('pages.services', [
             'services' => Service::ordered()->get(),
+            'faqs' => Faq::published()->ordered()->get(),
         ]);
     }
 

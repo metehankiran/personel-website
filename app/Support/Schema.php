@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use App\Models\Faq;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\Service;
@@ -169,6 +170,26 @@ class Schema
                     'description' => $service->description,
                     'provider' => static::personReference(),
                 ],
+            ])->all(),
+        ];
+    }
+
+    /**
+     * @param  Collection<int, Faq>  $faqs
+     * @return array<string, mixed>
+     */
+    public static function faqPage(Collection $faqs): array
+    {
+        if ($faqs->isEmpty()) {
+            return [];
+        }
+
+        return [
+            '@type' => 'FAQPage',
+            'mainEntity' => $faqs->values()->map(fn (Faq $faq): array => [
+                '@type' => 'Question',
+                'name' => $faq->question,
+                'acceptedAnswer' => ['@type' => 'Answer', 'text' => Str::squish(strip_tags($faq->answer))],
             ])->all(),
         ];
     }
