@@ -125,13 +125,13 @@
 
                 {{-- The strip slides left by exactly one half and restarts, so a half must outgrow the widest
                      screen: a short list is repeated until it does. Duration follows the card count to keep
-                     the pace the same. Only the first run of real testimonials is left to screen readers. --}}
+                     the pace the same. Only the first run of real testimonials is left to screen readers and to search snippets. --}}
                 @php($runsPerHalf = (int) ceil(8 / $testimonials->count()))
                 @php($cardsPerHalf = $runsPerHalf * $testimonials->count())
                 <div class="flex w-max gap-5 px-6 lg:px-12 animate-marquee motion-reduce:animate-none group-hover:[animation-play-state:paused]" style="animation-duration: {{ $cardsPerHalf * 6 }}s">
                     @foreach(range(1, $runsPerHalf * 2) as $run)
                         @foreach($testimonials as $testimonial)
-                            <figure data-marquee-card="{{ $run > 1 ? 'copy' : 'original' }}" @if($run > 1) aria-hidden="true" @endif class="m-0 w-[320px] sm:w-[380px] shrink-0 p-7 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.12)] dark:shadow-none flex flex-col">
+                            <figure data-marquee-card="{{ $run > 1 ? 'copy' : 'original' }}" @if($run > 1) aria-hidden="true" data-nosnippet @endif class="m-0 w-[320px] sm:w-[380px] shrink-0 p-7 rounded-2xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.12)] dark:shadow-none flex flex-col">
                                 <x-rating-stars :rating="$testimonial->rating" class="mb-3" />
                                 <blockquote class="m-0 flex-1 text-[15px] leading-relaxed text-neutral-800 dark:text-neutral-100">
                                     <span class="text-[48px] leading-none font-serif text-neutral-200 dark:text-neutral-700 float-left mr-2 -mt-1">"</span>

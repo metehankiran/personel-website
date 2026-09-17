@@ -91,6 +91,16 @@ it('repeats a short list of testimonials until the marquee fills the screen', fu
     'five testimonials' => [5, 20],
 ]);
 
+it('keeps the repeated marquee cards out of search snippets', function () {
+    Testimonial::factory()->create();
+
+    $html = $this->get(route('home'))->getContent();
+
+    // aria-hidden only speaks to screen readers; crawlers need their own hint that these are repeats.
+    expect(preg_match_all('/data-marquee-card="copy"[^>]*\\sdata-nosnippet/', $html))->toBe(15)
+        ->and(preg_match('/data-marquee-card="original"[^>]*\\sdata-nosnippet/', $html))->toBe(0);
+});
+
 it('keeps the marquee speed steady however many cards it carries', function () {
     Testimonial::factory()->count(5)->create();
 
