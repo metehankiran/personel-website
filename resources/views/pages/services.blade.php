@@ -39,7 +39,9 @@
                                     </div>
                                 @endif
                             </div>
-                            <a href="{{ route('contact') }}" class="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 text-[13px] font-medium rounded-lg bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85">Konuşalım →</a>
+                            <a href="{{ route('contact', ['service' => $service->id]) }}" data-contact-service="{{ $service->id }}"
+                                x-data x-on:click.prevent="$dispatch('open-contact-modal', { subject: '{{ $service->id }}' })"
+                                class="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 text-[13px] font-medium rounded-lg bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85">Konuşalım →</a>
                         </div>
                     </div>
                 @endforeach
@@ -71,4 +73,6 @@
             </div>
         </div>
     </section>
+
+    <x-contact-modal />
 @endsection

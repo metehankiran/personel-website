@@ -3,7 +3,10 @@
     $errorInput = 'border-red-400 dark:border-red-500';
 @endphp
 
-<div class="p-6 lg:p-10 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-neutral-50 dark:bg-neutral-900 sticky top-24">
+<div @class([
+    'p-6 lg:p-10 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-neutral-50 dark:bg-neutral-900 sticky top-24' => ! $inModal,
+    'p-6 sm:p-8' => $inModal,
+])>
     <div>
         @if($sent)
             <div class="flex flex-col items-center text-center py-8 animate-fade-up motion-reduce:animate-none" wire:key="contact-success">
@@ -63,16 +66,8 @@
 
                 <div>
                     <label for="contact-subject" class="block text-xs text-neutral-500 mb-1.5 tracking-wide">Konu</label>
-                    <div class="relative">
-                        <select id="contact-subject" name="subject" wire:model="subject"
-                            class="{{ $inputClasses }} appearance-none pr-9 @error('subject') {{ $errorInput }} @enderror">
-                            <option value="">Seçiniz</option>
-                            @foreach($subjects as $option)
-                                <option value="{{ $option->value }}">{{ $option->getLabel() }}</option>
-                            @endforeach
-                        </select>
-                        <svg class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-                    </div>
+                    <x-select id="contact-subject" name="subject" wire:model="subject"
+                        :options="$subjects" :selected="$subject" :invalid="$errors->has('subject')" />
                     <div>@error('subject') <p class="text-xs text-red-500 mt-1 m-0">{{ $message }}</p> @enderror</div>
                 </div>
 

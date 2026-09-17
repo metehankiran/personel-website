@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\ContactSubject;
 use App\Mail\ContactMessageReceived;
 use App\Models\Contact;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,7 +14,7 @@ it('renders the contact details, subject label and admin link', function () {
         'name' => 'Selin Akın',
         'email' => 'selin@example.com',
         'phone' => '+90 555 000 00 00',
-        'subject' => ContactSubject::ProjectInquiry,
+        'subject' => 'Proje Teklifi',
         'message' => 'Yeni bir e-ticaret projesi için görüşmek istiyorum.',
     ]);
 

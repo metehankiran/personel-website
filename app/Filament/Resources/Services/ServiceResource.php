@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
 
 class ServiceResource extends Resource
@@ -39,6 +41,18 @@ class ServiceResource extends Resource
     public static function table(Table $table): Table
     {
         return ServicesTable::configure($table);
+    }
+
+    /**
+     * Services are only ever soft deleted, because contact messages reference
+     * them. Include trashed records so they can be reviewed and restored.
+     *
+     * @return Builder<Service>
+     */
+    public static function getRecordRouteBindingEloquentQuery(): Builder
+    {
+        return parent::getRecordRouteBindingEloquentQuery()
+            ->withoutGlobalScopes([SoftDeletingScope::class]);
     }
 
     public static function getRelations(): array

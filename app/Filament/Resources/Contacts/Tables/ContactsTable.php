@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Contacts\Tables;
 
-use App\Enums\ContactSubject;
+use App\Models\Service;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -57,9 +57,10 @@ class ContactsTable
                     ->since(),
             ])
             ->filters([
-                SelectFilter::make('subject')
-                    ->label('Konu')
-                    ->options(ContactSubject::class),
+                SelectFilter::make('service_id')
+                    ->label('Hizmet')
+                    ->relationship('service', 'title', fn (Builder $query) => $query->withTrashed())
+                    ->getOptionLabelFromRecordUsing(fn (Service $record): string => $record->trashed() ? "{$record->title} (silindi)" : $record->title),
 
                 Filter::make('unread')
                     ->label('Sadece okunmamış')

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Enums\ContactSubject;
 use App\Models\Education;
 use App\Models\Experience;
 use App\Models\Language;
@@ -57,7 +56,6 @@ class PageController extends Controller
         return view('pages.contact', [
             'general' => app(GeneralSettings::class),
             'social' => app(SocialSettings::class),
-            'subjects' => ContactSubject::cases(),
         ]);
     }
 

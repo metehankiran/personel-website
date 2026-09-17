@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Enums\ContactSubject;
 use Database\Factories\ContactFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Contact extends Model
 {
@@ -15,8 +15,18 @@ class Contact extends Model
     protected function casts(): array
     {
         return [
-            'subject' => ContactSubject::class,
             'is_read' => 'boolean',
         ];
+    }
+
+    /**
+     * The service the message is about. Deleted services are included so old
+     * messages keep their context; `subject` holds the title as it was sent.
+     *
+     * @return BelongsTo<Service, $this>
+     */
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(Service::class)->withTrashed();
     }
 }

@@ -113,7 +113,7 @@
                 </div>
 
                 {{-- Right Column — Contact Form --}}
-                <livewire:contact-form />
+                <livewire:contact-form :service="request()->query('service')" />
             </div>
         </div>
     </section>

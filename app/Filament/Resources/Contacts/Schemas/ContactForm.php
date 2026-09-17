@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Contacts\Schemas;
 
-use App\Enums\ContactSubject;
+use App\Models\Service;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -10,6 +10,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Builder;
 
 class ContactForm
 {
@@ -36,10 +37,17 @@ class ContactForm
                             ->tel()
                             ->maxLength(50),
 
-                        Select::make('subject')
+                        TextInput::make('subject')
                             ->label('Konu')
-                            ->options(ContactSubject::class)
                             ->required()
+                            ->maxLength(255)
+                            ->helperText('Mesaj gönderilirken seçilen konunun o anki adı.'),
+
+                        Select::make('service_id')
+                            ->label('Hizmet')
+                            ->relationship('service', 'title', fn (Builder $query) => $query->withTrashed())
+                            ->getOptionLabelFromRecordUsing(fn (Service $record): string => $record->trashed() ? "{$record->title} (silindi)" : $record->title)
+                            ->placeholder('Bir hizmetle ilgili değil')
                             ->native(false),
                     ]),
                 ]),

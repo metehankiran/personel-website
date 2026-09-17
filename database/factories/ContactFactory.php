@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Enums\ContactSubject;
 use App\Models\Contact;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,7 +19,7 @@ class ContactFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->safeEmail(),
             'phone' => '+90 5'.fake()->numerify('## ### ## ##'),
-            'subject' => fake()->randomElement(ContactSubject::cases()),
+            'subject' => fake()->randomElement(['Web Geliştirme', 'Danışmanlık', 'Diğer']),
             'message' => fake()->paragraphs(3, true),
             'is_read' => false,
         ];

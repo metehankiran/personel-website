@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\ContactSubject;
 use App\Filament\Resources\Contacts\ContactResource;
 use App\Filament\Resources\Contacts\Pages\EditContact;
 use App\Filament\Resources\Contacts\Pages\ListContacts;
@@ -60,8 +59,8 @@ test('navigation badge is null when no unread', function () {
     expect(ContactResource::getNavigationBadge())->toBeNull();
 });
 
-test('subject enum is cast', function () {
-    $contact = Contact::factory()->create(['subject' => ContactSubject::Consulting->value]);
+test('subject is plain text', function () {
+    $contact = Contact::factory()->create(['subject' => 'Danışmanlık']);
 
-    expect($contact->subject)->toBe(ContactSubject::Consulting);
+    expect($contact->subject)->toBe('Danışmanlık');
 });

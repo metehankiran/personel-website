@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Service;
 use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -28,7 +29,10 @@ it('shows contact info from settings', function () {
         ->assertSee('hello@example.com', escape: false);
 });
 
-it('shows contact subject options from enum', function () {
+it('shows contact subject options from the services', function () {
+    Service::factory()->create(['title' => 'Proje Teklifi']);
+    Service::factory()->create(['title' => 'Danışmanlık']);
+
     $this->get(route('contact'))
         ->assertSee('Proje Teklifi', escape: false)
         ->assertSee('Danışmanlık', escape: false)

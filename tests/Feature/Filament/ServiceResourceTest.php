@@ -83,7 +83,8 @@ test('service can be deleted from edit page', function () {
     Livewire::test(EditService::class, ['record' => $service->getRouteKey()])
         ->callAction(DeleteAction::class);
 
-    $this->assertDatabaseMissing('services', ['id' => $service->id]);
+    // Services are soft deleted so contact messages keep their reference.
+    $this->assertSoftDeleted('services', ['id' => $service->id]);
 });
 
 test('table is reorderable by sort_order', function () {

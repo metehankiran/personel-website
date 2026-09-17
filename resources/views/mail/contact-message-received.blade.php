@@ -4,7 +4,7 @@
 **{{ $contact->name }}** ({{ $contact->email }}) siteden bir mesaj gönderdi.
 
 <x-mail::panel>
-**Konu:** {{ $contact->subject->getLabel() }}
+**Konu:** {{ $contact->subject }}
 @if($contact->phone)
 
 **Telefon:** {{ $contact->phone }}

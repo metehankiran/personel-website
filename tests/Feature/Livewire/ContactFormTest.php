@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Enums\ContactSubject;
 use App\Livewire\ContactForm;
 use App\Mail\ContactMessageReceived;
+use App\Models\Service;
 use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -18,11 +18,13 @@ it('is rendered on the contact page', function () {
 });
 
 it('submits the form without a page reload and stores the message', function () {
+    $service = Service::factory()->create(['title' => 'Proje Teklifi']);
+
     Livewire::test(ContactForm::class)
         ->set('name', 'Test User')
         ->set('email', 'test@example.com')
         ->set('phone', '+90 555 000 00 00')
-        ->set('subject', ContactSubject::ProjectInquiry->value)
+        ->set('subject', (string) $service->id)
         ->set('message', 'Merhaba, bir proje hakkında konuşmak istiyorum.')
         ->set('kvkk_consent', true)
         ->call('send')
@@ -35,7 +37,8 @@ it('submits the form without a page reload and stores the message', function () 
 
     $this->assertDatabaseHas('contacts', [
         'email' => 'test@example.com',
-        'subject' => 'project_inquiry',
+        'subject' => 'Proje Teklifi',
+        'service_id' => $service->id,
         'name' => 'Test User',
     ]);
 });
@@ -49,7 +52,7 @@ it('validates required fields', function () {
     $this->assertDatabaseCount('contacts', 0);
 });
 
-it('validates the subject against the enum', function () {
+it('validates the subject against the available services', function () {
     Livewire::test(ContactForm::class)
         ->set('name', 'Test')
         ->set('email', 'test@example.com')
@@ -67,7 +70,7 @@ it('requires kvkk consent only when a kvkk page is configured', function () {
     Livewire::test(ContactForm::class)
         ->set('name', 'Test')
         ->set('email', 'test@example.com')
-        ->set('subject', ContactSubject::Other->value)
+        ->set('subject', ContactForm::OTHER_SUBJECT)
         ->set('message', 'Test mesaj')
         ->set('kvkk_consent', false)
         ->call('send')
@@ -79,7 +82,7 @@ it('requires kvkk consent only when a kvkk page is configured', function () {
     Livewire::test(ContactForm::class)
         ->set('name', 'Test')
         ->set('email', 'test@example.com')
-        ->set('subject', ContactSubject::Other->value)
+        ->set('subject', ContactForm::OTHER_SUBJECT)
         ->set('message', 'Test mesaj')
         ->call('send')
         ->assertHasNoErrors()
@@ -125,7 +128,7 @@ it('emails the site owner when a message is sent', function () {
     Livewire::test(ContactForm::class)
         ->set('name', 'Test User')
         ->set('email', 'sender@example.com')
-        ->set('subject', ContactSubject::Consulting->value)
+        ->set('subject', ContactForm::OTHER_SUBJECT)
         ->set('message', 'Danışmanlık almak istiyorum.')
         ->call('send')
         ->assertHasNoErrors();
@@ -147,7 +150,7 @@ it('does not try to email when no owner address is configured', function () {
     Livewire::test(ContactForm::class)
         ->set('name', 'Test User')
         ->set('email', 'sender@example.com')
-        ->set('subject', ContactSubject::Other->value)
+        ->set('subject', ContactForm::OTHER_SUBJECT)
         ->set('message', 'Merhaba.')
         ->call('send')
         ->assertHasNoErrors()
@@ -162,7 +165,7 @@ it('silently drops submissions that fill the honeypot field', function () {
     Livewire::test(ContactForm::class)
         ->set('name', 'Bot')
         ->set('email', 'bot@example.com')
-        ->set('subject', ContactSubject::Other->value)
+        ->set('subject', ContactForm::OTHER_SUBJECT)
         ->set('message', 'Buy now!')
         ->set('website', 'https://spam.example')
         ->call('send')
@@ -179,7 +182,7 @@ it('rate limits repeated submissions from the same client', function () {
     $submit = fn () => Livewire::test(ContactForm::class)
         ->set('name', 'Test User')
         ->set('email', 'sender@example.com')
-        ->set('subject', ContactSubject::Other->value)
+        ->set('subject', ContactForm::OTHER_SUBJECT)
         ->set('message', 'Merhaba.')
         ->call('send');
 
