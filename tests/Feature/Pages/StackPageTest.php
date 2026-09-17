@@ -15,7 +15,7 @@ it('renders the stack page', function () {
 
 it('shows stack hero content', function () {
     $this->get(route('stack'))
-        ->assertSee('Stack', escape: false)
+        ->assertSee('Teknolojiler', escape: false)
         ->assertSee('Kullandığım teknolojiler', escape: false);
 });
 

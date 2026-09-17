@@ -82,8 +82,8 @@
                             <div class="{{ $dropDescClass }}">Müşteri yorumları</div>
                         </a>
                         <a href="{{ $link('stack') }}" {!! $current('stack') !!} @class([$dropLinkClass, $dropLinkActive => $nav['stack']])>
-                            <div class="{{ $dropTitleClass }}"><i data-lucide="layers" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>Stack</div>
-                            <div class="{{ $dropDescClass }}">Kullandığım teknolojiler</div>
+                            <div class="{{ $dropTitleClass }}"><i data-lucide="layers" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>Teknolojiler</div>
+                            <div class="{{ $dropDescClass }}">Araçlar ve deneyim sürem</div>
                         </a>
                     </div>
                 </div>
@@ -185,7 +185,7 @@
                         <a href="{{ $link('projects') }}" {!! $current('projects') !!} @class([$mobileNavClass, $mobileNavActive => $nav['projects']])><span class="flex items-center gap-2"><i data-lucide="folder-open" class="w-4 h-4"></i> Projeler</span></a>
                         <a href="{{ $link('services') }}" {!! $current('services') !!} @class([$mobileNavClass, $mobileNavActive => $nav['services']])><span class="flex items-center gap-2"><i data-lucide="handshake" class="w-4 h-4"></i> Hizmetler</span></a>
                         <a href="{{ $link('references') }}" {!! $current('references') !!} @class([$mobileNavClass, $mobileNavActive => $nav['references']])><span class="flex items-center gap-2"><i data-lucide="quote" class="w-4 h-4"></i> Referanslar</span></a>
-                        <a href="{{ $link('stack') }}" {!! $current('stack') !!} @class([$mobileNavClass, $mobileNavActive => $nav['stack']])><span class="flex items-center gap-2"><i data-lucide="layers" class="w-4 h-4"></i> Stack</span></a>
+                        <a href="{{ $link('stack') }}" {!! $current('stack') !!} @class([$mobileNavClass, $mobileNavActive => $nav['stack']])><span class="flex items-center gap-2"><i data-lucide="layers" class="w-4 h-4"></i> Teknolojiler</span></a>
                     </div>
                 </div>
             </div>

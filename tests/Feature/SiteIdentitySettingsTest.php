@@ -25,7 +25,7 @@ it('suffixes every page title with the site title from the settings', function (
     $this->get($url())->assertOk()->assertSee("<title>{$expected}</title>", escape: false);
 })->with([
     'services' => [fn () => route('services'), 'Hizmetler — Ada Studio'],
-    'stack' => [fn () => route('stack'), 'Stack — Ada Studio'],
+    'stack' => [fn () => route('stack'), 'Teknolojiler — Ada Studio'],
     'references' => [fn () => route('references'), 'Referanslar — Ada Studio'],
     'bookmarks' => [fn () => route('bookmarks'), 'Yer İşaretlerim — Ada Studio'],
     'projects' => [fn () => route('projects'), 'Projeler — Ada Studio'],

@@ -33,7 +33,7 @@ class SearchController extends Controller
             ['type' => 'Sayfa', 'title' => 'Hakkımda', 'desc' => 'Biyografi, zaman çizelgesi', 'url' => route('about'), 'icon' => 'user'],
             ['type' => 'Sayfa', 'title' => 'Projeler', 'desc' => 'Tüm freelance işler', 'url' => route('projects'), 'icon' => 'folder-open'],
             ['type' => 'Sayfa', 'title' => 'Hizmetler', 'desc' => 'Çalışma şekilleri ve fiyatlandırma', 'url' => route('services'), 'icon' => 'handshake'],
-            ['type' => 'Sayfa', 'title' => 'Stack', 'desc' => 'Kullandığım teknolojiler', 'url' => route('stack'), 'icon' => 'layers'],
+            ['type' => 'Sayfa', 'title' => 'Teknolojiler', 'desc' => 'Kullandığım araçlar ve deneyim sürem', 'url' => route('stack'), 'icon' => 'layers'],
             ['type' => 'Sayfa', 'title' => 'Referanslar', 'desc' => 'Müşteri yorumları ve markalar', 'url' => route('references'), 'icon' => 'quote'],
             ['type' => 'Sayfa', 'title' => 'Blog', 'desc' => 'Teknik makaleler', 'url' => route('blog'), 'icon' => 'notebook-pen'],
             ['type' => 'Sayfa', 'title' => 'Yer İşaretleri', 'desc' => 'Faydalı linkler', 'url' => route('bookmarks'), 'icon' => 'bookmark'],

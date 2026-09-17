@@ -54,9 +54,9 @@
                     <a href="{{ $link('stack') }}" class="group p-5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600">
                         <div class="flex items-center gap-2.5 mb-1.5">
                             <i data-lucide="layers" class="w-4 h-4 text-neutral-400 dark:text-neutral-600"></i>
-                            <h3 class="m-0 text-sm font-semibold text-neutral-950 dark:text-neutral-50">Stack</h3>
+                            <h3 class="m-0 text-sm font-semibold text-neutral-950 dark:text-neutral-50">Teknolojiler</h3>
                         </div>
-                        <div class="text-xs text-neutral-600 dark:text-neutral-400">Kullandığım teknolojiler</div>
+                        <div class="text-xs text-neutral-600 dark:text-neutral-400">Araçlar ve deneyim sürem</div>
                     </a>
                     <a href="{{ $link('references') }}" class="group p-5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600">
                         <div class="flex items-center gap-2.5 mb-1.5">

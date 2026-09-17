@@ -4,7 +4,7 @@
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">
-        <div class="max-w-[920px] mx-auto px-6 lg:px-12">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
             <div class="mb-12">
                 <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">{{ $page->title }}</h1>
             </div>

@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Stack')
+@section('title', 'Teknolojiler')
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">
         <div class="max-w-7xl mx-auto px-6 lg:px-12">
-            <x-eyebrow class="mb-3">Stack</x-eyebrow>
+            <x-eyebrow class="mb-3">Teknolojiler</x-eyebrow>
             <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Kullandığım teknolojiler.</h1>
             <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[580px]">Modaya kapılmadan, doğrulanmış araçlarla çalışıyorum. Her teknolojinin yanında o araçla geçirdiğim zamanın yansıması var.</p>
 

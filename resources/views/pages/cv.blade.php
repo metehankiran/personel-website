@@ -4,7 +4,7 @@
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">
-        <div class="max-w-[920px] mx-auto px-6 lg:px-12">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
 
             {{-- Header --}}
             <div class="flex flex-col sm:flex-row justify-between items-start gap-6 sm:gap-12 mb-14">
@@ -24,14 +24,14 @@
             <div class="flex flex-col gap-14">
 
                 {{-- Özet --}}
-                <div class="grid grid-cols-1 lg:grid-cols-[180px_1fr] gap-4 lg:gap-8 items-start">
+                <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 lg:gap-16 items-start">
                     <x-section-heading>Özet</x-section-heading>
-                    <p class="m-0 text-base leading-[1.7] opacity-90 text-neutral-950 dark:text-neutral-50">{{ $general->bio ?? '' }}</p>
+                    <p class="m-0 max-w-[760px] text-base leading-[1.7] opacity-90 text-neutral-950 dark:text-neutral-50">{{ $general->bio ?? '' }}</p>
                 </div>
 
                 {{-- Tecrübe --}}
                 @if($experiences->isNotEmpty())
-                    <div class="grid grid-cols-1 lg:grid-cols-[180px_1fr] gap-4 lg:gap-8 items-start">
+                    <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 lg:gap-16 items-start">
                         <x-section-heading>Tecrübe</x-section-heading>
                         <div class="flex flex-col gap-8">
                             @foreach($experiences as $experience)
@@ -52,7 +52,7 @@
 
                 {{-- Yetkinlikler --}}
                 @if($skills->isNotEmpty())
-                    <div class="grid grid-cols-1 lg:grid-cols-[180px_1fr] gap-4 lg:gap-8 items-start">
+                    <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 lg:gap-16 items-start">
                         <x-section-heading>Yetkinlikler</x-section-heading>
                         <div class="flex flex-col gap-3.5">
                             @foreach($skills as $skill)
@@ -67,7 +67,7 @@
 
                 {{-- Eğitim --}}
                 @if($educations->isNotEmpty())
-                    <div class="grid grid-cols-1 lg:grid-cols-[180px_1fr] gap-4 lg:gap-8 items-start">
+                    <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 lg:gap-16 items-start">
                         <x-section-heading>Eğitim</x-section-heading>
                         <div class="flex flex-col gap-6">
                             @foreach($educations as $education)
@@ -85,7 +85,7 @@
 
                 {{-- Diller --}}
                 @if($languages->isNotEmpty())
-                    <div class="grid grid-cols-1 lg:grid-cols-[180px_1fr] gap-4 lg:gap-8 items-start">
+                    <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 lg:gap-16 items-start">
                         <x-section-heading>Diller</x-section-heading>
                         <div class="text-sm leading-8 text-neutral-950 dark:text-neutral-50">
                             @foreach($languages as $language)
