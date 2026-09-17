@@ -51,6 +51,14 @@ it('makes urls absolute without touching ones that already are', function () {
         ->and(Seo::absolute('https://cdn.example.com/a.png'))->toBe('https://cdn.example.com/a.png');
 });
 
+it('escapes special characters in titles exactly once', function () {
+    $post = Post::factory()->published()->for(Category::factory())->create(['title' => "Plesk'te Kuyruklar & İşler"]);
+
+    $this->get(route('blog.show', $post))
+        ->assertSee('<title>Plesk&#039;te Kuyruklar &amp; İşler — ', escape: false)
+        ->assertSee('<meta property="og:title" content="Plesk&#039;te Kuyruklar &amp; İşler — ', escape: false);
+});
+
 it('lets normal pages be indexed', function () {
     $this->get('/')->assertSee('<meta name="robots" content="index, follow">', escape: false);
 });

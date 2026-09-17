@@ -1,8 +1,9 @@
 @php
     // Pages declare only their own part of the title; the site title suffix is added here.
     $siteTitle = $general->site_title ?: config('app.name');
-    $pageTitle = trim($__env->yieldContent('title'));
-    $fullTitle = trim($__env->yieldContent('full_title')) ?: ($pageTitle !== '' ? "{$pageTitle} — {$siteTitle}" : $siteTitle);
+    // Sections arrive already escaped; decode them so the tags below escape exactly once.
+    $pageTitle = html_entity_decode(trim($__env->yieldContent('title')), ENT_QUOTES);
+    $fullTitle = html_entity_decode(trim($__env->yieldContent('full_title')), ENT_QUOTES) ?: ($pageTitle !== '' ? "{$pageTitle} — {$siteTitle}" : $siteTitle);
     $metaDescription = \App\Support\Seo::description(html_entity_decode($__env->yieldContent('meta_description'), ENT_QUOTES), $seo->meta_description, $general->site_description, $siteTitle);
     $canonicalUrl = \App\Support\Seo::canonical();
     $shareImage = \App\Support\Seo::absolute(trim($__env->yieldContent('og_image')) ?: \App\Support\Images::og($seo->og_image_path ?? null));
