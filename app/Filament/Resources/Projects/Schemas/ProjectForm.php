@@ -142,7 +142,7 @@ class ProjectForm
 
                     KeyValue::make('stats')
                         ->label('İstatistikler')
-                        ->keyLabel('Metric')
+                        ->keyLabel('Metrik')
                         ->valueLabel('Değer')
                         ->reorderable()
                         ->columnSpanFull(),

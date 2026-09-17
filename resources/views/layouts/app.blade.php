@@ -14,7 +14,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="@yield('og_image', \App\Support\Images::og($seo->og_image_path ?? null))">
 
-    <link rel="icon" href="{{ asset('theme/favicon.svg') }}" type="image/svg+xml">
+    <link rel="icon" href="{{ \App\Support\Images::url($general->favicon_path ?? null, 'favicon') }}">
     <link rel="canonical" href="{{ url()->current() }}">
 
     <script>

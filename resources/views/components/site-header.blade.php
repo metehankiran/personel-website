@@ -17,9 +17,13 @@
 
         {{-- Brand --}}
         <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0">
-            <span class="w-7 h-7 rounded-full bg-neutral-950 dark:bg-neutral-50 relative inline-block shrink-0">
-                <span class="absolute inset-[5px] bg-white dark:bg-neutral-950 rounded-[9px]"></span>
-            </span>
+            @if(\App\Support\Images::exists($general->logo_path))
+                <img data-site-logo src="{{ \App\Support\Images::url($general->logo_path) }}" alt="" class="h-7 w-auto max-w-[120px] object-contain shrink-0" />
+            @else
+                <span class="w-7 h-7 rounded-full bg-neutral-950 dark:bg-neutral-50 relative inline-block shrink-0">
+                    <span class="absolute inset-[5px] bg-white dark:bg-neutral-950 rounded-[9px]"></span>
+                </span>
+            @endif
             <span class="flex flex-col leading-tight whitespace-nowrap">
                 <span class="text-sm font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">{{ $general->author_name }}</span>
                 <span class="text-[11px] text-neutral-600 dark:text-neutral-400 mt-0.5">{{ $general->author_title ?? 'developer' }}</span>

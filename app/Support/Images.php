@@ -18,6 +18,7 @@ class Images
         'cover' => 'images/default-cover.svg',
         'avatar' => 'images/default-avatar.svg',
         'og' => 'images/og-default.png',
+        'favicon' => 'theme/favicon.svg',
     ];
 
     public static function url(?string $path, string $fallback = 'cover'): string

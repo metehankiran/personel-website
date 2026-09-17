@@ -9,9 +9,13 @@
         {{-- Brand Column --}}
         <div>
             <div class="flex items-center gap-2.5 mb-4">
-                <span class="w-6 h-6 rounded-full bg-neutral-950 dark:bg-neutral-50 relative inline-block">
-                    <span class="absolute inset-1 bg-white dark:bg-neutral-950 rounded-lg"></span>
-                </span>
+                @if(\App\Support\Images::exists($general->logo_path))
+                    <img data-site-logo src="{{ \App\Support\Images::url($general->logo_path) }}" alt="" class="h-6 w-auto max-w-[110px] object-contain" loading="lazy" />
+                @else
+                    <span class="w-6 h-6 rounded-full bg-neutral-950 dark:bg-neutral-50 relative inline-block">
+                        <span class="absolute inset-1 bg-white dark:bg-neutral-950 rounded-lg"></span>
+                    </span>
+                @endif
                 <span class="text-sm font-semibold text-neutral-950 dark:text-neutral-50">{{ $general->author_name }}</span>
             </div>
             @if($general->footer_text)
