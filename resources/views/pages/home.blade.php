@@ -35,9 +35,7 @@
                 <div class="relative overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
                     {{-- Üst: profil bölümü --}}
                     <div class="p-6 pb-5 flex items-center gap-4 border-b border-neutral-200 dark:border-neutral-800">
-                        <span class="w-12 h-12 rounded-full bg-neutral-950 dark:bg-neutral-50 relative inline-block shrink-0">
-                            <span class="absolute inset-[8px] bg-white dark:bg-neutral-950 rounded-full"></span>
-                        </span>
+                        <x-brand-mark class="w-12 h-12" />
                         <div>
                             <div class="text-[15px] font-semibold text-neutral-950 dark:text-neutral-50">{{ $general->author_name }}</div>
                             <div class="text-xs text-neutral-500 mt-0.5">{{ $general->author_title ?? 'Developer' }} · {{ $general->author_location ?? '' }}</div>

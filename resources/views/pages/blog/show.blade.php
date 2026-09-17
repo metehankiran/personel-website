@@ -31,9 +31,7 @@
                 {{-- Byline --}}
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mt-10 pt-6 border-t border-neutral-200 dark:border-neutral-800">
                     <div class="flex items-center gap-3.5">
-                        <span class="w-10 h-10 rounded-full bg-neutral-950 dark:bg-neutral-50 relative inline-block shrink-0">
-                            <span class="absolute inset-[7px] bg-white dark:bg-neutral-950 rounded-[13px]"></span>
-                        </span>
+                        <x-brand-mark class="w-10 h-10" />
                         <div>
                             <div class="text-sm font-semibold text-neutral-950 dark:text-neutral-50">{{ $general->author_name }}</div>
                             <div class="text-xs text-neutral-600 dark:text-neutral-400">@if($post->published_at)<time datetime="{{ $post->published_at->toIso8601String() }}">{{ $post->published_at->translatedFormat('d F Y') }}</time>@else<span>Taslak</span>@endif · {{ $post->reading_time }} dk okuma</div>

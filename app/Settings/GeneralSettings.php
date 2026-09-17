@@ -22,6 +22,11 @@ class GeneralSettings extends Settings
 
     public ?string $logo_path;
 
+    /**
+     * Optional logo for the dark theme; the regular logo is used when it is missing.
+     */
+    public ?string $logo_dark_path;
+
     public ?string $favicon_path;
 
     public ?string $cv_path;

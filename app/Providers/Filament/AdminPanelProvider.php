@@ -35,7 +35,8 @@ class AdminPanelProvider extends PanelProvider
             // Branding follows Settings → General. Closures keep the settings
             // lookup out of panel registration, which runs before migrations can.
             ->favicon(fn (): string => Images::url(app(GeneralSettings::class)->favicon_path, 'favicon'))
-            ->brandLogo(fn (): ?string => $this->uploadedLogoUrl())
+            ->brandLogo(fn (): ?string => $this->uploadedLogoUrl('logo_path') ?? $this->uploadedLogoUrl('logo_dark_path'))
+            ->darkModeBrandLogo(fn (): ?string => $this->uploadedLogoUrl('logo_dark_path'))
             ->brandLogoHeight('2rem')
             ->profile()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
@@ -64,11 +65,12 @@ class AdminPanelProvider extends PanelProvider
     }
 
     /**
-     * Null when no logo is uploaded, so Filament falls back to the brand name.
+     * Null when that logo is not uploaded, so Filament falls back to the brand name
+     * (or, for the dark theme, to the regular logo).
      */
-    private function uploadedLogoUrl(): ?string
+    private function uploadedLogoUrl(string $setting): ?string
     {
-        $path = app(GeneralSettings::class)->logo_path;
+        $path = app(GeneralSettings::class)->{$setting};
 
         return Images::exists($path) ? Images::url($path) : null;
     }

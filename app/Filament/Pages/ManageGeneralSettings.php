@@ -40,7 +40,7 @@ class ManageGeneralSettings extends SettingsPage
      */
     protected function uploadFields(): array
     {
-        return ['logo_path', 'favicon_path', 'cv_path'];
+        return ['logo_path', 'logo_dark_path', 'favicon_path', 'cv_path'];
     }
 
     /**
@@ -73,14 +73,23 @@ class ManageGeneralSettings extends SettingsPage
                         TextInput::make('site_title')->label('Site Başlığı')->required()->maxLength(255)->columnSpanFull(),
                         TextInput::make('site_description')->label('Site Açıklaması')->maxLength(500)->columnSpanFull(),
                         FileUpload::make('logo_path')
-                            ->label('Logo')
+                            ->label('Logo (açık tema)')
                             ->disk('public')
                             ->visibility('public')
                             ->directory('settings')
                             ->acceptedFileTypes(['image/svg+xml', 'image/png', 'image/webp', 'image/jpeg'])
                             ->maxSize(1024)
                             ->imagePreviewHeight('120')
-                            ->helperText('SVG veya şeffaf PNG önerilir. Üst menüde ve alt bilgide görünür; boşsa varsayılan işaret kullanılır.'),
+                            ->helperText('Açık zeminde görünecek koyu renkli logo. SVG veya şeffaf PNG önerilir. Boşsa sitedeki halka işareti kullanılır.'),
+                        FileUpload::make('logo_dark_path')
+                            ->label('Logo (koyu tema)')
+                            ->disk('public')
+                            ->visibility('public')
+                            ->directory('settings')
+                            ->acceptedFileTypes(['image/svg+xml', 'image/png', 'image/webp', 'image/jpeg'])
+                            ->maxSize(1024)
+                            ->imagePreviewHeight('120')
+                            ->helperText('Koyu zeminde görünecek açık renkli logo. Boş bırakılırsa koyu temada da üstteki logo gösterilir.'),
                         FileUpload::make('favicon_path')
                             ->label('Favicon')
                             ->disk('public')
