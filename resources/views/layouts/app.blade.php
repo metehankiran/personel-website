@@ -27,6 +27,7 @@
 
     <link rel="icon" href="{{ \App\Support\Images::url($general->favicon_path ?? null, 'favicon') }}">
     <link rel="canonical" href="{{ $canonicalUrl }}">
+    <link rel="alternate" type="application/rss+xml" title="{{ $siteTitle }} — Blog" href="{{ \App\Support\Seo::route('feed') }}">
     {{ \App\Support\Schema::script(\App\Support\Schema::website(), \App\Support\Schema::person()) }}
     @stack('schema')
     @if(filled($seo->google_search_console_id))

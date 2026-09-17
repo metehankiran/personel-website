@@ -47,4 +47,5 @@ Route::get('/sayfa/{page:slug}', [PageController::class, 'show'])->name('pages.s
 Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
 Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
 Route::get('/llms.txt', [SeoController::class, 'llms'])->name('llms');
+Route::get('/feed.xml', [SeoController::class, 'feed'])->name('feed');
 Route::get('/favicon.ico', [SeoController::class, 'favicon'])->name('favicon');

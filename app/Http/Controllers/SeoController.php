@@ -19,10 +19,12 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 /**
- * Files that crawlers read instead of people: sitemap.xml, robots.txt and llms.txt.
+ * Files that crawlers and feed readers fetch instead of people: sitemap.xml, robots.txt, llms.txt and feed.xml.
  */
 class SeoController extends Controller
 {
+    private const int FEED_LIMIT = 20;
+
     /**
      * Static pages in the order they matter; [route name, change frequency, priority].
      *
@@ -46,6 +48,20 @@ class SeoController extends Controller
         return response()
             ->view('seo.sitemap', ['entries' => $this->sitemapEntries()])
             ->header('Content-Type', 'application/xml; charset=UTF-8');
+    }
+
+    /**
+     * Summaries only: the full post stays on the site, the feed just announces it.
+     */
+    public function feed(GeneralSettings $settings): Response
+    {
+        return response()
+            ->view('seo.feed', [
+                'title' => $settings->site_title ?: config('app.name'),
+                'description' => Seo::description($settings->site_description, $settings->bio, $settings->site_title ?: config('app.name')),
+                'posts' => Post::with('category')->published()->latest('published_at')->limit(self::FEED_LIMIT)->get(),
+            ])
+            ->header('Content-Type', 'application/rss+xml; charset=UTF-8');
     }
 
     public function robots(): Response
@@ -84,6 +100,7 @@ class SeoController extends Controller
                     'CV' => Seo::route('cv'),
                     'İletişim' => Seo::route('contact'),
                     ...(Faq::published()->exists() ? ['Sıkça Sorulan Sorular' => Seo::route('faq')] : []),
+                    'RSS' => Seo::route('feed'),
                 ],
                 'projects' => Project::ordered()->get(['title', 'slug', 'description']),
                 'posts' => Post::published()->latest('published_at')->limit(30)->get(['title', 'slug', 'excerpt']),
