@@ -17,6 +17,17 @@
     <link rel="icon" href="{{ asset('theme/favicon.svg') }}" type="image/svg+xml">
     <link rel="canonical" href="{{ url()->current() }}">
 
+    <script>
+        (function () {
+            var mode = null;
+            try { mode = localStorage.getItem('mk-theme'); } catch (e) {}
+            if (!mode || mode === 'system') {
+                mode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.setAttribute('data-theme', mode);
+        })();
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('head')
@@ -30,16 +41,16 @@
 
     <x-site-footer />
 
-    <script src="{{ asset('theme/js/main.js') }}"></script>
+    <script src="{{ \App\Support\Assets::versioned('theme/js/main.js') }}" defer></script>
     <script>window.mkSearchUrl = '{{ route("search.index") }}';</script>
-    <script src="{{ asset('theme/js/search.js') }}" defer></script>
+    <script src="{{ \App\Support\Assets::versioned('theme/js/search.js') }}" defer></script>
     <script>
         window.mkCookieConfig = {
             cookiePolicyUrl: '{{ $general->cookie_policy_slug ? route("pages.show", $general->cookie_policy_slug) : "#" }}',
             kvkkUrl: '{{ $general->kvkk_page_slug ? route("pages.show", $general->kvkk_page_slug) : "#" }}'
         };
     </script>
-    <script src="{{ asset('theme/js/cookie.js') }}" defer></script>
+    <script src="{{ \App\Support\Assets::versioned('theme/js/cookie.js') }}" defer></script>
     @stack('scripts')
 </body>
 </html>
