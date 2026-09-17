@@ -38,7 +38,7 @@
     <div class="max-w-7xl mx-auto px-6 xl:px-12 py-4 xl:py-5 flex items-center justify-between gap-4 xl:gap-8">
 
         {{-- Brand --}}
-        <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0">
+        <a href="{{ route('home') }}" data-site-brand class="flex items-center gap-3 min-w-0">
             @if(\App\Support\Images::exists($general->logo_path))
                 <img data-site-logo src="{{ \App\Support\Images::url($general->logo_path) }}" alt="" class="h-7 w-auto max-w-[120px] object-contain shrink-0" />
             @else
@@ -46,9 +46,9 @@
                     <span class="absolute inset-[5px] bg-white dark:bg-neutral-950 rounded-[9px]"></span>
                 </span>
             @endif
-            <span class="flex flex-col leading-tight whitespace-nowrap">
-                <span class="text-sm font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">{{ $general->author_name }}</span>
-                <span class="text-[11px] text-neutral-600 dark:text-neutral-400 mt-0.5">{{ $general->author_title ?? 'developer' }}</span>
+            <span class="flex flex-col leading-tight min-w-0">
+                <span data-site-brand-name class="truncate text-sm font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">{{ $general->author_name }}</span>
+                <span class="truncate text-[11px] text-neutral-600 dark:text-neutral-400 mt-0.5">{{ $general->author_title ?? 'developer' }}</span>
             </span>
         </a>
 

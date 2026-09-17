@@ -62,3 +62,12 @@ it('marks the current item inside the dropdown on desktop and mobile', function 
 it('marks top level links with aria-current as well', function () {
     expect(substr_count($this->get(route('about'))->getContent(), 'href="'.route('about').'" aria-current="page"'))->toBe(2);
 });
+
+it('lets the brand shrink and truncate so the header never overflows narrow screens', function () {
+    $html = $this->get(route('home'))->getContent();
+
+    // The control group on the right keeps its size; the brand gives way instead.
+    expect($html)->toContain('data-site-brand class="flex items-center gap-3 min-w-0"')
+        ->and($html)->toContain('data-site-brand-name class="truncate ')
+        ->and($html)->not->toContain('data-site-brand class="flex items-center gap-3 shrink-0"');
+});
