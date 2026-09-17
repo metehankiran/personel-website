@@ -14,6 +14,9 @@
             <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Birlikte çalışmanın yolları.</h1>
             <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[580px]">Üç farklı şekilde çalışıyorum. Hepsinde de açık iletişim, gerçekçi tahminler ve teslim sonrası destek dahil.</p>
 
+            @if($services->isEmpty())
+                <x-empty-state class="mt-12 mb-20" icon="handshake" title="Henüz bir hizmet eklenmedi" description="Sunduğum hizmetler, kapsamları ve fiyatlandırmalarıyla burada yer alacak." />
+            @else
             {{-- Service Cards --}}
             <div class="flex flex-wrap gap-5 justify-center mt-14 mb-20">
                 @foreach($services as $service)
@@ -51,6 +54,7 @@
                     </div>
                 @endforeach
             </div>
+            @endif
 
             {{-- Process Steps --}}
             <x-section-heading class="mb-7">Nasıl çalışırız</x-section-heading>

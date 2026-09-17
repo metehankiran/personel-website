@@ -14,8 +14,13 @@
             <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Faydalı linkler.</h1>
             <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[560px]">Çalışırken sık geri döndüğüm, başkalarına da değerli olabileceğini düşündüğüm kaynaklar. Konuya göre gruplanmış.</p>
 
+            @php($filledCategories = $categories->filter(fn ($category) => $category->bookmarks->isNotEmpty()))
+
+            @if($filledCategories->isEmpty())
+                <x-empty-state class="mt-12" icon="bookmark" title="Henüz bir yer işareti eklenmedi" description="Faydalı bulduğum araçlar ve kaynaklar burada listelenecek." />
+            @else
             <div class="mt-16 flex flex-col gap-16">
-                @foreach($categories as $category)
+                @foreach($filledCategories as $category)
                     <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 lg:gap-16 items-start">
                         <div class="lg:sticky lg:top-24">
                             <h2 class="m-0 text-[28px] font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">{{ $category->name }}</h2>
@@ -34,6 +39,7 @@
                     </div>
                 @endforeach
             </div>
+            @endif
         </div>
     </section>
 @endsection

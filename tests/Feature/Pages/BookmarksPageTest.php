@@ -35,8 +35,9 @@ it('displays bookmark categories from database', function () {
 });
 
 it('displays multiple categories in order', function () {
-    BookmarkCategory::factory()->create(['name' => 'Okuma', 'sort_order' => 2]);
-    BookmarkCategory::factory()->create(['name' => 'Geliştirme', 'sort_order' => 1]);
+    // Categories without bookmarks are not listed, so give each one a bookmark.
+    Bookmark::factory()->for(BookmarkCategory::factory()->create(['name' => 'Okuma', 'sort_order' => 2]), 'category')->create();
+    Bookmark::factory()->for(BookmarkCategory::factory()->create(['name' => 'Geliştirme', 'sort_order' => 1]), 'category')->create();
 
     $response = $this->get(route('bookmarks'));
 

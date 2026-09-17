@@ -53,6 +53,10 @@
             @endif
 
             {{-- Featured testimonial --}}
+            @if($testimonials->isEmpty())
+                <x-empty-state class="mt-14" icon="quote" title="Henüz bir müşteri yorumu eklenmedi" description="Birlikte çalıştığım kişilerin yorumları burada yer alacak." />
+            @endif
+
             @if($featured)
                 <figure class="m-0 mt-20 relative rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 px-8 sm:px-14 py-12 sm:py-16 overflow-hidden" data-featured>
                     <span aria-hidden="true" class="absolute -top-6 left-6 sm:left-10 text-[180px] leading-none font-serif text-neutral-200/80 dark:text-neutral-800 select-none">"</span>

@@ -14,6 +14,9 @@
             <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Kullandığım teknolojiler.</h1>
             <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[580px]">Modaya kapılmadan, doğrulanmış araçlarla çalışıyorum. Her teknolojinin yanında o araçla geçirdiğim zamanın yansıması var.</p>
 
+            @if($skills->isEmpty())
+                <x-empty-state class="mt-12" icon="layers" title="Henüz bir teknoloji eklenmedi" description="Kullandığım araçlar ve her biriyle deneyim sürem burada yer alacak." />
+            @else
             <div class="mt-16 flex flex-col gap-16">
                 @foreach($skills as $skill)
                     <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 lg:gap-16 items-start">
@@ -43,6 +46,7 @@
                     </div>
                 @endforeach
             </div>
+            @endif
         </div>
     </section>
 @endsection

@@ -32,7 +32,11 @@
                                 @endif
                             </a>
                         @empty
-                            <p class="text-neutral-600 dark:text-neutral-400">Bu filtrede yazı bulunamadı.</p>
+                            @if($activeCategory || $activeTag)
+                                <x-empty-state icon="search-x" title="Bu filtrede yazı bulunamadı" action-label="Tüm yazılara dön" :action-url="route('blog')" />
+                            @else
+                                <x-empty-state icon="notebook-pen" title="Henüz bir yazı yayınlanmadı" description="İlk yazı yayınlandığında burada görünecek." />
+                            @endif
                         @endforelse
                     </div>
                 </div>

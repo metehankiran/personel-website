@@ -14,6 +14,9 @@
             <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Yaptığım işler.</h1>
             <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[580px]">5 yıllık freelance kariyerimden seçili çalışmalar. Hepsi production'da, büyük çoğunluğu hâlâ canlı.</p>
 
+            @if($projects->isEmpty())
+                <x-empty-state class="mt-12" icon="folder-open" title="Henüz bir proje yayınlanmadı" description="Teslim edilen projeler ve case study'ler burada yer alacak." />
+            @else
             {{-- Filters --}}
             <div class="flex flex-wrap gap-2 mt-8" data-filter-group="proj">
                 <button class="text-[13px] px-3.5 py-2 rounded-full font-medium border cursor-pointer font-sans transition-colors bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 border-neutral-950 dark:border-neutral-50" data-filter="all">Hepsi ({{ $projects->count() }})</button>
@@ -41,6 +44,7 @@
                     </a>
                 @endforeach
             </div>
+            @endif
         </div>
     </section>
 @endsection

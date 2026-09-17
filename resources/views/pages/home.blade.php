@@ -38,7 +38,7 @@
                         <x-brand-mark class="w-12 h-12" />
                         <div>
                             <div class="text-[15px] font-semibold text-neutral-950 dark:text-neutral-50">{{ $general->author_name }}</div>
-                            <div class="text-xs text-neutral-500 mt-0.5">{{ $general->author_title ?? 'Developer' }} · {{ $general->author_location ?? '' }}</div>
+                            <div class="text-xs text-neutral-500 mt-0.5">{{ collect([$general->author_title ?: 'Developer', $general->author_location])->filter()->join(' · ') }}</div>
                         </div>
                     </div>
 
@@ -63,7 +63,7 @@
                             <i data-lucide="mail" class="w-3 h-3"></i> Email
                         </a>
                         <a href="{{ $link('stack') }}" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 text-neutral-950 dark:text-neutral-50 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600">
-                            <i data-lucide="layers" class="w-3 h-3"></i> Stack
+                            <i data-lucide="layers" class="w-3 h-3"></i> Teknolojiler
                         </a>
                     </div>
                 </div>
@@ -72,13 +72,17 @@
     </section>
 
     {{-- Blog --}}
-    @if($posts->isNotEmpty())
         <section class="py-10 lg:py-[60px]">
             <div class="max-w-7xl mx-auto px-6 lg:px-12">
                 <div class="flex justify-between items-baseline mb-7">
                     <h2 class="m-0 text-2xl font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">Son Yazılar</h2>
-                    <a href="{{ $link('blog') }}" class="text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors">Tümünü gör →</a>
+                    @if($posts->isNotEmpty())
+                        <a href="{{ $link('blog') }}" class="text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors">Tümünü gör →</a>
+                    @endif
                 </div>
+                @if($posts->isEmpty())
+                    <x-empty-state icon="notebook-pen" title="Henüz bir yazı yayınlanmadı" description="İlk yazı yayınlandığında burada görünecek." />
+                @else
                 <div>
                     @foreach($posts as $post)
                         <a href="{{ route('blog.show', $post) }}" class="block py-6 border-b border-neutral-200 dark:border-neutral-800 first:border-t transition-colors hover:opacity-80">
@@ -95,20 +99,25 @@
                         </a>
                     @endforeach
                 </div>
+                @endif
             </div>
         </section>
-    @endif
 
     {{-- Testimonials --}}
-    @if($testimonials->isNotEmpty())
         <section class="py-10 lg:py-[60px]">
             <div class="max-w-7xl mx-auto px-6 lg:px-12">
                 <div class="flex justify-between items-baseline mb-7">
                     <h2 class="m-0 text-2xl font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">Müşteri Yorumları</h2>
-                    <a href="{{ $link('references') }}" class="text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors">Tümünü gör →</a>
+                    @if($testimonials->isNotEmpty())
+                        <a href="{{ $link('references') }}" class="text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors">Tümünü gör →</a>
+                    @endif
                 </div>
+                @if($testimonials->isEmpty())
+                    <x-empty-state icon="quote" title="Henüz bir müşteri yorumu eklenmedi" description="Birlikte çalıştığım kişilerin yorumları burada yer alacak." />
+                @endif
             </div>
 
+            @if($testimonials->isNotEmpty())
             <div class="group relative overflow-hidden" data-marquee>
                 {{-- Edge fades: blurred + faded so cards dissolve at both sides --}}
                 <div aria-hidden="true" class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 sm:w-40 backdrop-blur-sm bg-gradient-to-r from-white via-white/70 to-transparent dark:from-neutral-950 dark:via-neutral-950/70 [mask-image:linear-gradient(to_right,black_30%,transparent)]"></div>
@@ -138,8 +147,8 @@
                     @endforeach
                 </div>
             </div>
+            @endif
         </section>
-    @endif
 
     {{-- CTA --}}
     <section class="pb-2">

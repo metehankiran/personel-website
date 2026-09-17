@@ -38,7 +38,8 @@ it('displays projects from database', function () {
 });
 
 it('displays category filter buttons', function () {
-    ProjectCategory::factory()->create(['name' => 'SaaS']);
+    // The filters only appear when there is something to filter.
+    Project::factory()->for(ProjectCategory::factory()->create(['name' => 'SaaS']), 'category')->create();
     ProjectCategory::factory()->create(['name' => 'API']);
 
     $this->get(route('projects'))
