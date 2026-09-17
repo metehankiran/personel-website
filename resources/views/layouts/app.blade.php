@@ -46,8 +46,8 @@
     <script src="{{ \App\Support\Assets::versioned('theme/js/search.js') }}" defer></script>
     <script>
         window.mkCookieConfig = {
-            cookiePolicyUrl: '{{ $general->cookie_policy_slug ? route("pages.show", $general->cookie_policy_slug) : "#" }}',
-            kvkkUrl: '{{ $general->kvkk_page_slug ? route("pages.show", $general->kvkk_page_slug) : "#" }}'
+            cookiePolicyUrl: @json(\App\Models\Page::publicUrl($general->cookie_policy_slug), JSON_UNESCAPED_SLASHES),
+            kvkkUrl: @json(\App\Models\Page::publicUrl($general->kvkk_page_slug), JSON_UNESCAPED_SLASHES)
         };
     </script>
     <script src="{{ \App\Support\Assets::versioned('theme/js/cookie.js') }}" defer></script>

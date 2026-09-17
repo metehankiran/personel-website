@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Page;
 use App\Settings\GeneralSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -15,6 +16,9 @@ test('cookie banner script and config are present on every page', function () {
 });
 
 test('cookie config contains correct policy urls', function () {
+    Page::factory()->published()->create(['slug' => 'cookie-policy']);
+    Page::factory()->published()->create(['slug' => 'kvkk']);
+
     $general = app(GeneralSettings::class);
     $general->cookie_policy_slug = 'cookie-policy';
     $general->kvkk_page_slug = 'kvkk';

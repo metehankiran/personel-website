@@ -8,6 +8,15 @@
   if (stored && stored.ts) return;
 
   const cfg = window.mkCookieConfig || {};
+
+  // Only link to legal pages that actually exist; the URLs are null otherwise.
+  const linkClass = 'underline hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors';
+  const legalLinks = [
+    [cfg.cookiePolicyUrl, 'Çerez Politikası'],
+    [cfg.kvkkUrl, 'KVKK Aydınlatma Metni']
+  ].filter(function (link) { return !!link[0]; })
+    .map(function (link) { return '<a href="' + link[0] + '" class="' + linkClass + '">' + link[1] + '</a>'; })
+    .join(' ve ');
   const banner = document.createElement('div');
   banner.className = 'fixed left-4 right-4 sm:left-6 sm:right-6 bottom-4 sm:bottom-6 z-[90]';
   banner.setAttribute('role', 'dialog');
@@ -18,15 +27,12 @@
 
   banner.innerHTML = `
     <div class="max-w-5xl mx-auto bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] px-5 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5">
-      <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3.5">
-        <div id="cookie-title" class="flex items-center gap-2 text-sm font-semibold text-neutral-950 dark:text-neutral-50 whitespace-nowrap">
+      <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-3.5">
+        <div id="cookie-title" class="flex items-center gap-2 text-sm leading-[22px] font-semibold text-neutral-950 dark:text-neutral-50 whitespace-nowrap">
           <i data-lucide="cookie" class="w-4 h-4 text-neutral-400 dark:text-neutral-500"></i>
           Çerez tercihleri
         </div>
-        <p id="cookie-body" class="m-0 text-[13px] leading-relaxed text-neutral-500 dark:text-neutral-400">Site, deneyimi geliştirmek için zorunlu çerezleri kullanır.
-          <a href="${cfg.cookiePolicyUrl || '#'}" class="underline hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors">Çerez Politikası</a> ve
-          <a href="${cfg.kvkkUrl || '#'}" class="underline hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors">KVKK Aydınlatma Metni</a>
-        </p>
+        <p id="cookie-body" class="m-0 text-[13px] leading-[22px] text-neutral-500 dark:text-neutral-400">Site, deneyimi geliştirmek için zorunlu çerezleri kullanır.${legalLinks ? ' ' + legalLinks : ''}</p>
       </div>
       <div class="flex gap-2 flex-shrink-0 w-full sm:w-auto">
         <button type="button" data-cookie="reject"
