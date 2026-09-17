@@ -70,7 +70,7 @@
                     <div class="min-w-[240px] bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-lg p-2">
                         <a href="{{ $link('projects') }}" {!! $current('projects') !!} @class([$dropLinkClass, $dropLinkActive => $nav['projects']])>
                             <div class="{{ $dropTitleClass }}"><i data-lucide="folder-open" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>Projeler</div>
-                            <div class="{{ $dropDescClass }}">Case study</div>
+                            <div class="{{ $dropDescClass }}">Teslim ettiğim işler</div>
                         </a>
                         <a href="{{ $link('services') }}" {!! $current('services') !!} @class([$dropLinkClass, $dropLinkActive => $nav['services']])>
                             <div class="{{ $dropTitleClass }}"><i data-lucide="handshake" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>Hizmetler</div>

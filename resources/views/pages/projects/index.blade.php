@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Projeler')
-@section('meta_description', $projects->isNotEmpty() ? 'Teslim edilen projeler ve case study\'ler: '.$projects->take(4)->pluck('title')->join(', ').'. Kapsam, teknoloji ve sonuçlarıyla.' : 'Teslim edilen projeler ve case study\'ler: kapsamı, kullanılan teknolojileri ve elde edilen sonuçlarıyla.')
+@section('meta_description', $projects->isNotEmpty() ? 'Teslim edilen projeler: '.$projects->take(4)->pluck('title')->join(', ').'. Kapsam, teknoloji ve sonuçlarıyla.' : 'Teslim edilen projeler ve nasıl yapıldıkları: kapsamı, kullanılan teknolojileri ve elde edilen sonuçlarıyla.')
 
 @push('schema')
     {{ \App\Support\Schema::script(\App\Support\Schema::breadcrumbs(['Projeler' => \App\Support\Seo::route('projects')])) }}
@@ -15,7 +15,7 @@
             <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[580px]">5 yıllık freelance kariyerimden seçili çalışmalar. Hepsi production'da, büyük çoğunluğu hâlâ canlı.</p>
 
             @if($projects->isEmpty())
-                <x-empty-state class="mt-12" icon="folder-open" title="Henüz bir proje yayınlanmadı" description="Teslim edilen projeler ve case study'ler burada yer alacak." />
+                <x-empty-state class="mt-12" icon="folder-open" title="Henüz bir proje yayınlanmadı" description="Teslim ettiğim projeler, nasıl yapıldıklarıyla birlikte burada yer alacak." />
             @else
             {{-- Filters --}}
             <div class="flex flex-wrap gap-2 mt-8" data-filter-group="proj">

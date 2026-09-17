@@ -137,3 +137,9 @@ it('runs the faq list and its answers across the full container', function () {
 it('reserves the scrollbar gutter so short and long pages share the same content box', function () {
     expect(File::get(resource_path('css/app.css')))->toMatch('/html\s*\{[^}]*scrollbar-gutter:\s*stable/');
 });
+
+it('describes the projects in plain Turkish instead of calling them case studies', function () {
+    $this->get(route('home'))->assertSee('Teslim ettiğim işler')->assertDontSee('Case study');
+
+    expect($this->get(route('projects'))->getContent())->not->toContain('case study');
+});
