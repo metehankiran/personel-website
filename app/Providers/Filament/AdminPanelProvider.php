@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Settings\GeneralSettings;
+use App\Support\Images;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -30,6 +32,11 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            // Branding follows Settings → General. Closures keep the settings
+            // lookup out of panel registration, which runs before migrations can.
+            ->favicon(fn (): string => Images::url(app(GeneralSettings::class)->favicon_path, 'favicon'))
+            ->brandLogo(fn (): ?string => $this->uploadedLogoUrl())
+            ->brandLogoHeight('2rem')
             ->profile()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -54,5 +61,15 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
+    }
+
+    /**
+     * Null when no logo is uploaded, so Filament falls back to the brand name.
+     */
+    private function uploadedLogoUrl(): ?string
+    {
+        $path = app(GeneralSettings::class)->logo_path;
+
+        return Images::exists($path) ? Images::url($path) : null;
     }
 }
