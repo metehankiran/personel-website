@@ -66,13 +66,35 @@ it('does not render the projects section on the home page', function () {
 });
 
 it('renders testimonials as a looping marquee with duplicated items', function () {
-    $testimonial = Testimonial::factory()->create(['body' => 'Harika bir iş çıkardı, kesinlikle tavsiye ederim.']);
+    $testimonials = Testimonial::factory()->count(8)->create();
 
-    $response = $this->get(route('home'));
+    $html = $this->get(route('home'))->assertSee('data-marquee', escape: false)->getContent();
 
-    $response->assertSee('data-marquee', escape: false);
+    // Two identical halves: the strip slides by one half, then starts over unnoticed.
+    expect(substr_count($html, e($testimonials->first()->body)))->toBe(2)
+        ->and(substr_count($html, 'data-marquee-card'))->toBe(16);
+});
 
-    expect(substr_count($response->getContent(), e($testimonial->body)))->toBe(2);
+it('repeats a short list of testimonials until the marquee fills the screen', function (int $count, int $cards) {
+    Testimonial::factory()->count($count)->create();
+
+    $html = $this->get(route('home'))->getContent();
+
+    // Every card beyond the first run of real testimonials is decoration for screen readers.
+    expect(substr_count($html, 'data-marquee-card'))->toBe($cards)
+        ->and(substr_count($html, 'data-marquee-card="original"'))->toBe($count)
+        ->and(substr_count($html, 'data-marquee-card="copy"'))->toBe($cards - $count)
+        ->and(preg_match_all('/data-marquee-card="copy"\\s+aria-hidden="true"/', $html))->toBe($cards - $count);
+})->with([
+    'one testimonial' => [1, 16],
+    'three testimonials' => [3, 18],
+    'five testimonials' => [5, 20],
+]);
+
+it('keeps the marquee speed steady however many cards it carries', function () {
+    Testimonial::factory()->count(5)->create();
+
+    $this->get(route('home'))->assertSee('style="animation-duration: 60s"', escape: false);
 });
 
 it('renders the call-to-action block', function () {
@@ -99,11 +121,11 @@ it('runs in the Istanbul timezone with Turkish as the default locale', function 
 
 it('shows stars on rated testimonials in the marquee', function () {
     Testimonial::factory()->rated(4)->create();
-    Testimonial::factory()->create();
+    Testimonial::factory()->count(7)->create();
 
     $html = $this->get(route('home'))->assertOk()->getContent();
 
-    // The marquee prints every card twice; the second copy is hidden from assistive tech as a whole.
+    // A full marquee prints every card twice; the second copy is hidden from assistive tech as a whole.
     expect(substr_count($html, 'aria-label="5 üzerinden 4"'))->toBe(2)
         ->and(substr_count($html, 'role="img" aria-label="5 üzerinden'))->toBe(2);
 });
