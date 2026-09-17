@@ -57,3 +57,20 @@ it('lists the page as "Teknolojiler" in the search index', function () {
 
     expect($titles)->toContain('Teknolojiler')->not->toContain('Stack');
 });
+
+it('styles links in a static page body wherever the rich editor nests them', function () {
+    $page = Page::factory()->published()->create(['body' => '<p>Başvurular için <a href="mailto:a@example.com">a@example.com</a> adresine yazın.</p>']);
+
+    $html = $this->get(route('pages.show', $page))->assertOk()->getContent();
+
+    // "[&>a]" only matches anchors that are direct children of the body, which rich text never produces.
+    expect($html)->toContain('[&_a]:underline')->not->toContain('[&>a]:');
+});
+
+it('gives static page bodies a comfortable reading width instead of a narrow column', function () {
+    $page = Page::factory()->published()->create();
+
+    $this->get(route('pages.show', $page))
+        ->assertSee('max-w-[760px]', escape: false)
+        ->assertDontSee('max-w-[640px]', escape: false);
+});
