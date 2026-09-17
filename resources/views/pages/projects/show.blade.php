@@ -119,16 +119,19 @@
     {{-- Body --}}
     @if($project->body)
         <section class="py-10 lg:py-[60px]">
-            <div class="max-w-[920px] mx-auto px-6 lg:px-12">
-                <div class="flex flex-col gap-[18px] text-[17px] leading-[1.7] opacity-90 max-w-[640px] text-neutral-600 dark:text-neutral-400
-                    [&>p]:m-0
-                    [&>h2]:mt-10 [&>h2]:mb-4 [&>h2]:text-2xl [&>h2]:font-semibold [&>h2]:tracking-tight [&>h2]:text-neutral-950 dark:[&>h2]:text-neutral-50 [&>h2]:opacity-100
-                    [&>ul]:pl-5 [&>ul]:list-disc
-                    [&>ol]:pl-5 [&>ol]:list-decimal
-                    [&>a]:underline [&>a]:underline-offset-2
-                    [&>strong]:font-semibold">
-                    {!! $project->body !!}
-                </div>
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 lg:gap-16 items-start">
+                    <x-section-heading>Proje hakkında</x-section-heading>
+                    <div class="flex flex-col gap-[18px] text-[17px] leading-[1.7] opacity-90 max-w-[760px] text-neutral-600 dark:text-neutral-400
+                        [&>p]:m-0
+                        [&>h2]:mt-10 [&>h2]:mb-4 [&>h2]:text-2xl [&>h2]:font-semibold [&>h2]:tracking-tight [&>h2]:text-neutral-950 dark:[&>h2]:text-neutral-50 [&>h2]:opacity-100
+                        [&>ul]:pl-5 [&>ul]:list-disc
+                        [&>ol]:pl-5 [&>ol]:list-decimal
+                        [&>a]:underline [&>a]:underline-offset-2
+                        [&>strong]:font-semibold">
+                        {!! $project->body !!}
+                    </div>
+                    </div>
             </div>
         </section>
     @endif

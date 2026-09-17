@@ -57,6 +57,11 @@
     }
 }
 
+/* Short and long pages get the same content box: the scrollbar's space is always reserved. */
+html {
+    scrollbar-gutter: stable;
+}
+
 /* Keep Alpine-controlled elements hidden until Alpine has initialised. */
 [x-cloak] {
     display: none !important;

@@ -14,7 +14,7 @@
     <article>
         {{-- Header --}}
         <header class="pt-8 pb-12 border-b border-neutral-200 dark:border-neutral-800">
-            <div class="max-w-[920px] mx-auto px-6 lg:px-12">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
                 <div class="flex items-center gap-3 mb-8">
                     <a href="{{ route('blog') }}" class="text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors inline-flex items-center gap-1">
                         <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Blog
@@ -22,7 +22,7 @@
                     <span class="inline-block text-[11px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 rounded-full font-medium text-neutral-950 dark:text-neutral-50">{{ $post->category->name }}</span>
                 </div>
 
-                <h1 class="m-0 text-[36px] sm:text-[44px] lg:text-[56px] leading-[1.05] font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50">{{ $post->title }}</h1>
+                <h1 class="m-0 max-w-4xl text-[36px] sm:text-[44px] lg:text-[56px] leading-[1.05] font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50">{{ $post->title }}</h1>
 
                 @if($post->excerpt)
                     <p class="mt-6 text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-[720px] m-0 mt-6">{{ $post->excerpt }}</p>
@@ -48,45 +48,55 @@
             </div>
         </header>
 
-        {{-- Cover Image --}}
-        @if($post->cover_image)
-            <div class="max-w-[920px] mx-auto px-6 lg:px-12 mb-12 mt-12">
-                <div class="aspect-video rounded-xl overflow-hidden">
-                    <x-image :src="$post->cover_image" fallback="cover" :alt="$post->title" class="w-full h-full object-cover" />
-                </div>
-            </div>
-        @endif
+        {{-- Cover + body beside a sidebar: the post starts at the shared left edge and fills the shared container. --}}
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 mt-12">
+            <div class="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10 lg:gap-16 items-start">
+                <div class="min-w-0">
+                    @if($post->cover_image)
+                        <div class="aspect-video rounded-xl overflow-hidden mb-12">
+                            <x-image :src="$post->cover_image" fallback="cover" :alt="$post->title" class="w-full h-full object-cover" />
+                        </div>
+                    @endif
 
-        {{-- Body --}}
-        <div class="max-w-[920px] mx-auto px-6 lg:px-12 mt-14">
-            <div class="text-[17px] leading-[1.75] max-w-[680px] text-neutral-950 dark:text-neutral-50
-                [&>p]:mb-6 [&>p]:opacity-[0.92]
-                [&>h2]:mt-14 [&>h2]:mb-4 [&>h2]:text-[26px] [&>h2]:font-semibold [&>h2]:tracking-tight [&>h2]:scroll-mt-24
-                [&>ul]:pl-5 [&>ul]:list-disc [&>li]:mb-2 [&>li]:opacity-[0.92]
-                [&>ol]:pl-5 [&>ol]:list-decimal
-                [&>code]:font-mono [&>code]:text-[13px] [&>code]:bg-neutral-100 dark:[&>code]:bg-neutral-900 [&>code]:px-1.5 [&>code]:py-0.5 [&>code]:rounded
-                [&>pre]:bg-neutral-100 dark:[&>pre]:bg-neutral-900 [&>pre]:border [&>pre]:border-neutral-200 dark:[&>pre]:border-neutral-800 [&>pre]:px-5 [&>pre]:py-[18px] [&>pre]:rounded-xl [&>pre]:overflow-x-auto [&>pre]:my-7
-                [&>pre>code]:bg-transparent [&>pre>code]:p-0 [&>pre>code]:text-[13px] [&>pre>code]:leading-relaxed
-                [&>blockquote]:my-7 [&>blockquote]:px-6 [&>blockquote]:py-4 [&>blockquote]:border-l-[3px] [&>blockquote]:border-neutral-950 dark:[&>blockquote]:border-neutral-50 [&>blockquote]:text-[19px] [&>blockquote]:leading-relaxed [&>blockquote]:font-serif [&>blockquote]:italic [&>blockquote]:opacity-90
-                [&>a]:underline [&>a]:underline-offset-2">
-                {!! $post->body !!}
+                    <div class="text-[17px] leading-[1.75] max-w-[680px] text-neutral-950 dark:text-neutral-50
+                        [&>p]:mb-6 [&>p]:opacity-[0.92]
+                        [&>h2]:mt-14 [&>h2]:mb-4 [&>h2]:text-[26px] [&>h2]:font-semibold [&>h2]:tracking-tight [&>h2]:scroll-mt-24
+                        [&>ul]:pl-5 [&>ul]:list-disc [&>li]:mb-2 [&>li]:opacity-[0.92]
+                        [&>ol]:pl-5 [&>ol]:list-decimal
+                        [&>code]:font-mono [&>code]:text-[13px] [&>code]:bg-neutral-100 dark:[&>code]:bg-neutral-900 [&>code]:px-1.5 [&>code]:py-0.5 [&>code]:rounded
+                        [&>pre]:bg-neutral-100 dark:[&>pre]:bg-neutral-900 [&>pre]:border [&>pre]:border-neutral-200 dark:[&>pre]:border-neutral-800 [&>pre]:px-5 [&>pre]:py-[18px] [&>pre]:rounded-xl [&>pre]:overflow-x-auto [&>pre]:my-7
+                        [&>pre>code]:bg-transparent [&>pre>code]:p-0 [&>pre>code]:text-[13px] [&>pre>code]:leading-relaxed
+                        [&>blockquote]:my-7 [&>blockquote]:px-6 [&>blockquote]:py-4 [&>blockquote]:border-l-[3px] [&>blockquote]:border-neutral-950 dark:[&>blockquote]:border-neutral-50 [&>blockquote]:text-[19px] [&>blockquote]:leading-relaxed [&>blockquote]:font-serif [&>blockquote]:italic [&>blockquote]:opacity-90
+                        [&>a]:underline [&>a]:underline-offset-2">
+                        {!! $post->body !!}
+                    </div>
+                </div>
+
+                <aside data-post-aside class="flex flex-col gap-8 lg:sticky lg:top-24">
+                    <div>
+                        <x-eyebrow size="sm" class="mb-4">Kategori</x-eyebrow>
+                        <a href="{{ route('blog.category', $post->category) }}" class="inline-block text-xs px-3 py-1.5 rounded-full font-medium border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors">{{ $post->category->name }}</a>
+                    </div>
+
+                    @if($post->tags->isNotEmpty())
+                        <div>
+                            <x-eyebrow size="sm" class="mb-4">Etiketler</x-eyebrow>
+                            <div class="flex flex-wrap gap-1.5">
+                                @foreach($post->tags as $tag)
+                                    <a href="{{ route('blog.tag', $tag) }}" class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-neutral-100 dark:bg-neutral-900 text-neutral-950 dark:text-neutral-50 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800">{{ $tag->name }}</a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                    <a href="{{ route('blog') }}" class="inline-flex items-center gap-1.5 text-[13px] text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors"><i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Tüm yazılar</a>
+                </aside>
             </div>
         </div>
 
         {{-- Footer --}}
         <footer class="mt-16 pt-12 border-t border-neutral-200 dark:border-neutral-800">
-            <div class="max-w-[920px] mx-auto px-6 lg:px-12">
-                @if($post->tags->isNotEmpty())
-                    <div class="flex items-center gap-4 mb-12">
-                        <x-eyebrow size="sm">Etiketler</x-eyebrow>
-                        <div class="flex flex-wrap gap-1.5">
-                            @foreach($post->tags as $tag)
-                                <span class="inline-block text-[11px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 rounded-full font-medium text-neutral-950 dark:text-neutral-50">{{ $tag->name }}</span>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
                 {{-- Newsletter CTA --}}
                 <livewire:newsletter-form />
             </div>

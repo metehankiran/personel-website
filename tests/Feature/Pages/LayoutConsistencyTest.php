@@ -2,7 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Models\Faq;
 use App\Models\Page;
+use App\Models\Post;
+use App\Models\Project;
+use App\Models\Tag;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 
@@ -73,4 +77,61 @@ it('gives static page bodies a comfortable reading width instead of a narrow col
     $this->get(route('pages.show', $page))
         ->assertSee('max-w-[760px]', escape: false)
         ->assertDontSee('max-w-[640px]', escape: false);
+});
+
+it('never centres a page in a container narrower than the shared one', function () {
+    $views = collect(File::allFiles(resource_path('views/pages')))->merge(File::allFiles(resource_path('views/errors')));
+
+    foreach ($views as $view) {
+        // A narrower "max-w-[…] mx-auto px-6" wrapper makes the content jump sideways between pages.
+        expect(preg_match('/max-w-\[\d+px\] mx-auto px-6/', $view->getContents()))->toBe(0, $view->getRelativePathname().' has its own page container');
+    }
+});
+
+it('starts a blog post at the same left edge as every other page and fills the row with a sidebar', function () {
+    $post = Post::factory()->published()->create();
+    $post->tags()->attach($tag = Tag::factory()->create());
+
+    $html = $this->get(route('blog.show', $post))->assertOk()->getContent();
+
+    expect($html)->not->toContain('max-w-[920px]')
+        ->toContain('lg:grid-cols-[1fr_280px]')
+        ->toMatch('#<aside[^>]*data-post-aside[^>]*>.*'.preg_quote(route('blog.category', $post->category), '#').'.*'.preg_quote(route('blog.tag', $tag), '#').'.*</aside>#su');
+});
+
+it('lays a project body out in the label and content grid the cv and stack pages use', function () {
+    $project = Project::factory()->create(['body' => '<p>Proje anlatımı.</p>']);
+
+    $html = $this->get(route('projects.show', $project))->assertOk()->getContent();
+
+    expect($html)->not->toContain('max-w-[920px]')
+        ->toContain('lg:grid-cols-[280px_1fr]')
+        ->toContain('Proje hakkında');
+});
+
+it('fills the row beside a static page with a list of the other pages', function () {
+    $page = Page::factory()->published()->create(['title' => 'Çerez Politikası']);
+    $other = Page::factory()->published()->create(['title' => 'KVKK Aydınlatma Metni']);
+    Page::factory()->create(['title' => 'Taslak Sayfa', 'is_published' => false]);
+
+    $html = $this->get(route('pages.show', $page))->assertOk()->getContent();
+    preg_match('#<aside[^>]*data-page-aside[^>]*>(.*?)</aside>#su', $html, $aside);
+
+    expect($aside[1] ?? '')->toContain(route('pages.show', $other))
+        ->toContain('KVKK Aydınlatma Metni')
+        ->toContain(route('faq'))
+        ->not->toContain('Taslak Sayfa')
+        ->toMatch('#<a href="'.preg_quote(route('pages.show', $page), '#').'"[^>]*aria-current="page"#u');
+});
+
+it('runs the faq list across the full container and keeps the answers at reading width', function () {
+    Faq::factory()->create(['is_published' => true]);
+
+    $html = $this->get(route('faq'))->assertOk()->getContent();
+
+    expect($html)->not->toContain('max-w-[820px]')->toContain('max-w-[760px]');
+});
+
+it('reserves the scrollbar gutter so short and long pages share the same content box', function () {
+    expect(File::get(resource_path('css/app.css')))->toMatch('/html\s*\{[^}]*scrollbar-gutter:\s*stable/');
 });
