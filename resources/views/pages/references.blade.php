@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Referanslar')
+@section('title', 'Müşteri Yorumları ve Referanslar')
 @section('meta_description', 'Birlikte çalışılan markalar ve müşterilerin kendi sözleriyle yorumları. '.$general->author_name.' ile çalışmak nasıl, doğrudan onlardan okuyun.')
 
 @push('schema')
@@ -22,7 +22,7 @@
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">
         <div class="max-w-7xl mx-auto px-6 lg:px-12">
             <x-eyebrow class="mb-3">Referanslar</x-eyebrow>
-            <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Birlikte çalıştığım insanlar.</h1>
+            <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Müşteri yorumları ve referanslar.</h1>
             <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[580px]">40+ müşteriden bir kesit. Hepsi gerçek, isim+rol kontrol edilebilir.</p>
 
             {{-- Brands strip --}}

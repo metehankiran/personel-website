@@ -40,7 +40,7 @@ it('uses the shared container on every top level page', function (string $route)
 it('calls the stack page "Teknolojiler" everywhere a visitor reads it', function () {
     $html = $this->get(route('stack'))->assertOk()->getContent();
 
-    expect($html)->toContain('<title>Teknolojiler — ')
+    expect($html)->toContain('<title>Teknolojiler: Laravel, Vue.js, .NET Core — ')
         ->and(substr_count($html, 'Teknolojiler'))->toBeGreaterThanOrEqual(4); // title, eyebrow, header (desktop + mobile), footer
 });
 

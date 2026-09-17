@@ -17,7 +17,7 @@ it('renders the blog index page', function () {
 
 it('shows the blog hero content', function () {
     $this->get(route('blog'))
-        ->assertSee('Yazılar', escape: false);
+        ->assertSee('Yazılım üzerine yazılar', escape: false);
 });
 
 it('displays published posts from database', function () {

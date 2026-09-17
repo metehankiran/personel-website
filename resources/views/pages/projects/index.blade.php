@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Projeler')
+@section('title', 'Laravel, Vue.js ve .NET Core Projeleri')
 @section('meta_description', $projects->isNotEmpty() ? 'Teslim edilen projeler: '.$projects->take(4)->pluck('title')->join(', ').'. Kapsam, teknoloji ve sonuçlarıyla.' : 'Teslim edilen projeler ve nasıl yapıldıkları: kapsamı, kullanılan teknolojileri ve elde edilen sonuçlarıyla.')
 
 @push('schema')
@@ -11,8 +11,8 @@
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">
         <div class="max-w-7xl mx-auto px-6 lg:px-12">
             <x-eyebrow class="mb-3">Projeler</x-eyebrow>
-            <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Yaptığım işler.</h1>
-            <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[580px]">5 yıllık freelance kariyerimden seçili çalışmalar. Hepsi production'da, büyük çoğunluğu hâlâ canlı.</p>
+            <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Teslim ettiğim projeler.</h1>
+            <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[580px]">Teslim ettiğim işlerden seçili çalışmalar; kapsamı, kullanılan teknolojileri ve sonuçlarıyla.</p>
 
             @if($projects->isEmpty())
                 <x-empty-state class="mt-12" icon="folder-open" title="Henüz bir proje yayınlanmadı" description="Teslim ettiğim projeler, nasıl yapıldıklarıyla birlikte burada yer alacak." />

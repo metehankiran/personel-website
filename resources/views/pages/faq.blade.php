@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Sıkça Sorulan Sorular')
+@section('title', 'SSS: Proje Süresi, Fiyat ve Çalışma Süreci')
 @section('meta_description', $faqs->isNotEmpty() ? 'Sıkça sorulan sorular: '.$faqs->take(4)->pluck('question')->join(' ') : 'Birlikte çalışmaya dair sıkça sorulan sorular ve yanıtları: fiyatlandırma, süre, süreç ve teslim sonrası destek.')
 
 @push('schema')

@@ -19,7 +19,7 @@ it('renders the references page', function () {
 it('shows references hero content', function () {
     $this->get(route('references'))
         ->assertSee('Referanslar', escape: false)
-        ->assertSee('Birlikte çalıştığım insanlar', escape: false);
+        ->assertSee('Müşteri yorumları ve referanslar', escape: false);
 });
 
 it('displays testimonials from database', function () {

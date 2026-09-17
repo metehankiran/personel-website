@@ -16,7 +16,7 @@ it('renders the services page', function () {
 it('shows services hero content', function () {
     $this->get(route('services'))
         ->assertSee('Hizmetler', escape: false)
-        ->assertSee('Birlikte çalışmanın yolları', escape: false);
+        ->assertSee('Freelance web geliştirme hizmetleri', escape: false);
 });
 
 it('displays services from database', function () {

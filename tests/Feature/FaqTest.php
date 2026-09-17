@@ -142,7 +142,7 @@ it('lives at a Turkish url with its own title, description and breadcrumb', func
 
     $html = $this->get('/sss')->assertOk()->getContent();
 
-    expect($html)->toContain('<title>Sıkça Sorulan Sorular — ')
+    expect($html)->toContain('<title>SSS: Proje Süresi, Fiyat ve Çalışma Süreci — ')
         ->toContain('"@type":"BreadcrumbList"')
         ->toMatch('/<meta name="description" content="[^"]*Teslim süresi ne kadar\?/u');
 });

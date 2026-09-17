@@ -24,17 +24,17 @@ beforeEach(function () {
 it('suffixes every page title with the site title from the settings', function (Closure $url, string $expected) {
     $this->get($url())->assertOk()->assertSee("<title>{$expected}</title>", escape: false);
 })->with([
-    'services' => [fn () => route('services'), 'Hizmetler — Ada Studio'],
-    'stack' => [fn () => route('stack'), 'Teknolojiler — Ada Studio'],
-    'references' => [fn () => route('references'), 'Referanslar — Ada Studio'],
+    'services' => [fn () => route('services'), 'Freelance Laravel ve Vue.js Geliştirme — Ada Studio'],
+    'stack' => [fn () => route('stack'), 'Teknolojiler: Laravel, Vue.js, .NET Core — Ada Studio'],
+    'references' => [fn () => route('references'), 'Müşteri Yorumları ve Referanslar — Ada Studio'],
     'bookmarks' => [fn () => route('bookmarks'), 'Yer İşaretlerim — Ada Studio'],
-    'projects' => [fn () => route('projects'), 'Projeler — Ada Studio'],
+    'projects' => [fn () => route('projects'), 'Laravel, Vue.js ve .NET Core Projeleri — Ada Studio'],
     'project' => [fn () => route('projects.show', Project::factory()->create(['title' => 'Karavela'])), 'Karavela — Projeler — Ada Studio'],
-    'blog' => [fn () => route('blog'), 'Blog — Ada Studio'],
+    'blog' => [fn () => route('blog'), 'Blog: Laravel ve Web Geliştirme Yazıları — Ada Studio'],
     'post' => [fn () => route('blog.show', Post::factory()->published()->for(Category::factory())->create(['title' => 'İlk Yazı'])), 'İlk Yazı — Ada Studio'],
-    'about' => [fn () => route('about'), 'Hakkımda — Ada Studio'],
+    'about' => [fn () => route('about'), 'Hakkımda: Full Stack Web Developer — Ada Studio'],
     'cv' => [fn () => route('cv'), 'CV — Ada Studio'],
-    'contact' => [fn () => route('contact'), 'İletişim — Ada Studio'],
+    'contact' => [fn () => route('contact'), 'İletişim: Proje Teklifi ve Danışmanlık — Ada Studio'],
 ]);
 
 it('keeps the home page title as author name and title', function () {
@@ -46,12 +46,12 @@ it('falls back to the app name when no site title is configured', function () {
     $general->site_title = '';
     $general->save();
 
-    $this->get(route('services'))->assertSee('<title>Hizmetler — '.config('app.name').'</title>', escape: false);
+    $this->get(route('services'))->assertSee('<title>Freelance Laravel ve Vue.js Geliştirme — '.config('app.name').'</title>', escape: false);
 });
 
 it('mirrors the title into the open graph tags and names the site', function () {
     $this->get(route('services'))
-        ->assertSee('<meta property="og:title" content="Hizmetler — Ada Studio">', escape: false)
+        ->assertSee('<meta property="og:title" content="Freelance Laravel ve Vue.js Geliştirme — Ada Studio">', escape: false)
         ->assertSee('<meta property="og:site_name" content="Ada Studio">', escape: false);
 });
 

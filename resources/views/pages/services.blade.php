@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Hizmetler')
+@section('title', 'Freelance Laravel ve Vue.js Geliştirme')
 @section('meta_description', $services->isNotEmpty() ? 'Birlikte çalışmanın yolları: '.$services->pluck('title')->join(', ', ' ve ').'. Kapsam, süre ve fiyatlandırma bilgileriyle.' : 'Birlikte çalışmanın yolları: kapsam, süre ve fiyatlandırma bilgileriyle sunulan yazılım geliştirme hizmetleri.')
 
 @push('schema')
@@ -11,8 +11,8 @@
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">
         <div class="max-w-7xl mx-auto px-6 lg:px-12">
             <x-eyebrow class="mb-3">Hizmetler</x-eyebrow>
-            <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Birlikte çalışmanın yolları.</h1>
-            <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[580px]">Üç farklı şekilde çalışıyorum. Hepsinde de açık iletişim, gerçekçi tahminler ve teslim sonrası destek dahil.</p>
+            <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Freelance web geliştirme hizmetleri.</h1>
+            <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[580px]">Birlikte çalışmanın birkaç yolu var. Hepsinde de açık iletişim, gerçekçi tahminler ve teslim sonrası destek dahil.</p>
 
             @if($services->isEmpty())
                 <x-empty-state class="mt-12 mb-20" icon="handshake" title="Henüz bir hizmet eklenmedi" description="Sunduğum hizmetler, kapsamları ve fiyatlandırmalarıyla burada yer alacak." />

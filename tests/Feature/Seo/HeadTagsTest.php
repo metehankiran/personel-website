@@ -124,7 +124,7 @@ it('describes the share image so previews render without fetching it first', fun
 
     expect($html)->toContain('<meta property="og:image:width" content="1200">')
         ->toContain('<meta property="og:image:height" content="630">')
-        ->toMatch('/<meta property="og:image:alt" content="Hakkımda — [^"]+">/u');
+        ->toMatch('/<meta property="og:image:alt" content="Hakkımda: Full Stack Web Developer — [^"]+">/u');
 });
 
 it('sizes the share image of a post from its own cover', function () {

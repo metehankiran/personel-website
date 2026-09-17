@@ -17,7 +17,7 @@ it('renders the projects index page', function () {
 it('shows the projects hero content', function () {
     $this->get(route('projects'))
         ->assertSee('Projeler', escape: false)
-        ->assertSee('Yaptığım işler', escape: false);
+        ->assertSee('Teslim ettiğim projeler', escape: false);
 });
 
 it('displays projects from database', function () {

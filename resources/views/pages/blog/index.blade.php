@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', ($activeCategory ? $activeCategory->name . ' — ' : ($activeTag ? $activeTag->name . ' — ' : '')) . 'Blog')
+@section('title', $activeCategory ? $activeCategory->name.' — Blog' : ($activeTag ? $activeTag->name.' — Blog' : 'Blog: Laravel ve Web Geliştirme Yazıları'))
 @section('meta_description', $activeCategory ? $activeCategory->name.' kategorisindeki yazılar: çalışırken karşılaşılan problemler, denenen çözümler ve öğrenilenler.' : ($activeTag ? $activeTag->name.' etiketli yazılar: çalışırken karşılaşılan problemler, denenen çözümler ve öğrenilenler.' : 'Yazılım geliştirme üzerine yazılar'.($categories->isNotEmpty() ? ': '.$categories->take(5)->pluck('name')->join(', ') : '').'. Çalışırken karşılaşılan problemler ve öğrenilenler.'))
 @section('robots', ($activeCategory || $activeTag) && $posts->isEmpty() ? 'noindex, follow' : 'index, follow')
 
@@ -16,7 +16,7 @@
                 {{-- Posts --}}
                 <div>
                     <x-eyebrow class="mb-3">Blog</x-eyebrow>
-                    <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">{{ $activeCategory ? $activeCategory->name : ($activeTag ? '#'.$activeTag->name : 'Yazılar.') }}</h1>
+                    <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">{{ $activeCategory ? $activeCategory->name : ($activeTag ? '#'.$activeTag->name : 'Yazılım üzerine yazılar.') }}</h1>
                     <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[480px]">Çalışırken karşılaştığım problemleri, deneyimleri ve denedikçe öğrendiklerimi yazıyorum.</p>
 
                     <div class="mt-12">

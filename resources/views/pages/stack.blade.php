@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Teknolojiler')
+@section('title', 'Teknolojiler: Laravel, Vue.js, .NET Core')
 @section('meta_description', $skills->isNotEmpty() ? 'Kullanılan teknolojiler ve her biriyle deneyim süresi: '.$skills->pluck('name')->join(', ', ' ve ').' alanlarında tercih edilen araçlar.' : 'Kullanılan teknolojiler ve her biriyle deneyim süresi: modaya kapılmadan seçilmiş, doğrulanmış araçlar.')
 
 @push('schema')

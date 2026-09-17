@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'İletişim')
+@section('title', 'İletişim: Proje Teklifi ve Danışmanlık')
 @section('meta_description', $general->author_name.' ile iletişime geçin: e-posta, telefon ve proje formu.'.(filled($general->availability_status) ? ' Durum: '.$general->availability_status.'.' : '').' Genelde 24 saat içinde dönüş.')
 
 @push('schema')

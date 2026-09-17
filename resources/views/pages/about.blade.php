@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Hakkımda')
+@section('title', 'Hakkımda: Full Stack Web Developer')
 @section('meta_description', \App\Support\Seo::description($about->body, $general->bio, $general->author_name.' hakkında: geçmişi, çalışma şekli ve bugüne kadar yaptığı işlerin zaman çizelgesi.'))
 
 @php
