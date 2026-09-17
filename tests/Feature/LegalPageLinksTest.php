@@ -97,7 +97,7 @@ it('never points the banner at a stale slug', function () {
 
     $this->get(route('home'))
         ->assertSee('cookiePolicyUrl: null', escape: false)
-        ->assertDontSee('/pages/ghost', escape: false);
+        ->assertDontSee('/sayfa/ghost', escape: false);
 });
 
 it('builds the banner sentence from the available links only', function () {

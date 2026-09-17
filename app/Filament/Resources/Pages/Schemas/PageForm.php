@@ -17,7 +17,7 @@ class PageForm
     {
         return $schema->components([
             Section::make('Sayfa Bilgileri')
-                ->description('KVKK, çerez politikası gibi statik sayfaların yapılandırılması. Bu sayfalar /{slug} URL\'inde yayınlanır.')
+                ->description('KVKK, çerez politikası gibi statik sayfaların yapılandırılması. Bu sayfalar /sayfa/{slug} adresinde yayınlanır.')
                 ->schema([
                     Grid::make(2)->schema([
                         TextInput::make('title')
@@ -33,7 +33,7 @@ class PageForm
                             ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true)
-                            ->helperText('URL\'de görünür: /{slug}'),
+                            ->helperText('URL\'de görünür: /sayfa/{slug}'),
                     ]),
                 ]),
 
@@ -50,7 +50,7 @@ class PageForm
                     Grid::make(2)->schema([
                         Toggle::make('is_published')
                             ->label('Yayında')
-                            ->helperText('Kapalıysa /{slug} adresi 404 döner.'),
+                            ->helperText('Kapalıysa /sayfa/{slug} adresi 404 döner.'),
 
                         Toggle::make('show_footer')
                             ->label('Footer Göster')

@@ -80,5 +80,5 @@ it('shows category and tag links in sidebar', function () {
 
 it('shows newsletter subscription form', function () {
     $this->get(route('blog'))
-        ->assertSee('newsletter', escape: false);
+        ->assertSee('action="'.route('newsletter.subscribe').'"', escape: false);
 });

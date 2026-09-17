@@ -91,7 +91,7 @@ For markdown-only or config-only changes, still run both — Pint is a no-op on 
 English-only:
 - Variables, functions, classes, methods, properties, enums, constants
 - File and folder names
-- Route names and URL slugs (`/about`, `/contact`, `/projects` — never `/hakkimda`, `/iletisim`)
+- Route names (`about`, `contact`, `projects.show`) — always reference pages through `route('name')`, never a hardcoded path
 - Migration table/column names
 - Commit messages and branch names
 - Code comments and PHPDoc
@@ -102,9 +102,10 @@ Turkish allowed (only for things the end user sees):
 - Validation messages shown to users
 - Email subjects and bodies sent to users
 - UI labels, button text, flash messages
+- Public URL paths, in ASCII without Turkish characters (`/hakkimda`, `/iletisim`, `/projeler/{slug}`, `/blog/kategori/{slug}`)
 - Seed data when it represents user-facing content (sample posts, etc.)
 
-The supplied static theme uses Turkish URL slugs (`hakkimda.html`, `iletisim.html`) — when porting to Blade, **rewrite the routes in English** but keep the visible link text Turkish: `hakkimda.html` → `Route::get('/about', ...)->name('about')` with `<a href="{{ route('about') }}">Hakkımda</a>` in the view.
+URLs are Turkish because visitors see them, but route names stay English like the rest of the code: `Route::get('/hakkimda', ...)->name('about')` with `<a href="{{ route('about') }}">Hakkımda</a>` in the view. Internal endpoints (`/search/index`, `/admin`) stay English. All public routes live in `routes/web.php`; changing a URL must never require touching a view.
 
 ## Commit Workflow (Required)
 

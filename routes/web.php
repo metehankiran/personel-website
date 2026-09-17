@@ -12,27 +12,31 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SkillController;
 use Illuminate\Support\Facades\Route;
 
+/*
+ * Public urls are Turkish because visitors see them; route names stay English
+ * like the rest of the code, so views and controllers never change with a url.
+ */
 Route::get('/', [PageController::class, 'home'])->name('home');
-Route::get('/about', [PageController::class, 'about'])->name('about');
-Route::get('/services', [PageController::class, 'services'])->name('services');
+Route::get('/hakkimda', [PageController::class, 'about'])->name('about');
+Route::get('/hizmetler', [PageController::class, 'services'])->name('services');
 Route::get('/cv', [PageController::class, 'cv'])->name('cv');
-Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/iletisim', [PageController::class, 'contact'])->name('contact');
 
-Route::get('/references', ReferenceController::class)->name('references');
+Route::get('/referanslar', ReferenceController::class)->name('references');
 Route::get('/stack', SkillController::class)->name('stack');
-Route::get('/bookmarks', BookmarkController::class)->name('bookmarks');
+Route::get('/yer-isaretlerim', BookmarkController::class)->name('bookmarks');
 
-Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
-Route::get('/projects/{project:slug}', [ProjectController::class, 'show'])->name('projects.show');
+Route::get('/projeler', [ProjectController::class, 'index'])->name('projects');
+Route::get('/projeler/{project:slug}', [ProjectController::class, 'show'])->name('projects.show');
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
-Route::get('/blog/category/{category:slug}', [BlogController::class, 'category'])->name('blog.category');
-Route::get('/blog/tag/{tag:slug}', [BlogController::class, 'tag'])->name('blog.tag');
+Route::get('/blog/kategori/{category:slug}', [BlogController::class, 'category'])->name('blog.category');
+Route::get('/blog/etiket/{tag:slug}', [BlogController::class, 'tag'])->name('blog.tag');
 Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 
-Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
-Route::get('/newsletter/unsubscribe/{email}/{token}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
+Route::post('/bulten/abone-ol', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+Route::get('/bulten/abonelikten-cik/{email}/{token}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
 
 Route::get('/search/index', [SearchController::class, 'index'])->name('search.index');
 
-Route::get('/pages/{page:slug}', [PageController::class, 'show'])->name('pages.show');
+Route::get('/sayfa/{page:slug}', [PageController::class, 'show'])->name('pages.show');

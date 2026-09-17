@@ -28,8 +28,8 @@ test('cookie config contains correct policy urls', function () {
 
     $response->assertSee('cookiePolicyUrl', false);
     $response->assertSee('kvkkUrl', false);
-    $response->assertSee('/pages/cookie-policy', false);
-    $response->assertSee('/pages/kvkk', false);
+    $response->assertSee('/sayfa/cookie-policy', false);
+    $response->assertSee('/sayfa/kvkk', false);
 });
 
 test('cookie config handles missing policy slugs gracefully', function () {
