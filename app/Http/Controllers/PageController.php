@@ -68,6 +68,8 @@ class PageController extends Controller
 
     public function show(Page $page): View
     {
+        abort_unless($page->isVisibleToCurrentVisitor(), 404);
+
         return view('pages.page', ['page' => $page]);
     }
 }

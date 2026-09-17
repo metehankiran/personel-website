@@ -20,11 +20,15 @@ class PageFactory extends Factory
             'slug' => fake()->unique()->slug(),
             'body' => fake()->paragraphs(5, true),
             'is_published' => false,
+            'published_at' => null,
         ];
     }
 
     public function published(): static
     {
-        return $this->state(['is_published' => true]);
+        return $this->state([
+            'is_published' => true,
+            'published_at' => fake()->dateTimeBetween('-1 year', 'now'),
+        ]);
     }
 }

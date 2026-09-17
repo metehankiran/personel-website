@@ -31,6 +31,18 @@ class PagesTable
                     ->label('Yayın')
                     ->boolean(),
 
+                TextColumn::make('published_at')
+
+                    ->label('Yayın Tarihi')
+
+                    ->dateTime('d M Y H:i')
+
+                    ->placeholder('—')
+
+                    ->description(fn ($record): ?string => $record->is_published && $record->published_at?->isFuture() ? 'Planlandı' : null)
+
+                    ->sortable(),
+
                 IconColumn::make('show_footer')
                     ->label('Footer')
                     ->boolean()

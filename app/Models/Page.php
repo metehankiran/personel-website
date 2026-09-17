@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasPublishingState;
 use App\Settings\GeneralSettings;
 use Database\Factories\PageFactory;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,10 +13,13 @@ class Page extends Model
     /** @use HasFactory<PageFactory> */
     use HasFactory;
 
+    use HasPublishingState;
+
     protected function casts(): array
     {
         return [
             'is_published' => 'boolean',
+            'published_at' => 'datetime',
             'show_footer' => 'boolean',
         ];
     }
@@ -39,11 +42,6 @@ class Page extends Model
         static::deleted(function (Page $page) {
             static::repointLinkedSettings($page->slug, null);
         });
-    }
-
-    public function scopePublished(Builder $query): Builder
-    {
-        return $query->where('is_published', true);
     }
 
     /**

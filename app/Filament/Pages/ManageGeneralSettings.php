@@ -52,10 +52,10 @@ class ManageGeneralSettings extends SettingsPage
     {
         // Sort in PHP: database collations disagree on Turkish letters (SQLite orders bytewise).
         return Page::query()
-            ->get(['title', 'slug', 'is_published'])
+            ->get(['title', 'slug', 'is_published', 'published_at'])
             ->sortBy(fn (Page $page): string => Str::ascii(Str::lower($page->title)))
             ->mapWithKeys(fn (Page $page): array => [
-                $page->slug => $page->is_published ? $page->title : "{$page->title} (taslak)",
+                $page->slug => $page->isPublished() ? $page->title : "{$page->title} (taslak)",
             ])
             ->all();
     }

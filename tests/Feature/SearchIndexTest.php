@@ -57,10 +57,9 @@ test('search index includes projects', function () {
 });
 
 test('search index includes published pages', function () {
-    Page::factory()->create([
+    Page::factory()->published()->create([
         'title' => 'KVKK Aydınlatma',
         'slug' => 'kvkk',
-        'is_published' => true,
     ]);
     Page::factory()->create([
         'title' => 'Taslak Sayfa',

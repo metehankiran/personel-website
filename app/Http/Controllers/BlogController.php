@@ -46,6 +46,8 @@ class BlogController extends Controller
 
     public function show(Post $post): View
     {
+        abort_unless($post->isVisibleToCurrentVisitor(), 404);
+
         $post->load(['category', 'tags']);
 
         $relatedPosts = Post::with('category')
