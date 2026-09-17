@@ -53,17 +53,6 @@
             "@php artisan config:clear --ansi @no_additional_args",
             "@php artisan test"
         ],
-        "deploy": [
-            "Composer\\Config::disableProcessTimeout",
-            "@composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist",
-            "npm ci --ignore-scripts",
-            "npm run build",
-            "@php artisan migrate --force --no-interaction",
-            "@php artisan storage:link --force",
-            "@php artisan optimize",
-            "@php artisan filament:optimize",
-            "@php artisan queue:restart"
-        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
