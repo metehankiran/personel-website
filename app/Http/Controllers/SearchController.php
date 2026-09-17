@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faq;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Project;
@@ -39,7 +40,9 @@ class SearchController extends Controller
             ['type' => 'Sayfa', 'title' => 'Yer İşaretleri', 'desc' => 'Faydalı linkler', 'url' => route('bookmarks'), 'icon' => 'bookmark'],
             ['type' => 'Sayfa', 'title' => 'CV', 'desc' => 'Özgeçmiş, PDF indir', 'url' => route('cv'), 'icon' => 'file-text'],
             ['type' => 'Sayfa', 'title' => 'İletişim', 'desc' => 'Email, sosyal, form', 'url' => route('contact'), 'icon' => 'mail'],
-        ]);
+        ])->when(Faq::published()->exists(), fn (Collection $pages): Collection => $pages->push(
+            ['type' => 'Sayfa', 'title' => 'Sıkça Sorulan Sorular', 'desc' => 'Fiyat, süre ve süreçle ilgili yanıtlar', 'url' => route('faq'), 'icon' => 'circle-help'],
+        ));
     }
 
     private function dynamicPages(): Collection

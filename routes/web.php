@@ -22,6 +22,7 @@ Route::get('/hakkimda', [PageController::class, 'about'])->name('about');
 Route::get('/hizmetler', [PageController::class, 'services'])->name('services');
 Route::get('/cv', [PageController::class, 'cv'])->name('cv');
 Route::get('/iletisim', [PageController::class, 'contact'])->name('contact');
+Route::get('/sss', [PageController::class, 'faq'])->name('faq');
 
 Route::get('/referanslar', ReferenceController::class)->name('references');
 Route::get('/teknolojiler', SkillController::class)->name('stack');

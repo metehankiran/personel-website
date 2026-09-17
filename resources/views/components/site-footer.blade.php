@@ -25,6 +25,7 @@
                 <a href="{{ $link('about') }}" class="{{ $footerLinkClass }}">Hakkımda</a>
                 <a href="{{ $link('projects') }}" class="{{ $footerLinkClass }}">Projeler</a>
                 <a href="{{ $link('blog') }}" class="{{ $footerLinkClass }}">Blog</a>
+                <a href="{{ $link('faq') }}" class="{{ $footerLinkClass }}" title="Sıkça Sorulan Sorular">SSS</a>
             </div>
         </div>
 

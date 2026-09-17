@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Faq;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Project;
@@ -82,6 +83,7 @@ class SeoController extends Controller
                     'Teknolojiler' => Seo::route('stack'),
                     'CV' => Seo::route('cv'),
                     'İletişim' => Seo::route('contact'),
+                    ...(Faq::published()->exists() ? ['Sıkça Sorulan Sorular' => Seo::route('faq')] : []),
                 ],
                 'projects' => Project::ordered()->get(['title', 'slug', 'description']),
                 'posts' => Post::published()->latest('published_at')->limit(30)->get(['title', 'slug', 'excerpt']),
@@ -105,6 +107,7 @@ class SeoController extends Controller
 
         return collect(self::STATIC_PAGES)
             ->map(fn (array $page): array => $entry(Seo::route($page[0]), null, $page[1], $page[2]))
+            ->when(Faq::published()->exists(), fn (Collection $entries): Collection => $entries->push($entry(Seo::route('faq'), Faq::published()->max('updated_at') ? Carbon::parse(Faq::published()->max('updated_at')) : null, 'monthly', '0.6')))
             ->concat(Post::published()->latest('published_at')->get()->map(fn (Post $post): array => $entry(Seo::route('blog.show', $post), $post->updated_at, 'monthly', '0.7')))
             ->concat(Project::ordered()->get()->map(fn (Project $project): array => $entry(Seo::route('projects.show', $project), $project->updated_at, 'monthly', '0.7')))
             ->concat(Category::whereHas('posts', $hasPublishedPosts)->get()->map(fn (Category $category): array => $entry(Seo::route('blog.category', $category), $category->updated_at, 'weekly', '0.4')))

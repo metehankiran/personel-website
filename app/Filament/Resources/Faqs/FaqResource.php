@@ -27,7 +27,7 @@ class FaqResource extends Resource
 
     protected static ?string $modelLabel = 'Soru';
 
-    protected static ?string $pluralModelLabel = 'Sık Sorulan Sorular';
+    protected static ?string $pluralModelLabel = 'Sıkça Sorulan Sorular';
 
     protected static ?string $recordTitleAttribute = 'question';
 

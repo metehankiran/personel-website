@@ -4,7 +4,7 @@
 @section('meta_description', $services->isNotEmpty() ? 'Birlikte çalışmanın yolları: '.$services->pluck('title')->join(', ', ' ve ').'. Kapsam, süre ve fiyatlandırma bilgileriyle.' : 'Birlikte çalışmanın yolları: kapsam, süre ve fiyatlandırma bilgileriyle sunulan yazılım geliştirme hizmetleri.')
 
 @push('schema')
-    {{ \App\Support\Schema::script(\App\Support\Schema::services($services), \App\Support\Schema::faqPage($faqs), \App\Support\Schema::breadcrumbs(['Hizmetler' => \App\Support\Seo::route('services')])) }}
+    {{ \App\Support\Schema::script(\App\Support\Schema::services($services), \App\Support\Schema::breadcrumbs(['Hizmetler' => \App\Support\Seo::route('services')])) }}
 @endpush
 
 @section('content')
@@ -81,22 +81,14 @@
                 </div>
             </div>
 
-            {{-- FAQ: native <details> keeps every answer in the HTML for crawlers and needs no JavaScript --}}
             @if($faqs->isNotEmpty())
-                <div class="mt-20">
-                    <x-section-heading class="mb-7">Sık sorulan sorular</x-section-heading>
-                    <div class="max-w-[820px] border-t border-neutral-200 dark:border-neutral-800">
-                        @foreach($faqs as $faq)
-                            <details class="group border-b border-neutral-200 dark:border-neutral-800" @if($loop->first) open @endif>
-                                <summary class="flex items-center justify-between gap-6 py-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-                                    <h3 class="m-0 text-[17px] font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">{{ $faq->question }}</h3>
-                                    <svg class="w-4 h-4 shrink-0 text-neutral-400 transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-                                </summary>
-                                <p class="m-0 pb-6 pr-10 text-[15px] leading-[1.7] text-neutral-600 dark:text-neutral-400">{!! nl2br(e($faq->answer)) !!}</p>
-                            </details>
-                        @endforeach
-                    </div>
-                </div>
+                <a href="{{ route('faq') }}" class="mt-16 flex items-center justify-between gap-6 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-300 dark:hover:border-neutral-700 group">
+                    <span>
+                        <span class="block text-[17px] font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">Aklına takılan bir şey mi var?</span>
+                        <span class="block mt-1 text-sm text-neutral-600 dark:text-neutral-400">Fiyat, süre ve süreçle ilgili en sık gelen {{ $faqs->count() }} soruyu yanıtladım.</span>
+                    </span>
+                    <span class="shrink-0 inline-flex items-center gap-1.5 text-[13px] font-medium text-neutral-950 dark:text-neutral-50">Sıkça sorulan sorular <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-0.5"></i></span>
+                </a>
             @endif
         </div>
     </section>

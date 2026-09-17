@@ -14,7 +14,7 @@ class FaqForm
     {
         return $schema->components([
             Section::make('Soru ve Yanıt')
-                ->description('Hizmetler sayfasının altındaki "Sık sorulan sorular" bölümünde görünür. Arama motorları ve yapay zekâ asistanları doğrudan bu yanıtları alıntılar.')
+                ->description('Sitedeki "Sıkça Sorulan Sorular" sayfasında (/sss) görünür. Arama motorları ve yapay zekâ asistanları doğrudan bu yanıtları alıntılar.')
                 ->schema([
                     TextInput::make('question')
                         ->label('Soru')

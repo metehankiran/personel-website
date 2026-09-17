@@ -28,7 +28,7 @@ it('lays static pages out in the same container as the other pages', function ()
 
 it('uses the shared container on every top level page', function (string $route) {
     $this->get(route($route))->assertSee(SITE_CONTAINER, escape: false);
-})->with(['home', 'about', 'services', 'references', 'stack', 'projects', 'bookmarks', 'blog', 'contact', 'cv']);
+})->with(['home', 'about', 'services', 'references', 'stack', 'projects', 'bookmarks', 'blog', 'contact', 'cv', 'faq']);
 
 it('calls the stack page "Teknolojiler" everywhere a visitor reads it', function () {
     $html = $this->get(route('stack'))->assertOk()->getContent();

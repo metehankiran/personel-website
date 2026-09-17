@@ -42,10 +42,14 @@ it('leaves drafts and scheduled pages out of the menu', function () {
         ->not->toContain('Planlı Sayfa');
 });
 
-it('hides the menu entirely when there is nothing to list', function () {
+it('still shows the menu with the faq link when no static page is published', function () {
     Page::factory()->create(['title' => 'Taslak Sayfa']);
 
-    expect(headerHtml(route('home')))->not->toContain('data-nav-group="pages"')->not->toContain('Sayfalar');
+    $header = headerHtml(route('home'));
+
+    expect(substr_count($header, 'data-nav-group="pages"'))->toBe(2)
+        ->and($header)->toContain('Sıkça Sorulan Sorular')
+        ->not->toContain('Taslak Sayfa');
 });
 
 it('orders the pages by title with Turkish letters in their place', function () {

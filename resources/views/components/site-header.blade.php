@@ -29,11 +29,12 @@
     $groups = [
         'works' => $nav->only(['projects', 'services', 'references', 'stack'])->contains(true),
         'writing' => $nav->only(['blog', 'bookmarks'])->contains(true),
-        'pages' => request()->routeIs('pages.show'),
+        'pages' => request()->routeIs('pages.show', 'faq'),
     ];
 
     // Slug of the static page being viewed, to mark it inside the "Sayfalar" menu.
-    $openPageSlug = $groups['pages'] ? request()->route('page')?->slug : null;
+    $openPageSlug = request()->routeIs('pages.show') ? request()->route('page')?->slug : null;
+    $onFaq = request()->routeIs('faq');
 
     $current = fn (string $item): string => $nav[$item] ? 'aria-current="page"' : '';
 @endphp
@@ -108,7 +109,6 @@
             </div>
 
             {{-- Sayfalar Dropdown: published static pages, managed in the panel --}}
-            @if($menuPages->isNotEmpty())
                 <div class="relative group">
                     <button data-nav-group="pages" data-active="{{ $groups['pages'] ? 'true' : 'false' }}" @class([$navLinkClass, $navLinkActive => $groups['pages'], 'group-hover:bg-neutral-100 dark:group-hover:bg-neutral-900 group-hover:text-neutral-950 dark:group-hover:text-neutral-50']) type="button">
                         <i data-lucide="files" class="w-3.5 h-3.5"></i> Sayfalar
@@ -116,6 +116,9 @@
                     </button>
                     <div class="absolute top-full left-0 pt-1.5 hidden group-hover:block z-50">
                         <div class="min-w-[240px] bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-lg p-2">
+                            <a href="{{ route('faq') }}" {!! $onFaq ? 'aria-current="page"' : '' !!} @class([$dropLinkClass, $dropLinkActive => $onFaq])>
+                                <div class="{{ $dropTitleClass }} mb-0"><i data-lucide="circle-help" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>Sıkça Sorulan Sorular</div>
+                            </a>
                             @foreach($menuPages as $menuPage)
                                 <a href="{{ route('pages.show', $menuPage) }}" {!! $openPageSlug === $menuPage->slug ? 'aria-current="page"' : '' !!} @class([$dropLinkClass, $dropLinkActive => $openPageSlug === $menuPage->slug])>
                                     <div class="{{ $dropTitleClass }} mb-0"><i data-lucide="file-text" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>{{ $menuPage->title }}</div>
@@ -124,7 +127,6 @@
                         </div>
                     </div>
                 </div>
-            @endif
 
             <div>
                 <a href="{{ $link('cv') }}" {!! $current('cv') !!} @class([$navLinkClass, $navLinkActive => $nav['cv']])><i data-lucide="file-text" class="w-3.5 h-3.5"></i> CV</a>
@@ -222,7 +224,6 @@
             </div>
 
             {{-- Sayfalar (Collapsible) --}}
-            @if($menuPages->isNotEmpty())
                 <div>
                     <button type="button" data-nav-group="pages" data-active="{{ $groups['pages'] ? 'true' : 'false' }}" @class(['w-full flex items-center justify-between', $mobileNavClass, 'text-neutral-950 dark:text-neutral-50 font-medium' => $groups['pages']]) data-mobile-collapse>
                         <span class="flex items-center gap-2"><i data-lucide="files" class="w-4 h-4"></i> Sayfalar</span>
@@ -230,13 +231,13 @@
                     </button>
                     <div class="max-h-0 overflow-hidden transition-all duration-200 ease-in-out pl-6" @if($groups['pages']) style="max-height: none" @endif>
                         <div class="flex flex-col gap-1 pt-1">
+                            <a href="{{ route('faq') }}" {!! $onFaq ? 'aria-current="page"' : '' !!} @class([$mobileNavClass, $mobileNavActive => $onFaq])><span class="flex items-center gap-2"><i data-lucide="circle-help" class="w-4 h-4"></i> Sıkça Sorulan Sorular</span></a>
                             @foreach($menuPages as $menuPage)
                                 <a href="{{ route('pages.show', $menuPage) }}" {!! $openPageSlug === $menuPage->slug ? 'aria-current="page"' : '' !!} @class([$mobileNavClass, $mobileNavActive => $openPageSlug === $menuPage->slug])><span class="flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> {{ $menuPage->title }}</span></a>
                             @endforeach
                         </div>
                     </div>
                 </div>
-            @endif
 
             <a href="{{ $link('cv') }}" {!! $current('cv') !!} @class([$mobileNavClass, $mobileNavActive => $nav['cv']])>
                 <span class="flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> CV</span>

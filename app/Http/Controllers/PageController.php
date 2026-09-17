@@ -60,6 +60,13 @@ class PageController extends Controller
         ]);
     }
 
+    public function faq(): View
+    {
+        return view('pages.faq', [
+            'faqs' => Faq::published()->ordered()->get(),
+        ]);
+    }
+
     public function contact(): View
     {
         return view('pages.contact', [

@@ -25,6 +25,7 @@ it('serves the public pages under Turkish urls', function (string $route, string
     'projects' => ['projects', '/projeler'],
     'bookmarks' => ['bookmarks', '/yer-isaretlerim'],
     'contact' => ['contact', '/iletisim'],
+    'faq' => ['faq', '/sss'],
     'blog' => ['blog', '/blog'],
     'stack' => ['stack', '/teknolojiler'],
     'cv' => ['cv', '/cv'],
