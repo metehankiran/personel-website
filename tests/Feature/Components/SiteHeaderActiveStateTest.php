@@ -67,7 +67,12 @@ it('lets the brand shrink and truncate so the header never overflows narrow scre
     $html = $this->get(route('home'))->getContent();
 
     // The control group on the right keeps its size; the brand gives way instead.
-    expect($html)->toContain('data-site-brand class="flex items-center gap-3 min-w-0"')
+    // Below xl the brand gives way and truncates; from xl up the navigation is visible and the name must stay whole.
+    expect($html)->toContain('data-site-brand class="flex items-center gap-3 min-w-0 xl:shrink-0"')
         ->and($html)->toContain('data-site-brand-name class="truncate ')
         ->and($html)->not->toContain('data-site-brand class="flex items-center gap-3 shrink-0"');
+});
+
+it('shrinks the search box on narrow desktops so the navigation and the brand both fit', function () {
+    expect($this->get(route('home'))->getContent())->toContain('min-w-[220px] xl:min-w-[150px] 2xl:min-w-[220px]');
 });

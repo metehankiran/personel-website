@@ -29,7 +29,11 @@
     $groups = [
         'works' => $nav->only(['projects', 'services', 'references', 'stack'])->contains(true),
         'writing' => $nav->only(['blog', 'bookmarks'])->contains(true),
+        'pages' => request()->routeIs('pages.show'),
     ];
+
+    // Slug of the static page being viewed, to mark it inside the "Sayfalar" menu.
+    $openPageSlug = $groups['pages'] ? request()->route('page')?->slug : null;
 
     $current = fn (string $item): string => $nav[$item] ? 'aria-current="page"' : '';
 @endphp
@@ -38,7 +42,7 @@
     <div class="max-w-7xl mx-auto px-6 xl:px-12 py-4 xl:py-5 flex items-center justify-between gap-4 xl:gap-8">
 
         {{-- Brand --}}
-        <a href="{{ route('home') }}" data-site-brand class="flex items-center gap-3 min-w-0">
+        <a href="{{ route('home') }}" data-site-brand class="flex items-center gap-3 min-w-0 xl:shrink-0">
             @if(\App\Support\Images::exists($general->logo_path))
                 <img data-site-logo src="{{ \App\Support\Images::url($general->logo_path) }}" alt="" class="h-7 w-auto max-w-[120px] object-contain shrink-0" />
             @else
@@ -109,6 +113,25 @@
                 </div>
             </div>
 
+            {{-- Sayfalar Dropdown: published static pages, managed in the panel --}}
+            @if($menuPages->isNotEmpty())
+                <div class="relative group">
+                    <button data-nav-group="pages" data-active="{{ $groups['pages'] ? 'true' : 'false' }}" @class([$navLinkClass, $navLinkActive => $groups['pages'], 'group-hover:bg-neutral-100 dark:group-hover:bg-neutral-900 group-hover:text-neutral-950 dark:group-hover:text-neutral-50']) type="button">
+                        <i data-lucide="files" class="w-3.5 h-3.5"></i> Sayfalar
+                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-60 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="absolute top-full left-0 pt-1.5 hidden group-hover:block z-50">
+                        <div class="min-w-[240px] bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-lg p-2">
+                            @foreach($menuPages as $menuPage)
+                                <a href="{{ route('pages.show', $menuPage) }}" {!! $openPageSlug === $menuPage->slug ? 'aria-current="page"' : '' !!} @class([$dropLinkClass, $dropLinkActive => $openPageSlug === $menuPage->slug])>
+                                    <div class="{{ $dropTitleClass }} mb-0"><i data-lucide="file-text" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>{{ $menuPage->title }}</div>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <div>
                 <a href="{{ $link('cv') }}" {!! $current('cv') !!} @class([$navLinkClass, $navLinkActive => $nav['cv']])><i data-lucide="file-text" class="w-3.5 h-3.5"></i> CV</a>
             </div>
@@ -136,7 +159,7 @@
             </div>
 
             {{-- Search Trigger (Desktop) --}}
-            <button type="button" class="search-trigger hidden sm:inline-flex items-center gap-2.5 px-3 py-[7px] min-w-[220px] bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-neutral-600 dark:text-neutral-400 text-[13px] font-sans transition-colors hover:border-neutral-400 dark:hover:border-neutral-600 cursor-pointer"
+            <button type="button" class="search-trigger hidden sm:inline-flex items-center gap-2.5 px-3 py-[7px] min-w-[220px] xl:min-w-[150px] 2xl:min-w-[220px] bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-neutral-600 dark:text-neutral-400 text-[13px] font-sans transition-colors hover:border-neutral-400 dark:hover:border-neutral-600 cursor-pointer"
                 data-search-trigger aria-label="Sitede ara (Cmd+K)" aria-haspopup="dialog">
                 <i data-lucide="search" class="w-3.5 h-3.5 opacity-60 shrink-0"></i>
                 <span class="flex-1 text-left">Ara…</span>
@@ -203,6 +226,23 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Sayfalar (Collapsible) --}}
+            @if($menuPages->isNotEmpty())
+                <div>
+                    <button type="button" data-nav-group="pages" data-active="{{ $groups['pages'] ? 'true' : 'false' }}" @class(['w-full flex items-center justify-between', $mobileNavClass, 'text-neutral-950 dark:text-neutral-50 font-medium' => $groups['pages']]) data-mobile-collapse>
+                        <span class="flex items-center gap-2"><i data-lucide="files" class="w-4 h-4"></i> Sayfalar</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 opacity-60"></i>
+                    </button>
+                    <div class="max-h-0 overflow-hidden transition-all duration-200 ease-in-out pl-6" @if($groups['pages']) style="max-height: none" @endif>
+                        <div class="flex flex-col gap-1 pt-1">
+                            @foreach($menuPages as $menuPage)
+                                <a href="{{ route('pages.show', $menuPage) }}" {!! $openPageSlug === $menuPage->slug ? 'aria-current="page"' : '' !!} @class([$mobileNavClass, $mobileNavActive => $openPageSlug === $menuPage->slug])><span class="flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> {{ $menuPage->title }}</span></a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <a href="{{ $link('cv') }}" {!! $current('cv') !!} @class([$mobileNavClass, $mobileNavActive => $nav['cv']])>
                 <span class="flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> CV</span>
