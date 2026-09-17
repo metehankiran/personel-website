@@ -33,7 +33,7 @@
                             <x-image :src="$project->cover_image" fallback="cover" :alt="$project->title" class="w-full h-full object-cover" />
                         </div>
                         <div class="flex justify-between items-baseline mb-1.5">
-                            <h3 class="m-0 {{ $loop->first ? 'text-[22px]' : 'text-base' }} font-semibold text-neutral-950 dark:text-neutral-50">{{ $project->title }}</h3>
+                            <h2 class="m-0 {{ $loop->first ? 'text-[22px]' : 'text-base' }} font-semibold text-neutral-950 dark:text-neutral-50">{{ $project->title }}</h2>
                             <span class="text-xs text-neutral-600 dark:text-neutral-400 tabular-nums">{{ $project->year }}</span>
                         </div>
                         <div class="text-[13px] text-neutral-600 dark:text-neutral-400 leading-relaxed mb-3">{{ $project->description }}</div>

@@ -18,7 +18,8 @@
                             {{ $general->availability_status }}
                         </x-eyebrow>
                     @endif
-                    @php($heroTitle = \App\Support\InlineHtml::from($general->hero_title))
+                    {{-- The page always gets its h1: without a hero title from the panel it is the author's or the site's name. --}}
+                    @php($heroTitle = \App\Support\InlineHtml::from($general->hero_title) ?: e($general->author_name ?: ($general->site_title ?: config('app.name'))))
                     @if($heroTitle !== '')
                         <h1 class="text-[44px] sm:text-[56px] lg:text-[72px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0 [&_em]:italic [&_em]:font-normal">{!! $heroTitle !!}</h1>
                     @endif

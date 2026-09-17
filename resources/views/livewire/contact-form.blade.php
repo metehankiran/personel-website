@@ -23,7 +23,7 @@
             </div>
         @else
             <form wire:submit="send" class="flex flex-col gap-5" wire:key="contact-form" novalidate>
-                <h3 class="text-[22px] font-semibold text-neutral-950 dark:text-neutral-50 m-0">Hızlıca yaz</h3>
+                <h2 class="text-[22px] font-semibold text-neutral-950 dark:text-neutral-50 m-0">Hızlıca yaz</h2>
 
                 <div>
                     @error('form')

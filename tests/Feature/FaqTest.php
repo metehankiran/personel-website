@@ -38,7 +38,7 @@ it('shows the questions on their own page in order, with the answers in the html
 it('uses a question heading for each entry', function () {
     Faq::factory()->create(['question' => 'Teslim süresi ne kadar?']);
 
-    expect($this->get(route('faq'))->getContent())->toMatch('#<h3[^>]*>\s*Teslim süresi ne kadar\?\s*</h3>#u');
+    expect($this->get(route('faq'))->getContent())->toMatch('#<h2[^>]*>\s*Teslim süresi ne kadar\?\s*</h2>#u');
 });
 
 it('lists the other pages in a sidebar beside the questions, with the faq marked as current', function () {

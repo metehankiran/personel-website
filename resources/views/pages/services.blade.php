@@ -22,7 +22,7 @@
                 @foreach($services as $service)
                     <div class="flex-[0_1_calc(33.333%-14px)] min-w-[280px] max-sm:flex-[0_1_100%] p-8 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 flex flex-col">
                         <div class="text-[11px] opacity-60 tracking-[1.4px] uppercase mb-3 text-neutral-950 dark:text-neutral-50">{{ $service->badge ?? 'Hizmet' }}</div>
-                        <h3 class="m-0 mb-3 text-[26px] font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">{{ $service->title }}</h3>
+                        <h2 class="m-0 mb-3 text-[26px] font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">{{ $service->title }}</h2>
                         <p class="m-0 mb-6 text-sm opacity-75 leading-relaxed text-neutral-950 dark:text-neutral-50">{{ $service->description }}</p>
 
                         <div class="flex flex-col gap-2.5 mb-7">
@@ -61,22 +61,22 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="border-t border-neutral-200 dark:border-neutral-800 pt-5">
                     <div class="text-[13px] text-neutral-500 font-mono mb-3">01</div>
-                    <h4 class="m-0 mb-2 text-[17px] font-semibold text-neutral-950 dark:text-neutral-50">Tanışma</h4>
+                    <h3 class="m-0 mb-2 text-[17px] font-semibold text-neutral-950 dark:text-neutral-50">Tanışma</h3>
                     <p class="m-0 text-[13px] text-neutral-600 dark:text-neutral-400 leading-relaxed">Kısa bir görüşmede projeyi anlarım, sana içeride uygun olup olmadığımı söylerim.</p>
                 </div>
                 <div class="border-t border-neutral-200 dark:border-neutral-800 pt-5">
                     <div class="text-[13px] text-neutral-500 font-mono mb-3">02</div>
-                    <h4 class="m-0 mb-2 text-[17px] font-semibold text-neutral-950 dark:text-neutral-50">Teklif</h4>
+                    <h3 class="m-0 mb-2 text-[17px] font-semibold text-neutral-950 dark:text-neutral-50">Teklif</h3>
                     <p class="m-0 text-[13px] text-neutral-600 dark:text-neutral-400 leading-relaxed">Net kapsam, tahmin ve fiyat. Her şey yazılı, sürpriz yok.</p>
                 </div>
                 <div class="border-t border-neutral-200 dark:border-neutral-800 pt-5">
                     <div class="text-[13px] text-neutral-500 font-mono mb-3">03</div>
-                    <h4 class="m-0 mb-2 text-[17px] font-semibold text-neutral-950 dark:text-neutral-50">İnşa</h4>
+                    <h3 class="m-0 mb-2 text-[17px] font-semibold text-neutral-950 dark:text-neutral-50">İnşa</h3>
                     <p class="m-0 text-[13px] text-neutral-600 dark:text-neutral-400 leading-relaxed">Haftalık demo + gerçek zamanlı staging. Süreç boyunca açık kanalım.</p>
                 </div>
                 <div class="border-t border-neutral-200 dark:border-neutral-800 pt-5">
                     <div class="text-[13px] text-neutral-500 font-mono mb-3">04</div>
-                    <h4 class="m-0 mb-2 text-[17px] font-semibold text-neutral-950 dark:text-neutral-50">Teslim</h4>
+                    <h3 class="m-0 mb-2 text-[17px] font-semibold text-neutral-950 dark:text-neutral-50">Teslim</h3>
                     <p class="m-0 text-[13px] text-neutral-600 dark:text-neutral-400 leading-relaxed">Production deployment, dokümantasyon, 30 gün ücretsiz destek.</p>
                 </div>
             </div>

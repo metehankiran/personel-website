@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Models\Category;
 use App\Models\Faq;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Project;
+use App\Models\Service;
 use App\Models\Tag;
+use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 
@@ -143,3 +146,22 @@ it('describes the projects in plain Turkish instead of calling them case studies
 
     expect($this->get(route('projects'))->getContent())->not->toContain('case study');
 });
+
+it('never skips a heading level', function (string $route) {
+    Service::factory()->count(2)->create();
+    Project::factory()->count(2)->create();
+    Faq::factory()->count(2)->create(['is_published' => true]);
+    Testimonial::factory()->create();
+    Post::factory()->published()->for(Category::factory())->create();
+
+    preg_match_all('/<h([1-6])\\b/', $this->get(route($route))->assertOk()->getContent(), $matches);
+    $levels = array_map(intval(...), $matches[1]);
+
+    expect($levels[0] ?? null)->toBe(1, "[{$route}] does not open with an h1");
+
+    foreach ($levels as $index => $level) {
+        $previous = $levels[$index - 1] ?? 1;
+
+        expect($level)->toBeLessThanOrEqual($previous + 1, "[{$route}] jumps from h{$previous} to h{$level}: ".implode(' ', $levels));
+    }
+})->with(['home', 'about', 'services', 'projects', 'references', 'stack', 'blog', 'cv', 'contact', 'faq', 'bookmarks', 'search']);
