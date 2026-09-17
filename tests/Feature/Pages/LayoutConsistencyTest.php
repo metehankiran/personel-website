@@ -124,12 +124,14 @@ it('fills the row beside a static page with a list of the other pages', function
         ->toMatch('#<a href="'.preg_quote(route('pages.show', $page), '#').'"[^>]*aria-current="page"#u');
 });
 
-it('runs the faq list across the full container and keeps the answers at reading width', function () {
+it('runs the faq list and its answers across the full container', function () {
     Faq::factory()->create(['is_published' => true]);
 
     $html = $this->get(route('faq'))->assertOk()->getContent();
+    preg_match('#<details.*</details>#su', $html, $list);
 
-    expect($html)->not->toContain('max-w-[820px]')->toContain('max-w-[760px]');
+    // An answer capped narrower than its question row leaves a third of the row empty on desktop.
+    expect($list[0] ?? '')->not->toBeEmpty()->not->toContain('max-w-[');
 });
 
 it('reserves the scrollbar gutter so short and long pages share the same content box', function () {
