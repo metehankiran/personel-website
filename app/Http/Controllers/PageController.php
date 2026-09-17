@@ -17,7 +17,6 @@ use App\Settings\AboutSettings;
 use App\Settings\GeneralSettings;
 use App\Settings\SocialSettings;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Str;
 
 class PageController extends Controller
 {
@@ -55,7 +54,7 @@ class PageController extends Controller
             'educations' => Education::ordered()->get(),
             'languages' => Language::ordered()->get(),
             'cvPath' => $settings->cv_path ?: null,
-            'cvDownloadName' => $settings->cv_original_name ?: Str::slug($settings->author_name.' cv').'.pdf',
+            'cvDownloadName' => $settings->cvDownloadName(),
         ]);
     }
 

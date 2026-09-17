@@ -78,9 +78,16 @@
                                 @endforeach
                             @endif
                         </div>
-                        <a href="{{ $link('cv') }}" class="mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-[13px] font-medium rounded-lg bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85">
-                            <i data-lucide="download" class="w-3.5 h-3.5"></i> CV'yi indir
-                        </a>
+                        <div class="mt-5 flex gap-2">
+                            <a href="{{ $link('cv') }}" data-cv-view class="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2.5 text-[13px] font-medium rounded-lg border border-neutral-200 dark:border-neutral-700 text-neutral-950 dark:text-neutral-50 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800 whitespace-nowrap">
+                                <i data-lucide="file-text" class="w-3.5 h-3.5"></i> CV görüntüle
+                            </a>
+                            @if($general->cvUrl())
+                                <a href="{{ $general->cvUrl() }}" data-cv-download download="{{ $general->cvDownloadName() }}" class="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2.5 text-[13px] font-medium rounded-lg bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85 whitespace-nowrap">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i> CV indir
+                                </a>
+                            @endif
+                        </div>
                     </div>
                 </aside>
 
