@@ -24,40 +24,21 @@
                     </div>
 
                     {{-- Timeline --}}
-                    <div class="mt-16">
-                        <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-5">Zaman çizelgesi</div>
+                    @if($timeline->isNotEmpty())
+                        <div class="mt-16">
+                            <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-5">Zaman çizelgesi</div>
 
-                        <div class="grid grid-cols-[80px_200px_1fr] max-sm:grid-cols-[70px_1fr] gap-x-6 py-5 border-b border-neutral-200 dark:border-neutral-800 border-t items-baseline">
-                            <span class="text-[13px] text-neutral-500 tabular-nums">2026</span>
-                            <span class="text-[15px] font-semibold text-neutral-950 dark:text-neutral-50">Şu an</span>
-                            <span class="text-sm text-neutral-600 dark:text-neutral-400 max-sm:col-span-full">Karavela v2 üzerinde çalışıyorum. {{ $general->availability_status ?? 'Yeni proje alıyor' }}.</span>
+                            @foreach($timeline as $entry)
+                                <div @class(['grid grid-cols-[80px_200px_1fr] max-sm:grid-cols-[70px_1fr] gap-x-6 py-5 border-b border-neutral-200 dark:border-neutral-800 items-baseline', 'border-t' => $loop->first])>
+                                    <span class="text-[13px] text-neutral-500 tabular-nums">{{ $entry->period }}</span>
+                                    <span class="text-[15px] font-semibold text-neutral-950 dark:text-neutral-50">{{ $entry->title }}</span>
+                                    @if($entry->description)
+                                        <span class="text-sm text-neutral-600 dark:text-neutral-400 max-sm:col-span-full">{{ $entry->description }}</span>
+                                    @endif
+                                </div>
+                            @endforeach
                         </div>
-                        <div class="grid grid-cols-[80px_200px_1fr] max-sm:grid-cols-[70px_1fr] gap-x-6 py-5 border-b border-neutral-200 dark:border-neutral-800 items-baseline">
-                            <span class="text-[13px] text-neutral-500 tabular-nums">2024</span>
-                            <span class="text-[15px] font-semibold text-neutral-950 dark:text-neutral-50">Karavela</span>
-                            <span class="text-sm text-neutral-600 dark:text-neutral-400 max-sm:col-span-full">Multi-tenant e-ticaret SaaS projesini sıfırdan inşa ettim.</span>
-                        </div>
-                        <div class="grid grid-cols-[80px_200px_1fr] max-sm:grid-cols-[70px_1fr] gap-x-6 py-5 border-b border-neutral-200 dark:border-neutral-800 items-baseline">
-                            <span class="text-[13px] text-neutral-500 tabular-nums">2022</span>
-                            <span class="text-[15px] font-semibold text-neutral-950 dark:text-neutral-50">Tam zamanlı freelance</span>
-                            <span class="text-sm text-neutral-600 dark:text-neutral-400 max-sm:col-span-full">Şirket bağlantımı bırakıp tamamen freelance kariyerine geçtim.</span>
-                        </div>
-                        <div class="grid grid-cols-[80px_200px_1fr] max-sm:grid-cols-[70px_1fr] gap-x-6 py-5 border-b border-neutral-200 dark:border-neutral-800 items-baseline">
-                            <span class="text-[13px] text-neutral-500 tabular-nums">2021</span>
-                            <span class="text-[15px] font-semibold text-neutral-950 dark:text-neutral-50">İlk büyük müşteri</span>
-                            <span class="text-sm text-neutral-600 dark:text-neutral-400 max-sm:col-span-full">Bir kurumsal CRM projesini 6 ayda teslim ettim.</span>
-                        </div>
-                        <div class="grid grid-cols-[80px_200px_1fr] max-sm:grid-cols-[70px_1fr] gap-x-6 py-5 border-b border-neutral-200 dark:border-neutral-800 items-baseline">
-                            <span class="text-[13px] text-neutral-500 tabular-nums">2020</span>
-                            <span class="text-[15px] font-semibold text-neutral-950 dark:text-neutral-50">Profesyonel başlangıç</span>
-                            <span class="text-sm text-neutral-600 dark:text-neutral-400 max-sm:col-span-full">Yarı zamanlı freelance işler almaya başladım.</span>
-                        </div>
-                        <div class="grid grid-cols-[80px_200px_1fr] max-sm:grid-cols-[70px_1fr] gap-x-6 py-5 border-b border-neutral-200 dark:border-neutral-800 items-baseline">
-                            <span class="text-[13px] text-neutral-500 tabular-nums">2018</span>
-                            <span class="text-[15px] font-semibold text-neutral-950 dark:text-neutral-50">Kodla tanışma</span>
-                            <span class="text-sm text-neutral-600 dark:text-neutral-400 max-sm:col-span-full">Lise yıllarında PHP ile başladım.</span>
-                        </div>
-                    </div>
+                    @endif
                 </div>
 
                 {{-- Sidebar --}}
