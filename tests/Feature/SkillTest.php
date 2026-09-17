@@ -24,7 +24,8 @@ test('skill items store structured data with level', function () {
 
     $fresh = $skill->fresh();
 
-    expect($fresh->items)->toBe($items)
+    // MySQL JSON columns do not preserve object key order, so compare loosely.
+    expect($fresh->items)->toEqual($items)
         ->and($fresh->items[0]['level'])->toBe(5);
 });
 
