@@ -102,7 +102,7 @@ Turkish allowed (only for things the end user sees):
 - Validation messages shown to users
 - Email subjects and bodies sent to users
 - UI labels, button text, flash messages
-- Public URL paths, in ASCII without Turkish characters (`/hakkimda`, `/iletisim`, `/projeler/{slug}`, `/blog/kategori/{slug}`)
+- Public URL paths, in ASCII without Turkish characters (`/hakkimda`, `/iletisim`, `/teknolojiler`, `/projeler/{slug}`, `/blog/kategori/{slug}`)
 - Seed data when it represents user-facing content (sample posts, etc.)
 
 URLs are Turkish because visitors see them, but route names stay English like the rest of the code: `Route::get('/hakkimda', ...)->name('about')` with `<a href="{{ route('about') }}">Hakkımda</a>` in the view. Internal endpoints (`/search/index`, `/admin`) stay English. All public routes live in `routes/web.php`; changing a URL must never require touching a view.

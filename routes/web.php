@@ -23,7 +23,7 @@ Route::get('/cv', [PageController::class, 'cv'])->name('cv');
 Route::get('/iletisim', [PageController::class, 'contact'])->name('contact');
 
 Route::get('/referanslar', ReferenceController::class)->name('references');
-Route::get('/stack', SkillController::class)->name('stack');
+Route::get('/teknolojiler', SkillController::class)->name('stack');
 Route::get('/yer-isaretlerim', BookmarkController::class)->name('bookmarks');
 
 Route::get('/projeler', [ProjectController::class, 'index'])->name('projects');

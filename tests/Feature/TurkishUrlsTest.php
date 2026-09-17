@@ -26,7 +26,7 @@ it('serves the public pages under Turkish urls', function (string $route, string
     'bookmarks' => ['bookmarks', '/yer-isaretlerim'],
     'contact' => ['contact', '/iletisim'],
     'blog' => ['blog', '/blog'],
-    'stack' => ['stack', '/stack'],
+    'stack' => ['stack', '/teknolojiler'],
     'cv' => ['cv', '/cv'],
 ]);
 
@@ -50,7 +50,7 @@ it('serves detail pages under Turkish urls', function () {
 
 it('no longer answers on the old English urls', function (string $path) {
     $this->get($path)->assertNotFound();
-})->with(['/about', '/services', '/references', '/projects', '/bookmarks', '/contact', '/blog/category/mimari', '/blog/tag/laravel', '/pages/kvkk']);
+})->with(['/about', '/services', '/references', '/projects', '/bookmarks', '/contact', '/stack', '/blog/category/mimari', '/blog/tag/laravel', '/pages/kvkk']);
 
 it('does not mistake the Turkish category and tag segments for a post slug', function () {
     Post::factory()->published()->for(Category::factory())->create(['slug' => 'kategori']);
