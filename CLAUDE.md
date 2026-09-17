@@ -7,8 +7,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Personal blog site built on **Laravel 13 + Tailwind v4 + Pest 4**. Currently a fresh Laravel skeleton — the blog domain (posts, categories, tags, etc.) has not yet been built. Treat the current state as a starting point: when adding blog features, scaffold via `php artisan make:` commands and follow the conventions described below.
 
 - Owner: Metehan Kıran (single-user / single-author site)
-- Stack: PHP 8.5, Laravel 13.7, Tailwind v4 (via `@tailwindcss/vite`), Vite 8, Pest 4, SQLite
-- Default drivers: `DB_CONNECTION=sqlite`, `QUEUE_CONNECTION=database`, `CACHE_STORE=database`, `SESSION_DRIVER=database` — no Redis/external services required to run locally.
+- Stack: PHP 8.5, Laravel 13.7, Tailwind v4 (via `@tailwindcss/vite`), Vite 8, Pest 4, MySQL 8 (tests run on in-memory SQLite)
+- Default drivers: `DB_CONNECTION=mysql`, `QUEUE_CONNECTION=database`, `CACHE_STORE=database`, `SESSION_DRIVER=database` — a local MySQL server is required; no Redis or other external services.
 
 ## Development Commands
 
@@ -32,7 +32,7 @@ Standard Laravel 13 layout — most behavior follows framework defaults. Things 
 
 - **No `app/Http/Kernel.php` / `app/Console/Kernel.php`** — Laravel 11+ moved these into `bootstrap/app.php`. Register middleware, exception handling, and console scheduling there, not in the legacy locations.
 - **Routes live in `routes/web.php` and `routes/console.php`** — there is no `routes/api.php` by default. If an API surface is needed, install it via `php artisan install:api` rather than creating the file manually (this also wires up Sanctum).
-- **Database is SQLite** at `database/database.sqlite`. Migrations should stay portable; avoid MySQL-specific column types unless the user agrees to switch drivers.
+- **Database is MySQL 8** (`utf8mb4_unicode_ci`), but the test suite runs on in-memory SQLite (`phpunit.xml`). Migrations and queries must stay portable across both: no raw driver-specific SQL. MySQL `json` columns do not preserve object key order — never rely on it (lists keep their order). To verify against MySQL, run the suite with `DB_CONNECTION=mysql DB_DATABASE=<throwaway_schema>`.
 - **Frontend pipeline**: `resources/css/app.css` and `resources/js/app.js` are the Vite entry points (configured in `vite.config.js`). Tailwind v4 is loaded via the `@tailwindcss/vite` plugin — there is no `tailwind.config.js`; configuration lives inside the CSS file using `@theme` (Tailwind v4 convention). The `Instrument Sans` font is fetched at build time via the `bunny` Vite plugin.
 - **Tests**: `Pest.php` extends `TestCase` for the `Feature` suite. `RefreshDatabase` is **commented out** at the suite level — opt in per test file when database state matters. Most new tests should be feature tests (`php artisan make:test --pest Name`), unit tests only for pure logic.
 - **Skills directory** (`.claude/skills/`) contains Laravel/PHP/Tailwind specialist skills that auto-activate when relevant — let them trigger naturally; don't manually invoke unless needed.
