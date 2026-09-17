@@ -14,14 +14,15 @@
                 {{-- Main Content --}}
                 <div>
                     <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-3">Hakkımda</div>
-                    <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">5 yıldır kod yazıyor, ürün teslim ediyorum.</h1>
+                    @if(filled($about->heading))
+                        <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">{{ $about->heading }}</h1>
+                    @endif
 
-                    <div class="flex flex-col gap-[18px] text-[17px] leading-[1.7] opacity-90 max-w-[640px] mt-8 text-neutral-950 dark:text-neutral-50 [&>p]:m-0 [&>em]:italic [&>em]:font-normal">
-                        <p>{{ $general->author_location }}'da yaşıyorum. Lise yıllarında PHP ile başlayan kod yolculuğum, bugün Laravel, Vue.js ve .NET Core ekosistemlerinde derinleşmiş bir pratiğe dönüştü. 5 yıldır freelance olarak çalışıyorum.</p>
-                        <p>E-ticaret altyapılarından kurumsal CRM'lere, dahili yönetim araçlarından mobil uygulama backend'lerine kadar geniş bir yelpazede proje teslim ettim. 40'tan fazla müşteriyle çalıştım — bazılarıyla hâlâ çalışmaya devam ediyorum.</p>
-                        <p>İyi yazılım benim için <em>fark edilmeyen</em> yazılımdır: kullanıcı düşünmeden iş gören, bakımı kolay, gelecek versiyonlara dirençli kod. O yüzden modaya kapılmadan, doğrulanmış araçlarla çalışmayı tercih ediyorum.</p>
-                        <p>Kodun dışında: kitap okumayı, uzun yürüyüşleri ve mekanik klavyeleri seviyorum.</p>
-                    </div>
+                    @if(filled($about->body))
+                        <div data-about-body class="flex flex-col gap-[18px] text-[17px] leading-[1.7] opacity-90 max-w-[640px] mt-8 text-neutral-950 dark:text-neutral-50 [&_p]:m-0 [&_em]:italic [&_em]:font-normal [&_a]:underline [&_a]:underline-offset-2 [&_ul]:m-0 [&_ul]:pl-5 [&_ul]:list-disc [&_ol]:m-0 [&_ol]:pl-5 [&_ol]:list-decimal">
+                            {!! $about->body !!}
+                        </div>
+                    @endif
 
                     {{-- Timeline --}}
                     @if($timeline->isNotEmpty())
@@ -43,7 +44,9 @@
 
                 {{-- Sidebar --}}
                 <aside class="flex flex-col gap-6 lg:sticky lg:top-24">
-                    <div class="aspect-[4/5] bg-gradient-to-br from-neutral-200 dark:from-neutral-800 to-neutral-100 dark:to-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl flex items-center justify-center text-neutral-400 dark:text-neutral-600 text-xs">[ portre fotoğrafı ]</div>
+                    @if(\App\Support\Images::exists($about->portrait_path))
+                        <img data-about-portrait src="{{ \App\Support\Images::url($about->portrait_path) }}" alt="{{ $general->author_name }}" width="720" height="900" class="w-full aspect-[4/5] object-cover rounded-xl border border-neutral-200 dark:border-neutral-800" />
+                    @endif
 
                     <div class="p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50 dark:bg-neutral-900">
                         <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-4">Hızlı bilgiler</div>
@@ -54,14 +57,18 @@
                                     <span class="font-medium text-neutral-950 dark:text-neutral-50">{{ $general->author_location }}</span>
                                 </div>
                             @endif
-                            <div class="flex justify-between items-center border-b border-neutral-200 dark:border-neutral-800 pb-2.5">
-                                <span class="text-neutral-500">Çalışma şekli</span>
-                                <span class="font-medium text-neutral-950 dark:text-neutral-50">Uzaktan</span>
-                            </div>
-                            <div class="flex justify-between items-center border-b border-neutral-200 dark:border-neutral-800 pb-2.5">
-                                <span class="text-neutral-500">Diller</span>
-                                <span class="font-medium text-neutral-950 dark:text-neutral-50">TR · EN</span>
-                            </div>
+                            @if(filled($about->work_mode))
+                                <div class="flex justify-between items-center border-b border-neutral-200 dark:border-neutral-800 pb-2.5">
+                                    <span class="text-neutral-500">Çalışma şekli</span>
+                                    <span class="font-medium text-neutral-950 dark:text-neutral-50">{{ $about->work_mode }}</span>
+                                </div>
+                            @endif
+                            @if($languages->isNotEmpty())
+                                <div class="flex justify-between items-center gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-2.5">
+                                    <span class="text-neutral-500">Diller</span>
+                                    <span class="font-medium text-right text-neutral-950 dark:text-neutral-50">{{ $languages->join(' · ') }}</span>
+                                </div>
+                            @endif
                             @if($general->homepage_stats)
                                 @foreach(collect($general->homepage_stats)->whereIn('label', ['Tecrübe']) as $stat)
                                     <div class="flex justify-between items-center border-b border-neutral-200 dark:border-neutral-800 pb-2.5">

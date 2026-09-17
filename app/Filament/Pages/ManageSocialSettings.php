@@ -21,7 +21,7 @@ class ManageSocialSettings extends SettingsPage
 
     protected static ?string $title = 'Sosyal Medya';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     public function form(Schema $schema): Schema
     {

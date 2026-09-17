@@ -13,6 +13,7 @@ use App\Models\Service;
 use App\Models\Skill;
 use App\Models\Testimonial;
 use App\Models\TimelineEntry;
+use App\Settings\AboutSettings;
 use App\Settings\GeneralSettings;
 use App\Settings\SocialSettings;
 use Illuminate\Contracts\View\View;
@@ -31,7 +32,9 @@ class PageController extends Controller
     public function about(): View
     {
         return view('pages.about', [
+            'about' => app(AboutSettings::class),
             'timeline' => TimelineEntry::ordered()->get(),
+            'languages' => Language::ordered()->pluck('name'),
         ]);
     }
 
