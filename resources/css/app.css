@@ -61,3 +61,17 @@
 [x-cloak] {
     display: none !important;
 }
+
+/*
+ * Theme toggle. The active button is chosen by <html data-theme-mode>, which the inline
+ * head script sets before the first paint; a deferred script adding classes would flash.
+ */
+.theme-radio {
+    @apply text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-300;
+}
+
+[data-theme-mode="light"] .theme-radio[data-theme-set="light"],
+[data-theme-mode="system"] .theme-radio[data-theme-set="system"],
+[data-theme-mode="dark"] .theme-radio[data-theme-set="dark"] {
+    @apply bg-white text-neutral-950 shadow-sm hover:text-neutral-950 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:text-neutral-50;
+}

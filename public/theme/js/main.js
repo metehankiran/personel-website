@@ -8,26 +8,24 @@
   var root = document.documentElement;
   var mq = window.matchMedia('(prefers-color-scheme: dark)');
 
-  var activeClass = 'bg-white dark:bg-neutral-800 text-neutral-950 dark:text-neutral-50 shadow-sm';
-  var inactiveClass = 'text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300';
-
   function resolveTheme(mode) {
     if (mode === 'system') return mq.matches ? 'dark' : 'light';
     return mode;
   }
 
+  // The look of the toggle comes from CSS keyed on <html data-theme-mode>; this only keeps
+  // the attributes (and the radios' aria state) in sync.
   function applyTheme(mode) {
+    root.setAttribute('data-theme-mode', mode);
     root.setAttribute('data-theme', resolveTheme(mode));
     document.querySelectorAll('[data-theme-set]').forEach(function (btn) {
-      var isActive = btn.getAttribute('data-theme-set') === mode;
-      activeClass.split(' ').forEach(function (c) { btn.classList.toggle(c, isActive); });
-      inactiveClass.split(' ').forEach(function (c) { btn.classList.toggle(c, !isActive); });
+      btn.setAttribute('aria-checked', String(btn.getAttribute('data-theme-set') === mode));
     });
   }
 
   var stored = null;
   try { stored = localStorage.getItem(THEME_KEY); } catch (e) {}
-  var currentMode = stored || 'system';
+  var currentMode = ['light', 'dark', 'system'].indexOf(stored) === -1 ? 'system' : stored;
   applyTheme(currentMode);
 
   mq.addEventListener('change', function () {

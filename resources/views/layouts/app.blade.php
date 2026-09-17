@@ -34,13 +34,15 @@
     @endif
 
     <script>
+        // Runs before the first paint: sets the resolved theme and the chosen mode, so neither
+        // the page colours nor the theme toggle have to wait for the deferred scripts.
         (function () {
             var mode = null;
             try { mode = localStorage.getItem('mk-theme'); } catch (e) {}
-            if (!mode || mode === 'system') {
-                mode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            }
-            document.documentElement.setAttribute('data-theme', mode);
+            if (['light', 'dark', 'system'].indexOf(mode) === -1) { mode = 'system'; }
+            var resolved = mode === 'system' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : mode;
+            document.documentElement.setAttribute('data-theme-mode', mode);
+            document.documentElement.setAttribute('data-theme', resolved);
         })();
     </script>
 

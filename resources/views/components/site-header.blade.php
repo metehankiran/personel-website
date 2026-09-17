@@ -135,17 +135,17 @@
         <div class="flex items-center gap-2 xl:gap-3 shrink-0">
             {{-- Theme Toggle (radio pill) --}}
             <div class="inline-flex items-center rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 p-0.5 shrink-0" role="radiogroup" aria-label="Tema">
-                <button type="button" data-theme-set="light"
+                <button type="button" data-theme-set="light" role="radio" aria-checked="false"
                     class="theme-radio w-8 h-8 rounded-md inline-flex items-center justify-center text-sm transition-all cursor-pointer"
                     aria-label="Açık tema" title="Açık tema">
                     <i data-lucide="sun" class="w-3.5 h-3.5"></i>
                 </button>
-                <button type="button" data-theme-set="system"
+                <button type="button" data-theme-set="system" role="radio" aria-checked="false"
                     class="theme-radio w-8 h-8 rounded-md inline-flex items-center justify-center text-sm transition-all cursor-pointer"
                     aria-label="Sistem teması" title="Sistem teması">
                     <i data-lucide="monitor" class="w-3.5 h-3.5"></i>
                 </button>
-                <button type="button" data-theme-set="dark"
+                <button type="button" data-theme-set="dark" role="radio" aria-checked="false"
                     class="theme-radio w-8 h-8 rounded-md inline-flex items-center justify-center text-sm transition-all cursor-pointer"
                     aria-label="Koyu tema" title="Koyu tema">
                     <i data-lucide="moon" class="w-3.5 h-3.5"></i>
