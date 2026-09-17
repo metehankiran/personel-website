@@ -1,9 +1,14 @@
 @extends('layouts.app')
 
+@section('robots', $post->isPublished() ? 'index, follow' : 'noindex, follow')
 @section('title', $post->title)
-@section('meta_description', $post->excerpt ?? '')
+@section('meta_description', \App\Support\Seo::description($post->excerpt, $post->body))
 @section('og_type', 'article')
 @section('og_image', \App\Support\Images::og($post->cover_image))
+
+@push('schema')
+    {{ \App\Support\Schema::script(\App\Support\Schema::blogPosting($post), \App\Support\Schema::breadcrumbs(['Blog' => \App\Support\Seo::route('blog'), $post->title => \App\Support\Seo::route('blog.show', $post)])) }}
+@endpush
 
 @section('content')
     <article>
@@ -31,7 +36,7 @@
                         </span>
                         <div>
                             <div class="text-sm font-semibold text-neutral-950 dark:text-neutral-50">{{ $general->author_name }}</div>
-                            <div class="text-xs text-neutral-600 dark:text-neutral-400">{{ $post->published_at->translatedFormat('d F Y') }} · {{ $post->reading_time }} dk okuma</div>
+                            <div class="text-xs text-neutral-600 dark:text-neutral-400">@if($post->published_at)<time datetime="{{ $post->published_at->toIso8601String() }}">{{ $post->published_at->translatedFormat('d F Y') }}</time>@else<span>Taslak</span>@endif · {{ $post->reading_time }} dk okuma</div>
                         </div>
                     </div>
                     <div class="flex gap-1.5">

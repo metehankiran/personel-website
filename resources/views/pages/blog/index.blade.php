@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', ($activeCategory ? $activeCategory->name . ' — ' : ($activeTag ? $activeTag->name . ' — ' : '')) . 'Blog')
+@section('meta_description', $activeCategory ? $activeCategory->name.' kategorisindeki yazılar: çalışırken karşılaşılan problemler, denenen çözümler ve öğrenilenler.' : ($activeTag ? $activeTag->name.' etiketli yazılar: çalışırken karşılaşılan problemler, denenen çözümler ve öğrenilenler.' : 'Yazılım geliştirme üzerine yazılar'.($categories->isNotEmpty() ? ': '.$categories->take(5)->pluck('name')->join(', ') : '').'. Çalışırken karşılaşılan problemler ve öğrenilenler.'))
+
+@push('schema')
+    {{ \App\Support\Schema::script(\App\Support\Schema::breadcrumbs(['Blog' => \App\Support\Seo::route('blog')])) }}
+@endpush
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">
@@ -18,7 +23,7 @@
                             <a href="{{ route('blog.show', $post) }}" class="block py-8 border-b border-neutral-200 dark:border-neutral-800 first:border-t transition-colors hover:opacity-90">
                                 <div class="flex gap-4 items-center mb-3">
                                     <span class="inline-block text-[11px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 rounded-full font-medium whitespace-nowrap text-neutral-950 dark:text-neutral-50">{{ $post->category->name }}</span>
-                                    <span class="text-xs text-neutral-500 tabular-nums">{{ $post->published_at->format('Y-m-d') }}</span>
+                                    <time datetime="{{ $post->published_at->toIso8601String() }}" class="text-xs text-neutral-500 tabular-nums">{{ $post->published_at->format('Y-m-d') }}</time>
                                     <span class="text-xs text-neutral-500">· {{ $post->reading_time }} dk okuma</span>
                                 </div>
                                 <h2 class="m-0 mb-2 text-[26px] font-semibold tracking-tight leading-tight text-neutral-950 dark:text-neutral-50">{{ $post->title }}</h2>

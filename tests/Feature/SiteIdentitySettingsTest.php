@@ -77,17 +77,17 @@ it('picks the meta description from seo settings, then the site description', fu
     $general->site_description = 'Site açıklaması.';
     $general->save();
 
-    $this->get(route('services'))->assertSee('<meta name="description" content="Site açıklaması.">', escape: false);
+    $this->get(route('home'))->assertSee('<meta name="description" content="Site açıklaması.">', escape: false);
 
     $seo = app(SeoSettings::class);
     $seo->meta_description = 'SEO açıklaması.';
     $seo->save();
 
-    $this->get(route('services'))->assertSee('<meta name="description" content="SEO açıklaması.">', escape: false);
+    $this->get(route('home'))->assertSee('<meta name="description" content="SEO açıklaması.">', escape: false);
 });
 
 it('never renders an empty meta description', function () {
-    $this->get(route('services'))
+    $this->get(route('home'))
         ->assertDontSee('<meta name="description" content="">', escape: false)
         ->assertSee('<meta name="description" content="Ada Studio">', escape: false);
 });

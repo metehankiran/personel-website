@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'Teknolojiler')
+@section('meta_description', $skills->isNotEmpty() ? 'Kullanılan teknolojiler ve her biriyle deneyim süresi: '.$skills->pluck('name')->join(', ', ' ve ').' alanlarında tercih edilen araçlar.' : 'Kullanılan teknolojiler ve her biriyle deneyim süresi: modaya kapılmadan seçilmiş, doğrulanmış araçlar.')
+
+@push('schema')
+    {{ \App\Support\Schema::script(\App\Support\Schema::breadcrumbs(['Teknolojiler' => \App\Support\Seo::route('stack')])) }}
+@endpush
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">

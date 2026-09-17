@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'Projeler')
+@section('meta_description', $projects->isNotEmpty() ? 'Teslim edilen projeler ve case study\'ler: '.$projects->take(4)->pluck('title')->join(', ').'. Kapsam, teknoloji ve sonuçlarıyla.' : 'Teslim edilen projeler ve case study\'ler: kapsamı, kullanılan teknolojileri ve elde edilen sonuçlarıyla.')
+
+@push('schema')
+    {{ \App\Support\Schema::script(\App\Support\Schema::breadcrumbs(['Projeler' => \App\Support\Seo::route('projects')])) }}
+@endpush
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">

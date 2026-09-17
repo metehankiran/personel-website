@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'Hizmetler')
+@section('meta_description', $services->isNotEmpty() ? 'Birlikte çalışmanın yolları: '.$services->pluck('title')->join(', ', ' ve ').'. Kapsam, süre ve fiyatlandırma bilgileriyle.' : 'Birlikte çalışmanın yolları: kapsam, süre ve fiyatlandırma bilgileriyle sunulan yazılım geliştirme hizmetleri.')
+
+@push('schema')
+    {{ \App\Support\Schema::script(\App\Support\Schema::services($services), \App\Support\Schema::breadcrumbs(['Hizmetler' => \App\Support\Seo::route('services')])) }}
+@endpush
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">

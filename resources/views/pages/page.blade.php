@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
+@section('robots', $page->isPublished() ? 'index, follow' : 'noindex, follow')
 @section('title', $page->title)
+@section('meta_description', \App\Support\Seo::description($page->body))
+
+@push('schema')
+    {{ \App\Support\Schema::script(\App\Support\Schema::breadcrumbs([$page->title => \App\Support\Seo::route('pages.show', $page)])) }}
+@endpush
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">

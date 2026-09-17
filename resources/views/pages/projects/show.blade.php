@@ -1,8 +1,12 @@
 @extends('layouts.app')
 
 @section('title', $project->title . ' — Projeler')
-@section('meta_description', $project->description ?? '')
+@section('meta_description', \App\Support\Seo::description($project->description, $project->body))
 @section('og_image', \App\Support\Images::og($project->cover_image))
+
+@push('schema')
+    {{ \App\Support\Schema::script(\App\Support\Schema::project($project), \App\Support\Schema::breadcrumbs(['Projeler' => \App\Support\Seo::route('projects'), $project->title => \App\Support\Seo::route('projects.show', $project)])) }}
+@endpush
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">

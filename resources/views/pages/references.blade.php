@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'Referanslar')
+@section('meta_description', 'Birlikte çalışılan markalar ve müşterilerin kendi sözleriyle yorumları. '.$general->author_name.' ile çalışmak nasıl, doğrudan onlardan okuyun.')
+
+@push('schema')
+    {{ \App\Support\Schema::script(\App\Support\Schema::breadcrumbs(['Referanslar' => \App\Support\Seo::route('references')])) }}
+@endpush
 
 @section('content')
     @php

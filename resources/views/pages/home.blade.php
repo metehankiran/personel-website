@@ -88,7 +88,7 @@
                                 <h3 class="m-0 text-lg font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">{{ $post->title }}</h3>
                                 <div class="flex items-center gap-3 shrink-0">
                                     <span class="inline-block text-[11px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 rounded-full font-medium text-neutral-950 dark:text-neutral-50">{{ $post->category->name }}</span>
-                                    <span class="text-xs text-neutral-500 tabular-nums">{{ $post->published_at->translatedFormat('d M Y') }}</span>
+                                    <time datetime="{{ $post->published_at->toIso8601String() }}" class="text-xs text-neutral-500 tabular-nums">{{ $post->published_at->translatedFormat('d M Y') }}</time>
                                 </div>
                             </div>
                             @if($post->excerpt)

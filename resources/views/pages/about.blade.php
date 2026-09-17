@@ -1,10 +1,15 @@
 @extends('layouts.app')
 
 @section('title', 'Hakkımda')
+@section('meta_description', \App\Support\Seo::description($about->body, $general->bio, $general->author_name.' hakkında: geçmişi, çalışma şekli ve bugüne kadar yaptığı işlerin zaman çizelgesi.'))
 
 @php
     $link = fn (string $name): string => Route::has($name) ? route($name) : '#';
 @endphp
+
+@push('schema')
+    {{ \App\Support\Schema::script(\App\Support\Schema::profilePage(), \App\Support\Schema::breadcrumbs(['Hakkımda' => \App\Support\Seo::route('about')])) }}
+@endpush
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">

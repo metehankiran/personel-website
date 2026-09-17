@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+@section('robots', 'noindex, follow')
 @section('title', '404 — Sayfa kayıp')
 
 @php

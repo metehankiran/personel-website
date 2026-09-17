@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'CV')
+@section('meta_description', \App\Support\Seo::description($general->bio, $general->author_name.' özgeçmişi: iş deneyimi, yetkinlikler, eğitim ve diller. PDF olarak indirilebilir.'))
+
+@push('schema')
+    {{ \App\Support\Schema::script(\App\Support\Schema::breadcrumbs(['CV' => \App\Support\Seo::route('cv')])) }}
+@endpush
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">

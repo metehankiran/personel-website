@@ -3,7 +3,9 @@
     $siteTitle = $general->site_title ?: config('app.name');
     $pageTitle = trim($__env->yieldContent('title'));
     $fullTitle = trim($__env->yieldContent('full_title')) ?: ($pageTitle !== '' ? "{$pageTitle} — {$siteTitle}" : $siteTitle);
-    $metaDescription = trim($__env->yieldContent('meta_description')) ?: ($seo->meta_description ?: ($general->site_description ?: $siteTitle));
+    $metaDescription = \App\Support\Seo::description(html_entity_decode($__env->yieldContent('meta_description'), ENT_QUOTES), $seo->meta_description, $general->site_description, $siteTitle);
+    $canonicalUrl = \App\Support\Seo::canonical();
+    $shareImage = \App\Support\Seo::absolute(trim($__env->yieldContent('og_image')) ?: \App\Support\Images::og($seo->og_image_path ?? null));
 @endphp
 <!doctype html>
 <html lang="tr">
@@ -12,18 +14,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $fullTitle }}</title>
     <meta name="description" content="{{ $metaDescription }}">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="@yield('robots', 'index, follow')">
     <meta property="og:site_name" content="{{ $siteTitle }}">
     <meta property="og:title" content="{{ $fullTitle }}">
     <meta property="og:description" content="{{ $metaDescription }}">
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:locale" content="tr_TR">
-    <meta property="og:image" content="@yield('og_image', \App\Support\Images::og($seo->og_image_path ?? null))">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
+    <meta property="og:image" content="{{ $shareImage }}">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="@yield('og_image', \App\Support\Images::og($seo->og_image_path ?? null))">
+    <meta name="twitter:image" content="{{ $shareImage }}">
 
     <link rel="icon" href="{{ \App\Support\Images::url($general->favicon_path ?? null, 'favicon') }}">
-    <link rel="canonical" href="{{ url()->current() }}">
+    <link rel="canonical" href="{{ $canonicalUrl }}">
+    {{ \App\Support\Schema::script(\App\Support\Schema::website(), \App\Support\Schema::person()) }}
+    @stack('schema')
     @if(filled($seo->google_search_console_id))
         <meta name="google-site-verification" content="{{ $seo->google_search_console_id }}">
     @endif

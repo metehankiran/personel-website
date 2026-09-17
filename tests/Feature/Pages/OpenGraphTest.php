@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Post;
+use App\Support\Seo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,7 +28,7 @@ it('uses the post cover as the open graph image when it exists', function () {
     ]);
 
     $this->get(route('blog.show', $post))
-        ->assertSee('<meta property="og:image" content="'.Storage::url('covers/post.png').'"', escape: false)
+        ->assertSee('<meta property="og:image" content="'.Seo::absolute(Storage::url('covers/post.png')).'"', escape: false)
         ->assertSee('<meta name="description" content="Kısa bir özet."', escape: false);
 });
 

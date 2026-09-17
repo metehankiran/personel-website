@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'İletişim')
+@section('meta_description', $general->author_name.' ile iletişime geçin: e-posta, telefon ve proje formu.'.(filled($general->availability_status) ? ' Durum: '.$general->availability_status.'.' : '').' Genelde 24 saat içinde dönüş.')
+
+@push('schema')
+    {{ \App\Support\Schema::script(\App\Support\Schema::breadcrumbs(['İletişim' => \App\Support\Seo::route('contact')])) }}
+@endpush
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">

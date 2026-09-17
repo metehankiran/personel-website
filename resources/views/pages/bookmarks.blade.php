@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'Yer İşaretlerim')
+@section('meta_description', 'Faydalı bulunan araçlar, makaleler ve kaynaklar: kategorilere ayrılmış, düzenli güncellenen yer işaretleri listesi.')
+
+@push('schema')
+    {{ \App\Support\Schema::script(\App\Support\Schema::breadcrumbs(['Yer İşaretlerim' => \App\Support\Seo::route('bookmarks')])) }}
+@endpush
 
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">
