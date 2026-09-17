@@ -10,6 +10,28 @@
 
     $mobileNavClass = 'px-3 py-2.5 rounded-lg text-sm text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-900 hover:text-neutral-950 dark:hover:text-neutral-50 transition-colors';
     $mobileNavActive = 'text-neutral-950 dark:text-neutral-50 font-medium bg-neutral-100 dark:bg-neutral-900';
+    $dropLinkActive = 'bg-neutral-100 dark:bg-neutral-900';
+
+    // Route patterns per menu item; "name.*" keeps an item active on its sub pages.
+    $nav = collect([
+        'home' => ['home'],
+        'about' => ['about'],
+        'projects' => ['projects', 'projects.*'],
+        'services' => ['services'],
+        'references' => ['references'],
+        'stack' => ['stack'],
+        'blog' => ['blog', 'blog.*'],
+        'bookmarks' => ['bookmarks'],
+        'cv' => ['cv'],
+        'contact' => ['contact'],
+    ])->map(fn (array $patterns): bool => request()->routeIs(...$patterns));
+
+    $groups = [
+        'works' => $nav->only(['projects', 'services', 'references', 'stack'])->contains(true),
+        'writing' => $nav->only(['blog', 'bookmarks'])->contains(true),
+    ];
+
+    $current = fn (string $item): string => $nav[$item] ? 'aria-current="page"' : '';
 @endphp
 
 <header class="sticky top-0 z-40 bg-white/[0.93] dark:bg-neutral-950/[0.93] backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800" role="banner">
@@ -33,33 +55,33 @@
         {{-- Desktop Navigation --}}
         <nav class="hidden xl:flex gap-1 items-center" aria-label="Ana menü">
             <div>
-                <a href="{{ route('home') }}" @class([$navLinkClass, $navLinkActive => request()->routeIs('home')])><i data-lucide="home" class="w-3.5 h-3.5"></i> Ana sayfa</a>
+                <a href="{{ route('home') }}" {!! $current('home') !!} @class([$navLinkClass, $navLinkActive => $nav['home']])><i data-lucide="home" class="w-3.5 h-3.5"></i> Ana sayfa</a>
             </div>
             <div>
-                <a href="{{ $link('about') }}" @class([$navLinkClass, $navLinkActive => request()->routeIs('about')])><i data-lucide="user" class="w-3.5 h-3.5"></i> Hakkımda</a>
+                <a href="{{ $link('about') }}" {!! $current('about') !!} @class([$navLinkClass, $navLinkActive => $nav['about']])><i data-lucide="user" class="w-3.5 h-3.5"></i> Hakkımda</a>
             </div>
 
             {{-- İşler Dropdown --}}
             <div class="relative group">
-                <button @class([$navLinkClass, 'group-hover:bg-neutral-100 dark:group-hover:bg-neutral-900 group-hover:text-neutral-950 dark:group-hover:text-neutral-50']) type="button">
+                <button data-nav-group="works" data-active="{{ $groups['works'] ? 'true' : 'false' }}" @class([$navLinkClass, $navLinkActive => $groups['works'], 'group-hover:bg-neutral-100 dark:group-hover:bg-neutral-900 group-hover:text-neutral-950 dark:group-hover:text-neutral-50']) type="button">
                     <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> İşler
                     <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-60 transition-transform group-hover:rotate-180"></i>
                 </button>
                 <div class="absolute top-full left-0 pt-1.5 hidden group-hover:block z-50">
                     <div class="min-w-[240px] bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-lg p-2">
-                        <a class="{{ $dropLinkClass }}" href="{{ $link('projects') }}">
+                        <a href="{{ $link('projects') }}" {!! $current('projects') !!} @class([$dropLinkClass, $dropLinkActive => $nav['projects']])>
                             <div class="{{ $dropTitleClass }}"><i data-lucide="folder-open" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>Projeler</div>
                             <div class="{{ $dropDescClass }}">Case study</div>
                         </a>
-                        <a class="{{ $dropLinkClass }}" href="{{ $link('services') }}">
+                        <a href="{{ $link('services') }}" {!! $current('services') !!} @class([$dropLinkClass, $dropLinkActive => $nav['services']])>
                             <div class="{{ $dropTitleClass }}"><i data-lucide="handshake" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>Hizmetler</div>
                             <div class="{{ $dropDescClass }}">Freelance teklif</div>
                         </a>
-                        <a class="{{ $dropLinkClass }}" href="{{ $link('references') }}">
+                        <a href="{{ $link('references') }}" {!! $current('references') !!} @class([$dropLinkClass, $dropLinkActive => $nav['references']])>
                             <div class="{{ $dropTitleClass }}"><i data-lucide="quote" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>Referanslar</div>
                             <div class="{{ $dropDescClass }}">Müşteri yorumları</div>
                         </a>
-                        <a class="{{ $dropLinkClass }}" href="{{ $link('stack') }}">
+                        <a href="{{ $link('stack') }}" {!! $current('stack') !!} @class([$dropLinkClass, $dropLinkActive => $nav['stack']])>
                             <div class="{{ $dropTitleClass }}"><i data-lucide="layers" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>Stack</div>
                             <div class="{{ $dropDescClass }}">Kullandığım teknolojiler</div>
                         </a>
@@ -69,17 +91,17 @@
 
             {{-- Yazı Dropdown --}}
             <div class="relative group">
-                <button @class([$navLinkClass, 'group-hover:bg-neutral-100 dark:group-hover:bg-neutral-900 group-hover:text-neutral-950 dark:group-hover:text-neutral-50']) type="button">
+                <button data-nav-group="writing" data-active="{{ $groups['writing'] ? 'true' : 'false' }}" @class([$navLinkClass, $navLinkActive => $groups['writing'], 'group-hover:bg-neutral-100 dark:group-hover:bg-neutral-900 group-hover:text-neutral-950 dark:group-hover:text-neutral-50']) type="button">
                     <i data-lucide="pen-line" class="w-3.5 h-3.5"></i> Yazı
                     <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-60 transition-transform group-hover:rotate-180"></i>
                 </button>
                 <div class="absolute top-full left-0 pt-1.5 hidden group-hover:block z-50">
                     <div class="min-w-[240px] bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-lg p-2">
-                        <a class="{{ $dropLinkClass }}" href="{{ $link('blog') }}">
+                        <a href="{{ $link('blog') }}" {!! $current('blog') !!} @class([$dropLinkClass, $dropLinkActive => $nav['blog']])>
                             <div class="{{ $dropTitleClass }}"><i data-lucide="notebook-pen" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>Blog</div>
                             <div class="{{ $dropDescClass }}">Teknik makaleler</div>
                         </a>
-                        <a class="{{ $dropLinkClass }}" href="{{ $link('bookmarks') }}">
+                        <a href="{{ $link('bookmarks') }}" {!! $current('bookmarks') !!} @class([$dropLinkClass, $dropLinkActive => $nav['bookmarks']])>
                             <div class="{{ $dropTitleClass }}"><i data-lucide="bookmark" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>Yer İşaretlerim</div>
                             <div class="{{ $dropDescClass }}">Faydalı linkler</div>
                         </a>
@@ -88,7 +110,7 @@
             </div>
 
             <div>
-                <a href="{{ $link('cv') }}" @class([$navLinkClass, $navLinkActive => request()->routeIs('cv')])><i data-lucide="file-text" class="w-3.5 h-3.5"></i> CV</a>
+                <a href="{{ $link('cv') }}" {!! $current('cv') !!} @class([$navLinkClass, $navLinkActive => $nav['cv']])><i data-lucide="file-text" class="w-3.5 h-3.5"></i> CV</a>
             </div>
         </nav>
 
@@ -145,47 +167,47 @@
     {{-- Mobile Menu --}}
     <div id="mobile-menu" class="xl:hidden max-h-0 overflow-hidden transition-all duration-300 ease-in-out border-t border-transparent">
         <nav class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-1" aria-label="Mobil menü">
-            <a href="{{ route('home') }}" @class([$mobileNavClass, $mobileNavActive => request()->routeIs('home')])>
+            <a href="{{ route('home') }}" {!! $current('home') !!} @class([$mobileNavClass, $mobileNavActive => $nav['home']])>
                 <span class="flex items-center gap-2"><i data-lucide="home" class="w-4 h-4"></i> Ana sayfa</span>
             </a>
-            <a href="{{ $link('about') }}" @class([$mobileNavClass, $mobileNavActive => request()->routeIs('about')])>
+            <a href="{{ $link('about') }}" {!! $current('about') !!} @class([$mobileNavClass, $mobileNavActive => $nav['about']])>
                 <span class="flex items-center gap-2"><i data-lucide="user" class="w-4 h-4"></i> Hakkımda</span>
             </a>
 
             {{-- İşler (Collapsible) --}}
             <div>
-                <button type="button" class="w-full {{ $mobileNavClass }} flex items-center justify-between" data-mobile-collapse>
+                <button type="button" data-nav-group="works" data-active="{{ $groups['works'] ? 'true' : 'false' }}" @class(['w-full flex items-center justify-between', $mobileNavClass, 'text-neutral-950 dark:text-neutral-50 font-medium' => $groups['works']]) data-mobile-collapse>
                     <span class="flex items-center gap-2"><i data-lucide="briefcase" class="w-4 h-4"></i> İşler</span>
                     <i data-lucide="chevron-down" class="w-4 h-4 opacity-60"></i>
                 </button>
-                <div class="max-h-0 overflow-hidden transition-all duration-200 ease-in-out pl-6">
+                <div class="max-h-0 overflow-hidden transition-all duration-200 ease-in-out pl-6" @if($groups['works']) style="max-height: none" @endif>
                     <div class="flex flex-col gap-1 pt-1">
-                        <a href="{{ $link('projects') }}" class="{{ $mobileNavClass }}"><span class="flex items-center gap-2"><i data-lucide="folder-open" class="w-4 h-4"></i> Projeler</span></a>
-                        <a href="{{ $link('services') }}" class="{{ $mobileNavClass }}"><span class="flex items-center gap-2"><i data-lucide="handshake" class="w-4 h-4"></i> Hizmetler</span></a>
-                        <a href="{{ $link('references') }}" class="{{ $mobileNavClass }}"><span class="flex items-center gap-2"><i data-lucide="quote" class="w-4 h-4"></i> Referanslar</span></a>
-                        <a href="{{ $link('stack') }}" class="{{ $mobileNavClass }}"><span class="flex items-center gap-2"><i data-lucide="layers" class="w-4 h-4"></i> Stack</span></a>
+                        <a href="{{ $link('projects') }}" {!! $current('projects') !!} @class([$mobileNavClass, $mobileNavActive => $nav['projects']])><span class="flex items-center gap-2"><i data-lucide="folder-open" class="w-4 h-4"></i> Projeler</span></a>
+                        <a href="{{ $link('services') }}" {!! $current('services') !!} @class([$mobileNavClass, $mobileNavActive => $nav['services']])><span class="flex items-center gap-2"><i data-lucide="handshake" class="w-4 h-4"></i> Hizmetler</span></a>
+                        <a href="{{ $link('references') }}" {!! $current('references') !!} @class([$mobileNavClass, $mobileNavActive => $nav['references']])><span class="flex items-center gap-2"><i data-lucide="quote" class="w-4 h-4"></i> Referanslar</span></a>
+                        <a href="{{ $link('stack') }}" {!! $current('stack') !!} @class([$mobileNavClass, $mobileNavActive => $nav['stack']])><span class="flex items-center gap-2"><i data-lucide="layers" class="w-4 h-4"></i> Stack</span></a>
                     </div>
                 </div>
             </div>
 
             {{-- Yazı (Collapsible) --}}
             <div>
-                <button type="button" class="w-full {{ $mobileNavClass }} flex items-center justify-between" data-mobile-collapse>
+                <button type="button" data-nav-group="writing" data-active="{{ $groups['writing'] ? 'true' : 'false' }}" @class(['w-full flex items-center justify-between', $mobileNavClass, 'text-neutral-950 dark:text-neutral-50 font-medium' => $groups['writing']]) data-mobile-collapse>
                     <span class="flex items-center gap-2"><i data-lucide="pen-line" class="w-4 h-4"></i> Yazı</span>
                     <i data-lucide="chevron-down" class="w-4 h-4 opacity-60"></i>
                 </button>
-                <div class="max-h-0 overflow-hidden transition-all duration-200 ease-in-out pl-6">
+                <div class="max-h-0 overflow-hidden transition-all duration-200 ease-in-out pl-6" @if($groups['writing']) style="max-height: none" @endif>
                     <div class="flex flex-col gap-1 pt-1">
-                        <a href="{{ $link('blog') }}" class="{{ $mobileNavClass }}"><span class="flex items-center gap-2"><i data-lucide="notebook-pen" class="w-4 h-4"></i> Blog</span></a>
-                        <a href="{{ $link('bookmarks') }}" class="{{ $mobileNavClass }}"><span class="flex items-center gap-2"><i data-lucide="bookmark" class="w-4 h-4"></i> Yer İşaretlerim</span></a>
+                        <a href="{{ $link('blog') }}" {!! $current('blog') !!} @class([$mobileNavClass, $mobileNavActive => $nav['blog']])><span class="flex items-center gap-2"><i data-lucide="notebook-pen" class="w-4 h-4"></i> Blog</span></a>
+                        <a href="{{ $link('bookmarks') }}" {!! $current('bookmarks') !!} @class([$mobileNavClass, $mobileNavActive => $nav['bookmarks']])><span class="flex items-center gap-2"><i data-lucide="bookmark" class="w-4 h-4"></i> Yer İşaretlerim</span></a>
                     </div>
                 </div>
             </div>
 
-            <a href="{{ $link('cv') }}" @class([$mobileNavClass, $mobileNavActive => request()->routeIs('cv')])>
+            <a href="{{ $link('cv') }}" {!! $current('cv') !!} @class([$mobileNavClass, $mobileNavActive => $nav['cv']])>
                 <span class="flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> CV</span>
             </a>
-            <a href="{{ $link('contact') }}" @class([$mobileNavClass, $mobileNavActive => request()->routeIs('contact')])>
+            <a href="{{ $link('contact') }}" {!! $current('contact') !!} @class([$mobileNavClass, $mobileNavActive => $nav['contact']])>
                 <span class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> İletişim</span>
             </a>
 
@@ -203,11 +225,12 @@
     // Mobile menu toggle
     var toggle = document.getElementById('mobile-menu-toggle');
     var menu = document.getElementById('mobile-menu');
-    var openIcon = document.getElementById('menu-icon-open');
-    var closeIcon = document.getElementById('menu-icon-close');
 
     if (toggle && menu) {
         toggle.addEventListener('click', function() {
+            // Look the icons up on every click: lucide replaces the <i> placeholders with <svg> after this script runs.
+            var openIcon = document.getElementById('menu-icon-open');
+            var closeIcon = document.getElementById('menu-icon-close');
             var isOpen = menu.style.maxHeight && menu.style.maxHeight !== '0px';
             if (isOpen) {
                 menu.style.maxHeight = '0px';
