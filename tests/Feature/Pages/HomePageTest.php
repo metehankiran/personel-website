@@ -139,3 +139,18 @@ it('shows stars on rated testimonials in the marquee', function () {
     expect(substr_count($html, 'aria-label="5 üzerinden 4"'))->toBe(2)
         ->and(substr_count($html, 'role="img" aria-label="5 üzerinden'))->toBe(2);
 });
+
+it('lets the paired buttons wrap instead of overflowing on narrow or large-text screens', function () {
+    $html = $this->get(route('home'))->assertOk()->getContent();
+
+    // A flex item cannot shrink below its text, so a row of two must be allowed to break.
+    preg_match_all('/<div class="([^"]*)" data-button-row>/', $html, $rows);
+
+    expect($rows[1])->toHaveCount(2);
+
+    foreach ($rows[1] as $classes) {
+        expect($classes)->toContain('flex-wrap');
+    }
+
+    expect(preg_match_all('/<a [^>]*class="[^"]*flex-1[^"]*whitespace-nowrap/', $html))->toBe(4);
+});

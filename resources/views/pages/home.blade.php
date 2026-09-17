@@ -26,9 +26,9 @@
                     @if($general->hero_subtitle)
                         <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-7 max-w-[540px]">{{ $general->hero_subtitle }}</p>
                     @endif
-                    <div class="mt-8 flex gap-3">
-                        <a href="{{ $link('contact') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3.5 text-sm font-medium rounded-xl bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85 whitespace-nowrap">İletişime geç <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
-                        <a href="{{ $link('projects') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3.5 text-sm font-medium rounded-xl bg-transparent text-neutral-950 dark:text-neutral-50 border border-neutral-200 dark:border-neutral-800 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600 whitespace-nowrap">Projeleri gör</a>
+                    <div class="mt-8 flex flex-wrap gap-3" data-button-row>
+                        <a href="{{ $link('contact') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 whitespace-nowrap px-5 py-3.5 text-sm font-medium rounded-xl bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85 whitespace-nowrap">İletişime geç <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                        <a href="{{ $link('projects') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 whitespace-nowrap px-5 py-3.5 text-sm font-medium rounded-xl bg-transparent text-neutral-950 dark:text-neutral-50 border border-neutral-200 dark:border-neutral-800 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600 whitespace-nowrap">Projeleri gör</a>
                     </div>
                 </div>
 
@@ -181,9 +181,9 @@
                         <h2 class="m-0 text-[30px] sm:text-[40px] font-medium tracking-tighter leading-[1.05] text-white text-balance">Bir proje fikrin var mı? <span class="text-white/60">Birlikte hayata geçirelim.</span></h2>
                         <p class="mt-3 text-[15px] text-white/70 leading-relaxed max-w-[480px]">Konuşalım. Genelde 24 saat içinde dönerim.</p>
                     </div>
-                    <div class="flex gap-2.5 w-full sm:w-auto">
-                        <a href="{{ $link('contact') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold rounded-xl bg-white text-neutral-950 shadow-[0_8px_30px_-8px_rgba(255,255,255,0.5)] transition-transform hover:-translate-y-0.5 whitespace-nowrap">İletişime geç <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
-                        <a href="mailto:{{ $general->author_email ?? '' }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-medium rounded-xl bg-white/10 backdrop-blur text-white border border-white/20 transition-colors hover:bg-white/20 whitespace-nowrap">
+                    <div class="flex flex-wrap gap-2.5 w-full sm:w-auto" data-button-row>
+                        <a href="{{ $link('contact') }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 whitespace-nowrap px-6 py-3.5 text-sm font-semibold rounded-xl bg-white text-neutral-950 shadow-[0_8px_30px_-8px_rgba(255,255,255,0.5)] transition-transform hover:-translate-y-0.5 whitespace-nowrap">İletişime geç <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                        <a href="mailto:{{ $general->author_email ?? '' }}" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 whitespace-nowrap px-6 py-3.5 text-sm font-medium rounded-xl bg-white/10 backdrop-blur text-white border border-white/20 transition-colors hover:bg-white/20 whitespace-nowrap">
                             <i data-lucide="mail" class="w-4 h-4"></i> Email gönder
                         </a>
                     </div>
