@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Livewire\NewsletterForm;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
@@ -47,5 +48,6 @@ it('shows newsletter subscription form on post page', function () {
     $post = Post::factory()->published()->for(Category::factory())->create();
 
     $this->get(route('blog.show', $post))
-        ->assertSee('newsletter', escape: false);
+        ->assertSeeLivewire(NewsletterForm::class)
+        ->assertSee('Abone ol');
 });

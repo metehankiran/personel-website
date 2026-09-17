@@ -85,21 +85,7 @@
                 @endif
 
                 {{-- Newsletter CTA --}}
-                <div class="bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-10 text-center">
-                    <h3 class="m-0 text-[26px] font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">Bu yazıdan hoşlandın mı?</h3>
-                    <p class="mt-2 mb-6 text-neutral-600 dark:text-neutral-400">Ayda 1-2 yazı. Email'ine düşüversin.</p>
-                    @if(session('success'))
-                        <p class="text-[13px] text-green-600 dark:text-green-400">{{ session('success') }}</p>
-                    @endif
-                    <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex gap-2 max-w-[400px] mx-auto">
-                        @csrf
-                        <input class="flex-1 px-3.5 py-2.5 text-sm font-sans bg-white dark:bg-neutral-950 text-neutral-950 dark:text-neutral-50 border border-neutral-200 dark:border-neutral-800 rounded-lg outline-none transition-colors focus:border-neutral-950 dark:focus:border-neutral-50 placeholder:text-neutral-400 dark:placeholder:text-neutral-600" name="email" type="email" placeholder="email@adres" required />
-                        <button type="submit" class="inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-medium rounded-lg bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85 cursor-pointer border-none font-sans shrink-0">Abone ol <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></button>
-                    </form>
-                    @error('email')
-                        <p class="text-xs text-red-500 mt-2">{{ $message }}</p>
-                    @enderror
-                </div>
+                <livewire:newsletter-form />
             </div>
         </footer>
     </article>
