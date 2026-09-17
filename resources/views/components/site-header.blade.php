@@ -183,9 +183,9 @@
         </div>
     </div>
 
-    {{-- Mobile Menu --}}
-    <div id="mobile-menu" class="xl:hidden max-h-0 overflow-hidden transition-all duration-300 ease-in-out border-t border-transparent">
-        <nav class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-1" aria-label="Mobil menü">
+    {{-- Mobile Menu: hangs below the sticky header and covers the page, so opening it never moves the content --}}
+    <div id="mobile-menu" class="xl:hidden absolute top-full inset-x-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-white dark:bg-neutral-950 border-b border-transparent">
+        <nav class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-1 max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain" aria-label="Mobil menü">
             <a href="{{ route('home') }}" {!! $current('home') !!} @class([$mobileNavClass, $mobileNavActive => $nav['home']])>
                 <span class="flex items-center gap-2"><i data-lucide="home" class="w-4 h-4"></i> Ana sayfa</span>
             </a>
@@ -262,27 +262,57 @@
     var menu = document.getElementById('mobile-menu');
 
     if (toggle && menu) {
-        toggle.addEventListener('click', function() {
-            // Look the icons up on every click: lucide replaces the <i> placeholders with <svg> after this script runs.
+        var isOpen = function() {
+            return toggle.getAttribute('aria-expanded') === 'true';
+        };
+
+        var setOpen = function(open) {
+            // Look the icons up on every call: lucide replaces the <i> placeholders with <svg> after this script runs.
             var openIcon = document.getElementById('menu-icon-open');
             var closeIcon = document.getElementById('menu-icon-close');
-            var isOpen = menu.style.maxHeight && menu.style.maxHeight !== '0px';
-            if (isOpen) {
-                menu.style.maxHeight = '0px';
-                menu.style.borderColor = 'transparent';
-                openIcon.classList.remove('hidden');
-                closeIcon.classList.add('hidden');
-                toggle.setAttribute('aria-expanded', 'false');
-            } else {
+
+            if (open) {
                 menu.style.maxHeight = menu.scrollHeight + 'px';
-                menu.style.borderColor = '';
-                menu.classList.remove('border-transparent');
-                menu.classList.add('border-neutral-200', 'dark:border-neutral-800');
-                openIcon.classList.add('hidden');
-                closeIcon.classList.remove('hidden');
-                toggle.setAttribute('aria-expanded', 'true');
-                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } else {
+                // "none" cannot be animated, so pin the current height before collapsing.
+                menu.style.maxHeight = menu.scrollHeight + 'px';
+                menu.offsetHeight;
+                menu.style.maxHeight = '0px';
             }
+
+            // A closed panel has no height but would still cast its shadow and show its border.
+            menu.classList.toggle('border-transparent', !open);
+            menu.classList.toggle('border-neutral-200', open);
+            menu.classList.toggle('dark:border-neutral-800', open);
+            menu.classList.toggle('shadow-lg', open);
+            openIcon.classList.toggle('hidden', open);
+            closeIcon.classList.toggle('hidden', !open);
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (open && typeof lucide !== 'undefined') lucide.createIcons();
+        };
+
+        toggle.addEventListener('click', function() {
+            setOpen(!isOpen());
+        });
+
+        // Once open, let the panel follow its content so the sub-menus can grow and shrink freely.
+        menu.addEventListener('transitionend', function(event) {
+            if (event.target === menu && isOpen()) menu.style.maxHeight = 'none';
+        });
+
+        // The menu now floats over the page, so it has to get out of the way like any other overlay.
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && isOpen()) {
+                setOpen(false);
+                toggle.focus();
+            }
+        });
+
+        var header = menu.closest('header');
+
+        document.addEventListener('click', function(event) {
+            // Opening the menu re-renders the icons and detaches the clicked node, so ask the path, not the node.
+            if (isOpen() && !event.composedPath().includes(header)) setOpen(false);
         });
     }
 
@@ -291,15 +321,17 @@
         btn.addEventListener('click', function() {
             var panel = btn.nextElementSibling;
             var isOpen = panel.style.maxHeight && panel.style.maxHeight !== '0px';
-            var delta = panel.scrollHeight;
 
             if (isOpen) {
+                // A group that starts open has "max-height: none", which cannot be animated.
+                panel.style.maxHeight = panel.scrollHeight + 'px';
+                panel.offsetHeight;
                 panel.style.maxHeight = '0px';
-                if (menu) menu.style.maxHeight = (menu.scrollHeight - delta) + 'px';
             } else {
-                panel.style.maxHeight = delta + 'px';
-                if (menu) menu.style.maxHeight = (menu.scrollHeight + delta) + 'px';
+                panel.style.maxHeight = panel.scrollHeight + 'px';
             }
+
+            if (menu) menu.style.maxHeight = 'none';
         });
     });
 })();
