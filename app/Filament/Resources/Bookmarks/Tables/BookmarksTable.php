@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Bookmarks\Tables;
 
+use App\Filament\Resources\BookmarkCategories\RelationManagers\BookmarksRelationManager;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -18,6 +19,7 @@ class BookmarksTable
             ->columns([
                 TextColumn::make('category.name')
                     ->label('Kategori')
+                    ->hiddenOn(BookmarksRelationManager::class)
                     ->badge()
                     ->sortable(),
 
@@ -51,6 +53,7 @@ class BookmarksTable
             ->filters([
                 SelectFilter::make('category_id')
                     ->label('Kategori')
+                    ->hiddenOn(BookmarksRelationManager::class)
                     ->relationship('category', 'name')
                     ->preload(),
             ])

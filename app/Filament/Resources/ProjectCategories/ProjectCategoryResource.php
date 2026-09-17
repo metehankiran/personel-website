@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ProjectCategories;
 use App\Filament\Resources\ProjectCategories\Pages\CreateProjectCategory;
 use App\Filament\Resources\ProjectCategories\Pages\EditProjectCategory;
 use App\Filament\Resources\ProjectCategories\Pages\ListProjectCategories;
+use App\Filament\Resources\ProjectCategories\RelationManagers\ProjectsRelationManager;
 use App\Filament\Resources\ProjectCategories\Schemas\ProjectCategoryForm;
 use App\Filament\Resources\ProjectCategories\Tables\ProjectCategoriesTable;
 use App\Models\ProjectCategory;
@@ -44,7 +45,7 @@ class ProjectCategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ProjectsRelationManager::class,
         ];
     }
 

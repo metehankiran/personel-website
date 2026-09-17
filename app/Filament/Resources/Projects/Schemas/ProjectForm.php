@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Projects\Schemas;
 
+use App\Models\ProjectCategory;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\RichEditor;
@@ -41,6 +42,8 @@ class ProjectForm
                         Select::make('category_id')
                             ->label('Kategori')
                             ->relationship('category', 'name')
+                            // Preselected when the page is opened from a category's relation table.
+                            ->default(fn (): ?int => ProjectCategory::whereKey(request()->integer('category_id'))->value('id'))
                             ->required()
                             ->searchable()
                             ->preload()

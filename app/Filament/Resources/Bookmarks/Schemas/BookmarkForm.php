@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Bookmarks\Schemas;
 
+use App\Models\BookmarkCategory;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
@@ -20,6 +21,8 @@ class BookmarkForm
                         Select::make('category_id')
                             ->label('Kategori')
                             ->relationship('category', 'name')
+                            // Preselected when the page is opened from a category's relation table.
+                            ->default(fn (): ?int => BookmarkCategory::whereKey(request()->integer('category_id'))->value('id'))
                             ->required()
                             ->searchable()
                             ->preload()

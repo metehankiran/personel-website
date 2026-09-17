@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Projects\Tables;
 
+use App\Filament\Resources\ProjectCategories\RelationManagers\ProjectsRelationManager;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -32,6 +33,7 @@ class ProjectsTable
 
                 TextColumn::make('category.name')
                     ->label('Kategori')
+                    ->hiddenOn(ProjectsRelationManager::class)
                     ->badge()
                     ->sortable()
                     ->toggleable(),
@@ -69,6 +71,7 @@ class ProjectsTable
             ->filters([
                 SelectFilter::make('category_id')
                     ->label('Kategori')
+                    ->hiddenOn(ProjectsRelationManager::class)
                     ->relationship('category', 'name')
                     ->preload(),
             ])

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\BookmarkCategories;
 use App\Filament\Resources\BookmarkCategories\Pages\CreateBookmarkCategory;
 use App\Filament\Resources\BookmarkCategories\Pages\EditBookmarkCategory;
 use App\Filament\Resources\BookmarkCategories\Pages\ListBookmarkCategories;
+use App\Filament\Resources\BookmarkCategories\RelationManagers\BookmarksRelationManager;
 use App\Filament\Resources\BookmarkCategories\Schemas\BookmarkCategoryForm;
 use App\Filament\Resources\BookmarkCategories\Tables\BookmarkCategoriesTable;
 use App\Models\BookmarkCategory;
@@ -44,7 +45,7 @@ class BookmarkCategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            BookmarksRelationManager::class,
         ];
     }
 
