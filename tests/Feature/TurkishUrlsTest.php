@@ -29,6 +29,7 @@ it('serves the public pages under Turkish urls', function (string $route, string
     'blog' => ['blog', '/blog'],
     'stack' => ['stack', '/teknolojiler'],
     'cv' => ['cv', '/cv'],
+    'search' => ['search', '/ara'],
 ]);
 
 it('serves detail pages under Turkish urls', function () {

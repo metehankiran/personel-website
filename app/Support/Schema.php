@@ -83,6 +83,11 @@ class Schema
             'description' => $general->site_description,
             'inLanguage' => self::LANGUAGE,
             'publisher' => static::personReference(),
+            'potentialAction' => [
+                '@type' => 'SearchAction',
+                'target' => ['@type' => 'EntryPoint', 'urlTemplate' => Seo::route('search').'?q={search_term_string}'],
+                'query-input' => 'required name=search_term_string',
+            ],
         ];
     }
 

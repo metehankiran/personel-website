@@ -276,3 +276,11 @@ it('points voice assistants at the questions and answers of the faq page', funct
     ])
         ->and($this->get(route('faq'))->getContent())->toContain('data-speakable="question"')->toContain('data-speakable="answer"');
 });
+
+it('announces the site search to search engines', function () {
+    expect(schemaNodes(route('home'))['WebSite']['potentialAction'])->toBe([
+        '@type' => 'SearchAction',
+        'target' => ['@type' => 'EntryPoint', 'urlTemplate' => 'https://example.test/ara?q={search_term_string}'],
+        'query-input' => 'required name=search_term_string',
+    ]);
+});

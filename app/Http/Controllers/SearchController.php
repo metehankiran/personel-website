@@ -8,23 +8,66 @@ use App\Models\Post;
 use App\Models\Project;
 use App\Settings\GeneralSettings;
 use App\Settings\SocialSettings;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class SearchController extends Controller
 {
+    private const int QUERY_LIMIT = 100;
+
+    /**
+     * The whole index at once; the Ctrl+K palette filters it in the browser.
+     */
     public function index(): JsonResponse
     {
-        $items = collect()
+        return response()->json($this->content()->merge($this->quickAccess())->values());
+    }
+
+    /**
+     * The same index searched on the server, so a query has a url of its own to link to.
+     */
+    public function results(Request $request): View
+    {
+        $query = is_string($request->query('q')) ? Str::limit(trim($request->query('q')), self::QUERY_LIMIT, '') : '';
+        $terms = array_filter(explode(' ', $this->fold($query)));
+
+        return view('pages.search', [
+            'query' => $query,
+            'results' => $terms === []
+                ? collect()
+                : $this->content()
+                    ->filter(function (array $item) use ($terms): bool {
+                        $haystack = $this->fold($item['title'].' '.$item['desc']);
+
+                        return collect($terms)->every(fn (string $term): bool => str_contains($haystack, $term));
+                    })
+                    ->groupBy('type'),
+        ]);
+    }
+
+    /**
+     * Lowercase without Turkish letters, so "İSTANBUL", "ıstanbul" and "istanbul" all meet.
+     * Ascii first: lowercasing "İ" on its own leaves a stray combining dot behind.
+     */
+    private function fold(string $text): string
+    {
+        return Str::lower(Str::ascii($text));
+    }
+
+    /**
+     * Everything a visitor can land on; shortcuts such as "send email" are not pages.
+     */
+    private function content(): Collection
+    {
+        return collect()
             ->merge($this->staticPages())
             ->merge($this->dynamicPages())
             ->merge($this->projects())
-            ->merge($this->posts())
-            ->merge($this->quickAccess());
-
-        return response()->json($items->values());
+            ->merge($this->posts());
     }
 
     private function staticPages(): Collection

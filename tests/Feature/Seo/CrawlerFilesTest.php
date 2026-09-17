@@ -116,3 +116,7 @@ it('answers /favicon.ico with the configured favicon instead of an empty file', 
 
     $this->get('/favicon.ico')->assertRedirect('https://example.test/storage/settings/fav.png');
 });
+
+it('keeps the search results page out of the sitemap', function () {
+    expect($this->get('/sitemap.xml')->getContent())->not->toContain('<loc>https://example.test/ara');
+});

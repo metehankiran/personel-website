@@ -39,6 +39,7 @@ Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.sho
 Route::post('/bulten/abone-ol', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 Route::get('/bulten/abonelikten-cik/{email}/{token}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
 
+Route::get('/ara', [SearchController::class, 'results'])->name('search');
 Route::get('/search/index', [SearchController::class, 'index'])->name('search.index');
 
 Route::get('/sayfa/{page:slug}', [PageController::class, 'show'])->name('pages.show');
