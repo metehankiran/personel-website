@@ -7,6 +7,7 @@ use App\Models\Page;
 use App\Settings\GeneralSettings;
 use BackedEnum;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Repeater\TableColumn;
 use Filament\Forms\Components\RichEditor;
@@ -103,16 +104,18 @@ class ManageGeneralSettings extends SettingsPage
                         TextInput::make('author_location')->label('Konum')->maxLength(100)->placeholder('İstanbul, TR'),
                         TextInput::make('author_address')->label('Adres')->maxLength(500),
                         Textarea::make('bio')->label('Biyografi / Özet')->rows(4)->columnSpanFull(),
+                        Hidden::make('cv_original_name'),
                         FileUpload::make('cv_path')
                             ->label('CV (PDF)')
                             ->disk('public')
                             ->visibility('public')
                             ->directory('cv')
+                            ->storeFileNamesIn('cv_original_name')
                             ->acceptedFileTypes(['application/pdf'])
                             ->maxSize(5120)
                             ->downloadable()
                             ->openable()
-                            ->helperText('CV sayfasındaki "İndir" düğmesi ve site araması bu dosyaya bağlanır. En fazla 5 MB.')
+                            ->helperText('CV sayfasındaki "İndir" düğmesi ve site araması bu dosyaya bağlanır. Ziyaretçi dosyayı senin yüklediğin adla indirir. En fazla 5 MB.')
                             ->columnSpanFull(),
                     ]),
                 Section::make('Ana Sayfa')

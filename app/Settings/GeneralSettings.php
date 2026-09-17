@@ -24,6 +24,11 @@ class GeneralSettings extends Settings
 
     public ?string $cv_path;
 
+    /**
+     * File name the CV was uploaded with; the stored file itself gets a random name.
+     */
+    public ?string $cv_original_name;
+
     public ?string $author_title;
 
     public ?string $author_location;

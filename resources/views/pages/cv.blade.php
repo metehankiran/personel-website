@@ -14,7 +14,7 @@
                     <p class="mt-3 text-lg text-neutral-600 dark:text-neutral-400 m-0">{{ $general->author_title ?? 'Developer' }} · {{ $general->author_location ?? '' }}</p>
                 </div>
                 @if($cvPath)
-                    <a href="{{ Storage::url($cvPath) }}" class="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium rounded-xl bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85 shrink-0" download>
+                    <a href="{{ Storage::url($cvPath) }}" class="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium rounded-xl bg-neutral-950 dark:bg-neutral-50 text-white dark:text-neutral-950 transition-opacity hover:opacity-85 shrink-0" download="{{ $cvDownloadName }}">
                         <i data-lucide="download" class="w-4 h-4"></i> CV İndir
                     </a>
                 @endif
