@@ -21,7 +21,7 @@
             </div>
 
             <div class="mt-16 pt-8 border-t border-neutral-200 dark:border-neutral-800">
-                <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-6">Belki bunlardan birini arıyordun</div>
+                <x-section-heading class="mb-6">Belki bunlardan birini arıyordun</x-section-heading>
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-left">
                     <a href="{{ $link('projects') }}" class="group p-5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-400 dark:hover:border-neutral-600">
                         <div class="flex items-center gap-2.5 mb-1.5">

@@ -13,7 +13,7 @@
 
                 {{-- Main Content --}}
                 <div>
-                    <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-3">Hakkımda</div>
+                    <x-eyebrow class="mb-3">Hakkımda</x-eyebrow>
                     @if(filled($about->heading))
                         <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">{{ $about->heading }}</h1>
                     @endif
@@ -27,7 +27,7 @@
                     {{-- Timeline --}}
                     @if($timeline->isNotEmpty())
                         <div class="mt-16">
-                            <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-5">Zaman çizelgesi</div>
+                            <x-section-heading class="mb-6">Zaman çizelgesi</x-section-heading>
 
                             @foreach($timeline as $entry)
                                 <div @class(['grid grid-cols-[80px_200px_1fr] max-sm:grid-cols-[70px_1fr] gap-x-6 py-5 border-b border-neutral-200 dark:border-neutral-800 items-baseline', 'border-t' => $loop->first])>
@@ -49,7 +49,7 @@
                     @endif
 
                     <div class="p-6 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50 dark:bg-neutral-900">
-                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-4">Hızlı bilgiler</div>
+                        <x-eyebrow size="sm" class="mb-4">Hızlı bilgiler</x-eyebrow>
                         <div class="flex flex-col gap-3 text-[13px]">
                             @if($general->author_location)
                                 <div class="flex justify-between items-center border-b border-neutral-200 dark:border-neutral-800 pb-2.5">

@@ -13,12 +13,10 @@
             <div class="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-10 lg:gap-12 items-start">
                 <div>
                     @if($general->availability_status)
-                        <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-3">
-                            <span class="inline-flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                                {{ $general->availability_status }}
-                            </span>
-                        </div>
+                        <x-eyebrow :accent="false" class="mb-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0"></span>
+                            {{ $general->availability_status }}
+                        </x-eyebrow>
                     @endif
                     @php($heroTitle = \App\Support\InlineHtml::from($general->hero_title))
                     @if($heroTitle !== '')

@@ -9,7 +9,7 @@
 
                 {{-- Posts --}}
                 <div>
-                    <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-3">Blog</div>
+                    <x-eyebrow class="mb-3">Blog</x-eyebrow>
                     <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">{{ $activeCategory ? $activeCategory->name : ($activeTag ? '#'.$activeTag->name : 'Yazılar.') }}</h1>
                     <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[480px]">Çalışırken karşılaştığım problemleri, deneyimleri ve denedikçe öğrendiklerimi yazıyorum.</p>
 
@@ -36,7 +36,7 @@
                 <aside class="flex flex-col gap-8 lg:sticky lg:top-24">
                     @if($categories->isNotEmpty())
                         <div>
-                            <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-4">Kategoriler</div>
+                            <x-eyebrow size="sm" class="mb-4">Kategoriler</x-eyebrow>
                             <div class="flex flex-wrap gap-1.5">
                                 <a href="{{ route('blog') }}" @class([
                                     'text-xs px-3 py-1.5 rounded-full font-medium border transition-colors',
@@ -56,7 +56,7 @@
 
                     @if($tags->isNotEmpty())
                         <div>
-                            <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-4">Etiketler</div>
+                            <x-eyebrow size="sm" class="mb-4">Etiketler</x-eyebrow>
                             <div class="flex flex-wrap gap-1.5">
                                 @foreach($tags as $tag)
                                     <a href="{{ route('blog.tag', $tag) }}" @class([

@@ -25,7 +25,7 @@
 
         {{-- Site Links --}}
         <div>
-            <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-3.5">Site</div>
+            <x-eyebrow size="sm" class="mb-3.5">Site</x-eyebrow>
             <div class="flex flex-col gap-2.5">
                 <a href="{{ route('home') }}" class="{{ $footerLinkClass }}">Ana sayfa</a>
                 <a href="{{ $link('about') }}" class="{{ $footerLinkClass }}">Hakkımda</a>
@@ -36,7 +36,7 @@
 
         {{-- İşler Links --}}
         <div>
-            <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-3.5">İşler</div>
+            <x-eyebrow size="sm" class="mb-3.5">İşler</x-eyebrow>
             <div class="flex flex-col gap-2.5">
                 <a href="{{ $link('services') }}" class="{{ $footerLinkClass }}">Hizmetler</a>
                 <a href="{{ $link('stack') }}" class="{{ $footerLinkClass }}">Stack</a>
@@ -47,7 +47,7 @@
 
         {{-- Social Links --}}
         <div>
-            <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase mb-3.5">Bağlan</div>
+            <x-eyebrow size="sm" class="mb-3.5">Bağlan</x-eyebrow>
             <div class="flex flex-col gap-2.5">
                 @if($general->author_email)
                     <a href="mailto:{{ $general->author_email }}" class="{{ $footerLinkClass }} inline-flex items-center gap-1.5">

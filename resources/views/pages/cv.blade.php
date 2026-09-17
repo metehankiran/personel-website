@@ -9,7 +9,7 @@
             {{-- Header --}}
             <div class="flex flex-col sm:flex-row justify-between items-start gap-6 sm:gap-12 mb-14">
                 <div>
-                    <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-3">CV</div>
+                    <x-eyebrow class="mb-3">CV</x-eyebrow>
                     <h1 class="text-[38px] lg:text-[56px] leading-none font-medium tracking-tighter text-neutral-950 dark:text-neutral-50 m-0">{{ $general->author_name }}</h1>
                     <p class="mt-3 text-lg text-neutral-600 dark:text-neutral-400 m-0">{{ $general->author_title ?? 'Developer' }} · {{ $general->author_location ?? '' }}</p>
                 </div>
@@ -24,15 +24,15 @@
             <div class="flex flex-col gap-14">
 
                 {{-- Özet --}}
-                <div class="grid grid-cols-1 lg:grid-cols-[160px_1fr] gap-4 lg:gap-8 items-start">
-                    <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase">Özet</div>
+                <div class="grid grid-cols-1 lg:grid-cols-[180px_1fr] gap-4 lg:gap-8 items-start">
+                    <x-section-heading>Özet</x-section-heading>
                     <p class="m-0 text-base leading-[1.7] opacity-90 text-neutral-950 dark:text-neutral-50">{{ $general->bio ?? '' }}</p>
                 </div>
 
                 {{-- Tecrübe --}}
                 @if($experiences->isNotEmpty())
-                    <div class="grid grid-cols-1 lg:grid-cols-[160px_1fr] gap-4 lg:gap-8 items-start">
-                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase">Tecrübe</div>
+                    <div class="grid grid-cols-1 lg:grid-cols-[180px_1fr] gap-4 lg:gap-8 items-start">
+                        <x-section-heading>Tecrübe</x-section-heading>
                         <div class="flex flex-col gap-8">
                             @foreach($experiences as $experience)
                                 <div>
@@ -52,8 +52,8 @@
 
                 {{-- Yetkinlikler --}}
                 @if($skills->isNotEmpty())
-                    <div class="grid grid-cols-1 lg:grid-cols-[160px_1fr] gap-4 lg:gap-8 items-start">
-                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase">Yetkinlikler</div>
+                    <div class="grid grid-cols-1 lg:grid-cols-[180px_1fr] gap-4 lg:gap-8 items-start">
+                        <x-section-heading>Yetkinlikler</x-section-heading>
                         <div class="flex flex-col gap-3.5">
                             @foreach($skills as $skill)
                                 <div class="grid grid-cols-[100px_1fr] gap-4 items-baseline">
@@ -67,8 +67,8 @@
 
                 {{-- Eğitim --}}
                 @if($educations->isNotEmpty())
-                    <div class="grid grid-cols-1 lg:grid-cols-[160px_1fr] gap-4 lg:gap-8 items-start">
-                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase">Eğitim</div>
+                    <div class="grid grid-cols-1 lg:grid-cols-[180px_1fr] gap-4 lg:gap-8 items-start">
+                        <x-section-heading>Eğitim</x-section-heading>
                         <div class="flex flex-col gap-6">
                             @foreach($educations as $education)
                                 <div>
@@ -85,8 +85,8 @@
 
                 {{-- Diller --}}
                 @if($languages->isNotEmpty())
-                    <div class="grid grid-cols-1 lg:grid-cols-[160px_1fr] gap-4 lg:gap-8 items-start">
-                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase">Diller</div>
+                    <div class="grid grid-cols-1 lg:grid-cols-[180px_1fr] gap-4 lg:gap-8 items-start">
+                        <x-section-heading>Diller</x-section-heading>
                         <div class="text-sm leading-8 text-neutral-950 dark:text-neutral-50">
                             @foreach($languages as $language)
                                 <div>{{ $language->name }} — <span class="text-neutral-600 dark:text-neutral-400">{{ $language->level->getLabel() }}</span></div>

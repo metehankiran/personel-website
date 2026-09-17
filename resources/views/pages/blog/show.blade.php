@@ -75,7 +75,7 @@
             <div class="max-w-[920px] mx-auto px-6 lg:px-12">
                 @if($post->tags->isNotEmpty())
                     <div class="flex items-center gap-4 mb-12">
-                        <div class="text-[11px] text-neutral-500 tracking-[1.2px] uppercase">Etiketler</div>
+                        <x-eyebrow size="sm">Etiketler</x-eyebrow>
                         <div class="flex flex-wrap gap-1.5">
                             @foreach($post->tags as $tag)
                                 <span class="inline-block text-[11px] px-2 py-0.5 bg-neutral-100 dark:bg-neutral-900 rounded-full font-medium text-neutral-950 dark:text-neutral-50">{{ $tag->name }}</span>

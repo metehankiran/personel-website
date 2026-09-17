@@ -5,7 +5,7 @@
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">
         <div class="max-w-7xl mx-auto px-6 lg:px-12">
-            <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-3">Hizmetler</div>
+            <x-eyebrow class="mb-3">Hizmetler</x-eyebrow>
             <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Birlikte çalışmanın yolları.</h1>
             <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[580px]">Üç farklı şekilde çalışıyorum. Hepsinde de açık iletişim, gerçekçi tahminler ve teslim sonrası destek dahil.</p>
 
@@ -48,7 +48,7 @@
             </div>
 
             {{-- Process Steps --}}
-            <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-7">Nasıl çalışırız</div>
+            <x-section-heading class="mb-7">Nasıl çalışırız</x-section-heading>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="border-t border-neutral-200 dark:border-neutral-800 pt-5">
                     <div class="text-[13px] text-neutral-500 font-mono mb-3">01</div>

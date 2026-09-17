@@ -9,7 +9,7 @@
 
                 {{-- Left Column — Contact Info --}}
                 <div>
-                    <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-3">İletişim</div>
+                    <x-eyebrow class="mb-3">İletişim</x-eyebrow>
                     <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Birlikte<br/>bir şey yapalım.</h1>
                     <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[480px]">Bir proje fikrin mi var? Sadece selam mı vereceksin? Her ikisi de iyi. Genelde 24 saat içinde dönüyorum.</p>
 

@@ -5,7 +5,7 @@
 @section('content')
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">
         <div class="max-w-7xl mx-auto px-6 lg:px-12">
-            <div class="text-xs text-neutral-500 tracking-[1.4px] uppercase mb-3">Projeler</div>
+            <x-eyebrow class="mb-3">Projeler</x-eyebrow>
             <h1 class="text-[40px] sm:text-[52px] lg:text-[64px] leading-none font-medium tracking-tighter text-balance text-neutral-950 dark:text-neutral-50 m-0">Yaptığım işler.</h1>
             <p class="text-[17px] text-neutral-600 dark:text-neutral-400 leading-relaxed mt-5 max-w-[580px]">5 yıllık freelance kariyerimden seçili çalışmalar. Hepsi production'da, büyük çoğunluğu hâlâ canlı.</p>
 
