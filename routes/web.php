@@ -9,6 +9,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReferenceController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SkillController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,3 +41,9 @@ Route::get('/bulten/abonelikten-cik/{email}/{token}', [NewsletterController::cla
 Route::get('/search/index', [SearchController::class, 'index'])->name('search.index');
 
 Route::get('/sayfa/{page:slug}', [PageController::class, 'show'])->name('pages.show');
+
+// Read by crawlers, not people, so these keep their conventional English names.
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
+Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
+Route::get('/llms.txt', [SeoController::class, 'llms'])->name('llms');
+Route::get('/favicon.ico', [SeoController::class, 'favicon'])->name('favicon');
