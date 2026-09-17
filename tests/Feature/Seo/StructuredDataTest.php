@@ -135,6 +135,20 @@ it('lists the skills, languages, schools and current work of the person', functi
         ->and($person['hasOccupation'])->toBe([['@type' => 'Occupation', 'name' => 'Takım Lideri']]);
 });
 
+it('does not mistake self-employment for an employer', function (string $company) {
+    Experience::factory()->current()->create(['title' => 'Freelancer', 'company' => $company, 'sort_order' => 1]);
+    Experience::factory()->current()->create(['title' => 'Takım Lideri', 'company' => 'Örnek A.Ş.', 'sort_order' => 2]);
+
+    $person = schemaNodes(route('home'))['Person'];
+
+    // Freelancing is still an occupation; it just has no organization behind it.
+    expect($person['worksFor'])->toBe([['@type' => 'Organization', 'name' => 'Örnek A.Ş.']])
+        ->and($person['hasOccupation'])->toBe([
+            ['@type' => 'Occupation', 'name' => 'Freelancer'],
+            ['@type' => 'Occupation', 'name' => 'Takım Lideri'],
+        ]);
+})->with(['Serbest', 'serbest çalışan', 'Freelance', 'FREELANCER', 'Bağımsız', 'Self-employed']);
+
 it('leaves the career properties out when the cv is empty', function () {
     expect(schemaNodes(route('home'))['Person'])->not->toHaveKeys(['knowsAbout', 'knowsLanguage', 'alumniOf', 'worksFor', 'hasOccupation']);
 });

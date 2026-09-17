@@ -30,6 +30,14 @@ class Schema
     private const string LANGUAGE = 'tr-TR';
 
     /**
+     * What a cv writes in the company field when there is no company (ascii-folded, lowercase).
+     * Such a job is an occupation, not an employer.
+     *
+     * @var array<int, string>
+     */
+    private const array SELF_EMPLOYMENT = ['serbest', 'freelance', 'bagimsiz', 'self-employed', 'self employed'];
+
+    /**
      * Language names as typed in the panel (ascii-folded, lowercase) => BCP 47 code.
      *
      * @var array<string, string>
@@ -156,7 +164,8 @@ class Schema
             'alumniOf' => Education::ordered()->get()
                 ->map(fn (Education $education): array => ['@type' => 'EducationalOrganization', 'name' => $education->school])->all(),
             'worksFor' => $currentJobs
-                ->map(fn (Experience $job): array => ['@type' => 'Organization', 'name' => $job->company])->all(),
+                ->reject(fn (Experience $job): bool => Str::contains(Str::lower(Str::ascii((string) $job->company)), self::SELF_EMPLOYMENT))
+                ->map(fn (Experience $job): array => ['@type' => 'Organization', 'name' => $job->company])->values()->all(),
             'hasOccupation' => $currentJobs
                 ->map(fn (Experience $job): array => ['@type' => 'Occupation', 'name' => $job->title])->all(),
         ];
