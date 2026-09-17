@@ -8,6 +8,7 @@ use App\Models\Testimonial;
 use App\Settings\GeneralSettings;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Vite;
 
 uses(RefreshDatabase::class);
 
@@ -25,6 +26,9 @@ it('extends the app layout including header and footer', function () {
 });
 
 it('loads the required scripts from the public theme directory', function () {
+    // Ignore a running Vite dev server so the built manifest is always used.
+    Vite::useHotFile(storage_path('framework/testing/vite.hot'));
+
     $response = $this->get(route('home'));
 
     $response->assertSee('build/assets/app-', escape: false);
