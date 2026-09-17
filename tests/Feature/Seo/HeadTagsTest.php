@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Support\Seo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
@@ -116,4 +117,43 @@ it('labels a preview without a publish date as a draft instead of crashing', fun
         ->get(route('blog.show', $post))
         ->assertOk()
         ->assertSee('Taslak');
+});
+
+it('describes the share image so previews render without fetching it first', function () {
+    $html = $this->get(route('about'))->getContent();
+
+    expect($html)->toContain('<meta property="og:image:width" content="1200">')
+        ->toContain('<meta property="og:image:height" content="630">')
+        ->toMatch('/<meta property="og:image:alt" content="Hakkımda — [^"]+">/u');
+});
+
+it('sizes the share image of a post from its own cover', function () {
+    Storage::fake('public');
+    Storage::disk('public')->putFileAs('covers', UploadedFile::fake()->image('kapak.png', 800, 400), 'kapak.png');
+
+    $post = Post::factory()->published()->for(Category::factory())->create(['cover_image' => 'covers/kapak.png']);
+
+    $this->get(route('blog.show', $post))
+        ->assertSee('<meta property="og:image:width" content="800">', escape: false)
+        ->assertSee('<meta property="og:image:height" content="400">', escape: false);
+});
+
+it('repeats the title and description for twitter cards', function () {
+    $html = $this->get(route('about'))->getContent();
+
+    preg_match('/<meta property="og:title" content="([^"]*)">/', $html, $title);
+    preg_match('/<meta property="og:description" content="([^"]*)">/', $html, $description);
+
+    expect($html)->toContain('<meta name="twitter:title" content="'.$title[1].'">')
+        ->toContain('<meta name="twitter:description" content="'.$description[1].'">');
+});
+
+it('dates articles for social networks and leaves other pages undated', function () {
+    $post = Post::factory()->published()->for(Category::factory())->create(['published_at' => '2026-03-05 10:00:00']);
+
+    $this->get(route('blog.show', $post))
+        ->assertSee('<meta property="article:published_time" content="2026-03-05T10:00:00+03:00">', escape: false)
+        ->assertSee('<meta property="article:modified_time" content="'.$post->updated_at->toIso8601String().'">', escape: false);
+
+    $this->get(route('about'))->assertDontSee('article:published_time', escape: false);
 });

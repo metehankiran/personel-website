@@ -2,7 +2,8 @@
 
 @section('robots', $page->isPublished() ? 'index, follow' : 'noindex, follow')
 @section('title', $page->title)
-@section('meta_description', \App\Support\Seo::description($page->body))
+{{-- Legal pages open with a "Son güncelleme: …" line; the description should start with what the page says. --}}
+@section('meta_description', \App\Support\Seo::description(preg_replace('/^\s*(<[^>]+>\s*)*Son güncelleme:[^<]*/u', '', (string) $page->body)))
 
 @push('schema')
     {{ \App\Support\Schema::script(\App\Support\Schema::breadcrumbs([$page->title => \App\Support\Seo::route('pages.show', $page)])) }}

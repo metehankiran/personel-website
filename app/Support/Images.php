@@ -80,6 +80,31 @@ class Images
     }
 
     /**
+     * The same, starting from a url this app produced: a stored upload or a bundled public asset.
+     *
+     * @return array{width: int, height: int}|null
+     */
+    public static function dimensionsFromUrl(string $url): ?array
+    {
+        $path = ltrim((string) parse_url($url, PHP_URL_PATH), '/');
+        $storagePrefix = ltrim((string) parse_url(Storage::url(''), PHP_URL_PATH), '/');
+
+        if ($storagePrefix !== '' && Str::startsWith($path, $storagePrefix)) {
+            return static::dimensions(Str::after($path, $storagePrefix));
+        }
+
+        $bundled = public_path($path);
+
+        if ($path === '' || ! is_file($bundled)) {
+            return null;
+        }
+
+        $size = @getimagesize($bundled);
+
+        return $size ? ['width' => $size[0], 'height' => $size[1]] : null;
+    }
+
+    /**
      * @return array{width: int, height: int}|null
      */
     private static function svgDimensions(string $svg): ?array

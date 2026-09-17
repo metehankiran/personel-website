@@ -7,6 +7,7 @@
     $metaDescription = \App\Support\Seo::description(html_entity_decode($__env->yieldContent('meta_description'), ENT_QUOTES), $seo->meta_description, $general->site_description, $siteTitle);
     $canonicalUrl = \App\Support\Seo::canonical();
     $shareImage = \App\Support\Seo::absolute(trim($__env->yieldContent('og_image')) ?: \App\Support\Images::og($seo->og_image_path ?? null));
+    $shareImageSize = \App\Support\Images::dimensionsFromUrl($shareImage);
 @endphp
 <!doctype html>
 <html lang="tr">
@@ -23,8 +24,16 @@
     <meta property="og:locale" content="tr_TR">
     <meta property="og:url" content="{{ $canonicalUrl }}">
     <meta property="og:image" content="{{ $shareImage }}">
+@if($shareImageSize)
+    <meta property="og:image:width" content="{{ $shareImageSize['width'] }}">
+    <meta property="og:image:height" content="{{ $shareImageSize['height'] }}">
+@endif
+    <meta property="og:image:alt" content="{{ $fullTitle }}">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $fullTitle }}">
+    <meta name="twitter:description" content="{{ $metaDescription }}">
     <meta name="twitter:image" content="{{ $shareImage }}">
+    @stack('meta')
 
     <link rel="icon" href="{{ \App\Support\Images::url($general->favicon_path ?? null, 'favicon') }}">
     <link rel="canonical" href="{{ $canonicalUrl }}">

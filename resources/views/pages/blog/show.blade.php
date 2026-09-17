@@ -6,6 +6,13 @@
 @section('og_type', 'article')
 @section('og_image', \App\Support\Images::og($post->cover_image))
 
+@push('meta')
+    @if($post->published_at)
+        <meta property="article:published_time" content="{{ $post->published_at->toIso8601String() }}">
+    @endif
+    <meta property="article:modified_time" content="{{ $post->updated_at->toIso8601String() }}">
+@endpush
+
 @push('schema')
     {{ \App\Support\Schema::script(\App\Support\Schema::blogPosting($post), \App\Support\Schema::breadcrumbs(['Blog' => \App\Support\Seo::route('blog'), $post->title => \App\Support\Seo::route('blog.show', $post)])) }}
 @endpush

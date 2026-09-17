@@ -111,3 +111,11 @@ it('never exceeds 160 characters and cuts on a word boundary', function () {
         ->and($description)->toEndWith('…')
         ->and($description)->not->toMatch('/parç…$/u');
 });
+
+it('skips the "last updated" line when describing a legal page', function () {
+    $page = Page::factory()->published()->create([
+        'body' => '<p>Son güncelleme: 17 Eylül 2026</p><p>Bu politika, sitede hangi çerezlerin hangi amaçla kullanıldığını açıklar.</p>',
+    ]);
+
+    expect(metaDescription(route('pages.show', $page)))->toStartWith('Bu politika, sitede hangi çerezlerin');
+});
