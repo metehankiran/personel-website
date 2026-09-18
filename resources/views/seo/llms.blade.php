@@ -9,6 +9,15 @@
 @foreach($pages as $label => $url)
 - [{!! $label !!}]({{ $url }})
 @endforeach
+@if($areas->isNotEmpty())
+
+## Hizmet Bölgeleri
+
+@foreach($areas as $area)
+- [{!! $area->name !!}]({{ \App\Support\Seo::route('service-areas.show', $area) }})@if(filled($area->summary)): {!! \Illuminate\Support\Str::of(strip_tags($area->summary))->squish()->limit(160) !!}@endif
+
+@endforeach
+@endif
 @if($projects->isNotEmpty())
 
 ## Projeler

@@ -115,6 +115,7 @@ class SeoController extends Controller
                     ...(Faq::published()->exists() ? ['Sıkça Sorulan Sorular' => Seo::route('faq')] : []),
                     'RSS' => Seo::route('feed'),
                 ],
+                'areas' => ServiceArea::published()->ordered()->get(['name', 'slug', 'summary']),
                 'projects' => Project::ordered()->get(['title', 'slug', 'description']),
                 'posts' => Post::published()->latest('published_at')->limit(30)->get(['title', 'slug', 'excerpt']),
             ])

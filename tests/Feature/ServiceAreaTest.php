@@ -271,4 +271,22 @@ describe('crawler files', function () {
         expect($this->get(route('sitemap'))->getContent())->not->toContain('hizmet-bolgeleri')
             ->and($this->get(route('llms'))->getContent())->not->toContain('hizmet-bolgeleri');
     });
+
+    it('describes every published area in llms.txt, in panel order', function () {
+        ServiceArea::factory()->create(['name' => 'Simav', 'summary' => "Termal turizm  ve\nseracılık.", 'sort_order' => 2]);
+        ServiceArea::factory()->create(['name' => 'Gediz', 'summary' => null, 'sort_order' => 1]);
+        ServiceArea::factory()->create(['name' => 'Gizli ilçe', 'is_published' => false]);
+
+        $this->get(route('llms'))
+            ->assertSeeInOrder([
+                '## Hizmet Bölgeleri',
+                '- [Gediz](https://example.test/hizmet-bolgeleri/gediz)'."\n",
+                '- [Simav](https://example.test/hizmet-bolgeleri/simav): Termal turizm ve seracılık.',
+            ], escape: false)
+            ->assertDontSee('Gizli ilçe');
+    });
+
+    it('leaves the section out of llms.txt while there is no published area', function () {
+        $this->get(route('llms'))->assertDontSee('## Hizmet Bölgeleri');
+    });
 });
