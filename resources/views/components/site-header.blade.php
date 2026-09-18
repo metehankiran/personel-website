@@ -32,8 +32,11 @@
         'pages' => request()->routeIs('pages.show', 'faq'),
     ];
 
+    // On a 404 a route parameter is still the raw string from the url, which is the slug already.
+    $slugOf = fn (mixed $parameter): ?string => $parameter instanceof \Illuminate\Database\Eloquent\Model ? $parameter->slug : $parameter;
+
     // Slug of the static page being viewed, to mark it inside the "Sayfalar" menu.
-    $openPageSlug = request()->routeIs('pages.show') ? request()->route('page')?->slug : null;
+    $openPageSlug = request()->routeIs('pages.show') ? $slugOf(request()->route('page')) : null;
     $onFaq = request()->routeIs('faq');
 
     $current = fn (string $item): string => $nav[$item] ? 'aria-current="page"' : '';

@@ -86,3 +86,7 @@ it('starts the mobile submenu expanded on a static page', function () {
 
     expect(headerHtml(route('pages.show', $page)))->toMatch('/data-nav-group="pages"[^>]*data-mobile-collapse>.*?<div[^>]*style="max-height: none"/s');
 });
+
+it('still renders on the 404 of an unknown static page, where the route parameter is not a model', function () {
+    $this->get('/sayfa/olmayan-sayfa')->assertNotFound();
+});
