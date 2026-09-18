@@ -10,6 +10,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReferenceController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SeoController;
+use App\Http\Controllers\ServiceAreaController;
 use App\Http\Controllers\SkillController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,9 @@ Route::get('/yer-isaretlerim', BookmarkController::class)->name('bookmarks');
 
 Route::get('/projeler', [ProjectController::class, 'index'])->name('projects');
 Route::get('/projeler/{project:slug}', [ProjectController::class, 'show'])->name('projects.show');
+
+Route::get('/hizmet-bolgeleri', [ServiceAreaController::class, 'index'])->name('service-areas');
+Route::get('/hizmet-bolgeleri/{serviceArea:slug}', [ServiceAreaController::class, 'show'])->name('service-areas.show');
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 Route::get('/blog/kategori/{category:slug}', [BlogController::class, 'category'])->name('blog.category');

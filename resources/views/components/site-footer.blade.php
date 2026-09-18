@@ -34,6 +34,7 @@
             <x-eyebrow size="sm" class="mb-3.5">İşler</x-eyebrow>
             <div class="flex flex-col gap-2.5">
                 <a href="{{ $link('services') }}" class="{{ $footerLinkClass }}">Hizmetler</a>
+                <a href="{{ $link('service-areas') }}" class="{{ $footerLinkClass }}">Hizmet Bölgeleri</a>
                 <a href="{{ $link('stack') }}" class="{{ $footerLinkClass }}">Teknolojiler</a>
                 <a href="{{ $link('references') }}" class="{{ $footerLinkClass }}">Referanslar</a>
                 <a href="{{ $link('cv') }}" class="{{ $footerLinkClass }}">CV</a>

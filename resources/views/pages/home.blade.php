@@ -6,6 +6,10 @@
     $link = fn (string $name): string => Route::has($name) ? route($name) : '#';
 @endphp
 
+@push('schema')
+    {{ \App\Support\Schema::script(\App\Support\Schema::business()) }}
+@endpush
+
 @section('content')
     {{-- Hero --}}
     <section class="py-10 lg:py-[60px] first-of-type:pt-12 lg:first-of-type:pt-20">

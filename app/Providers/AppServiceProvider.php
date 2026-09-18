@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Page;
+use App\Models\ServiceArea;
 use App\Settings\GeneralSettings;
 use App\Settings\SeoSettings;
 use App\Settings\SocialSettings;
@@ -29,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
                 // Sort in PHP: database collations disagree on Turkish letters (SQLite orders bytewise).
                 ->sortBy(fn (Page $page): string => Str::ascii(Str::lower($page->title)))
                 ->values());
+        });
+
+        View::composer('components.site-header', function ($view) {
+            $view->with('menuAreas', ServiceArea::published()->ordered()->get(['name', 'slug']));
         });
 
         View::composer('*', function ($view) {

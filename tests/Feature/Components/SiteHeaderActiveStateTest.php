@@ -73,6 +73,8 @@ it('lets the brand shrink and truncate so the header never overflows narrow scre
         ->and($html)->not->toContain('data-site-brand class="flex items-center gap-3 shrink-0"');
 });
 
-it('shrinks the search box on narrow desktops so the navigation and the brand both fit', function () {
-    expect($this->get(route('home'))->getContent())->toContain('min-w-[220px] xl:min-w-[150px] 2xl:min-w-[220px]');
+it('shrinks the search box once the desktop navigation shows, so the navigation and the brand both fit', function () {
+    // The header is capped at max-w-7xl, so a wider screen leaves no extra room to grow the box back.
+    expect($this->get(route('home'))->getContent())->toContain('min-w-[220px] xl:min-w-[150px] bg-neutral-50')
+        ->not->toContain('2xl:min-w-[220px]');
 });

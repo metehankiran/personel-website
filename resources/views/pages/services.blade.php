@@ -81,8 +81,18 @@
                 </div>
             </div>
 
+            @if($provinces->isNotEmpty())
+                <a href="{{ route('service-areas') }}" class="mt-16 flex items-center justify-between gap-6 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-300 dark:hover:border-neutral-700 group">
+                    <span>
+                        <span class="block text-[17px] font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">Hizmet verdiğim bölgeler</span>
+                        <span class="block mt-1 text-sm text-neutral-600 dark:text-neutral-400">{{ $provinces->join(', ', ' ve ') }} ve ilçelerindeki işletmelerle yüz yüze ya da uzaktan çalışıyorum.</span>
+                    </span>
+                    <span class="shrink-0 inline-flex items-center gap-1.5 text-[13px] font-medium text-neutral-950 dark:text-neutral-50">Hizmet bölgeleri <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-0.5"></i></span>
+                </a>
+            @endif
+
             @if($faqs->isNotEmpty())
-                <a href="{{ route('faq') }}" class="mt-16 flex items-center justify-between gap-6 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-300 dark:hover:border-neutral-700 group">
+                <a href="{{ route('faq') }}" class="{{ $provinces->isNotEmpty() ? 'mt-5' : 'mt-16' }} flex items-center justify-between gap-6 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 transition-colors hover:border-neutral-300 dark:hover:border-neutral-700 group">
                     <span>
                         <span class="block text-[17px] font-semibold tracking-tight text-neutral-950 dark:text-neutral-50">Aklına takılan bir şey mi var?</span>
                         <span class="block mt-1 text-sm text-neutral-600 dark:text-neutral-400">Fiyat, süre ve süreçle ilgili en sık gelen {{ $faqs->count() }} soruyu yanıtladım.</span>

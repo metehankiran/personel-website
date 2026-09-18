@@ -16,6 +16,7 @@ use App\Models\Page;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\Service;
+use App\Models\ServiceArea;
 use App\Models\Skill;
 use App\Models\Tag;
 use App\Models\Testimonial;
@@ -105,6 +106,7 @@ class SeoController extends Controller
                 'pages' => [
                     'Hakkımda' => Seo::route('about'),
                     'Hizmetler' => Seo::route('services'),
+                    ...(ServiceArea::published()->exists() ? ['Hizmet Bölgeleri' => Seo::route('service-areas')] : []),
                     'Projeler' => Seo::route('projects'),
                     'Referanslar' => Seo::route('references'),
                     'Teknolojiler' => Seo::route('stack'),
@@ -133,9 +135,11 @@ class SeoController extends Controller
 
         return collect(self::STATIC_PAGES)
             ->map(fn (array $page): array => $entry(Seo::route($page[0]), $this->staticPageModified($page[0]), $page[1], $page[2]))
+            ->when(ServiceArea::published()->exists(), fn (Collection $entries): Collection => $entries->push($entry(Seo::route('service-areas'), $this->latest(ServiceArea::published()->max('updated_at')), 'monthly', '0.8')))
             ->when(Faq::published()->exists(), fn (Collection $entries): Collection => $entries->push($entry(Seo::route('faq'), $this->latest(Faq::published()->max('updated_at')), 'monthly', '0.6')))
             ->concat(Post::published()->latest('published_at')->get()->map(fn (Post $post): array => $entry(Seo::route('blog.show', $post), $post->updated_at, 'monthly', '0.7')))
             ->concat(Project::ordered()->get()->map(fn (Project $project): array => $entry(Seo::route('projects.show', $project), $project->updated_at, 'monthly', '0.7')))
+            ->concat(ServiceArea::published()->ordered()->get()->map(fn (ServiceArea $area): array => $entry(Seo::route('service-areas.show', $area), $area->updated_at, 'monthly', '0.7')))
             ->concat(Category::withPublishedPosts()->get()->map(fn (Category $category): array => $entry(Seo::route('blog.category', $category), $category->updated_at, 'weekly', '0.4')))
             ->concat(Tag::withPublishedPosts()->get()->map(fn (Tag $tag): array => $entry(Seo::route('blog.tag', $tag), $tag->updated_at, 'weekly', '0.3')))
             ->concat(Page::published()->get()->map(fn (Page $page): array => $entry(Seo::route('pages.show', $page), $page->updated_at, 'yearly', '0.3')));

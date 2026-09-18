@@ -11,6 +11,7 @@ use App\Models\Language;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\Service;
+use App\Models\ServiceArea;
 use App\Models\Skill;
 use App\Models\Testimonial;
 use App\Settings\AboutSettings;
@@ -241,6 +242,8 @@ class Schema
             return [];
         }
 
+        $areas = static::areaServed();
+
         return [
             '@type' => 'ItemList',
             'name' => 'Hizmetler',
@@ -252,8 +255,83 @@ class Schema
                     'name' => $service->title,
                     'description' => $service->description,
                     'provider' => static::personReference(),
+                    'areaServed' => $areas,
                 ],
             ])->all(),
+        ];
+    }
+
+    /**
+     * The owner as a local business, which is how map and local results understand a freelancer.
+     * Without an area to serve there is nothing local to say, so the node is left out.
+     *
+     * @return array<string, mixed>
+     */
+    public static function business(): array
+    {
+        $areas = static::areaServed();
+
+        if ($areas === []) {
+            return [];
+        }
+
+        $general = app(GeneralSettings::class);
+
+        return [
+            '@type' => 'ProfessionalService',
+            '@id' => static::id('business'),
+            'name' => $general->author_name,
+            'description' => $general->site_description ?: $general->bio,
+            'url' => Seo::siteUrl(),
+            'email' => $general->author_email,
+            'telephone' => $general->author_phone,
+            'address' => static::address($general->author_location),
+            'founder' => static::personReference(),
+            'areaServed' => $areas,
+        ];
+    }
+
+    /**
+     * What is offered in a single area, provided by the business the list page describes.
+     *
+     * @return array<string, mixed>
+     */
+    public static function serviceArea(ServiceArea $area): array
+    {
+        return [
+            '@type' => 'Service',
+            'name' => $area->name.' web tasarım ve yazılım',
+            'description' => $area->summary,
+            'url' => Seo::route('service-areas.show', $area),
+            'provider' => ['@id' => static::id('business')],
+            'areaServed' => static::place($area),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private static function place(ServiceArea $area): array
+    {
+        return [
+            '@type' => 'AdministrativeArea',
+            'name' => $area->name,
+            'containedInPlace' => ['@type' => 'AdministrativeArea', 'name' => $area->province],
+        ];
+    }
+
+    /**
+     * Each province once, followed by its districts in panel order.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private static function areaServed(): array
+    {
+        $areas = ServiceArea::published()->ordered()->get(['name', 'province']);
+
+        return [
+            ...$areas->pluck('province')->unique()->map(fn (string $province): array => ['@type' => 'AdministrativeArea', 'name' => $province])->values()->all(),
+            ...$areas->map(static::place(...))->all(),
         ];
     }
 

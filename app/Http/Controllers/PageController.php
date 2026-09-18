@@ -11,6 +11,7 @@ use App\Models\Language;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Service;
+use App\Models\ServiceArea;
 use App\Models\Skill;
 use App\Models\Testimonial;
 use App\Models\TimelineEntry;
@@ -43,6 +44,7 @@ class PageController extends Controller
         return view('pages.services', [
             'services' => Service::ordered()->get(),
             'faqs' => Faq::published()->ordered()->get(),
+            'provinces' => ServiceArea::published()->ordered()->pluck('province')->unique()->values(),
         ]);
     }
 

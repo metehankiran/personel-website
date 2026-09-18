@@ -1,7 +1,7 @@
 @php
     $link = fn (string $name): string => Route::has($name) ? route($name) : '#';
 
-    $navLinkClass = 'px-3.5 py-2 rounded-lg text-[13px] text-neutral-600 dark:text-neutral-400 flex items-center gap-1.5 whitespace-nowrap transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900 hover:text-neutral-950 dark:hover:text-neutral-50';
+    $navLinkClass = 'px-2.5 py-2 rounded-lg text-[13px] text-neutral-600 dark:text-neutral-400 flex items-center gap-1.5 whitespace-nowrap transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900 hover:text-neutral-950 dark:hover:text-neutral-50';
     $navLinkActive = 'text-neutral-950 dark:text-neutral-50 font-medium';
 
     $dropLinkClass = 'block px-3 py-2.5 rounded-lg transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900';
@@ -30,6 +30,7 @@
         'works' => $nav->only(['projects', 'services', 'references', 'stack'])->contains(true),
         'writing' => $nav->only(['blog', 'bookmarks'])->contains(true),
         'pages' => request()->routeIs('pages.show', 'faq'),
+        'areas' => request()->routeIs('service-areas', 'service-areas.*'),
     ];
 
     // On a 404 a route parameter is still the raw string from the url, which is the slug already.
@@ -37,6 +38,10 @@
 
     // Slug of the static page being viewed, to mark it inside the "Sayfalar" menu.
     $openPageSlug = request()->routeIs('pages.show') ? $slugOf(request()->route('page')) : null;
+
+    // Slug of the service area being viewed, to mark it inside the "Bölgeler" menu.
+    $openAreaSlug = request()->routeIs('service-areas.show') ? $slugOf(request()->route('serviceArea')) : null;
+    $onAreaList = request()->routeIs('service-areas');
     $onFaq = request()->routeIs('faq');
 
     $current = fn (string $item): string => $nav[$item] ? 'aria-current="page"' : '';
@@ -90,6 +95,31 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Bölgeler Dropdown: published service areas, managed in the panel --}}
+            @if($menuAreas->isNotEmpty())
+                <div class="relative group">
+                    <button data-nav-group="areas" data-active="{{ $groups['areas'] ? 'true' : 'false' }}" @class([$navLinkClass, $navLinkActive => $groups['areas'], 'group-hover:bg-neutral-100 dark:group-hover:bg-neutral-900 group-hover:text-neutral-950 dark:group-hover:text-neutral-50']) type="button">
+                        <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Bölgeler
+                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-60 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="absolute top-full left-0 pt-1.5 hidden group-hover:block z-50">
+                        <div class="w-[380px] bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-lg p-2">
+                            <a href="{{ route('service-areas') }}" {!! $onAreaList ? 'aria-current="page"' : '' !!} @class([$dropLinkClass, $dropLinkActive => $onAreaList])>
+                                <div class="{{ $dropTitleClass }}"><i data-lucide="map" class="w-3.5 h-3.5 inline mr-1.5 opacity-50"></i>Tüm hizmet bölgeleri</div>
+                                <div class="{{ $dropDescClass }}">Yüz yüze ve uzaktan çalıştığım yerler</div>
+                            </a>
+                            <div class="mt-1 pt-1 border-t border-neutral-200 dark:border-neutral-800 grid grid-cols-2">
+                                @foreach($menuAreas as $menuArea)
+                                    <a href="{{ route('service-areas.show', $menuArea) }}" {!! $openAreaSlug === $menuArea->slug ? 'aria-current="page"' : '' !!} @class([$dropLinkClass, $dropLinkActive => $openAreaSlug === $menuArea->slug])>
+                                        <div class="{{ $dropTitleClass }} mb-0">{{ $menuArea->name }}</div>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             {{-- Yazı Dropdown --}}
             <div class="relative group">
@@ -158,7 +188,7 @@
             </div>
 
             {{-- Search Trigger (Desktop) --}}
-            <button type="button" class="search-trigger hidden sm:inline-flex items-center gap-2.5 px-3 py-[7px] min-w-[220px] xl:min-w-[150px] 2xl:min-w-[220px] bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-neutral-600 dark:text-neutral-400 text-[13px] font-sans transition-colors hover:border-neutral-400 dark:hover:border-neutral-600 cursor-pointer"
+            <button type="button" class="search-trigger hidden sm:inline-flex items-center gap-2.5 px-3 py-[7px] min-w-[220px] xl:min-w-[150px] bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg text-neutral-600 dark:text-neutral-400 text-[13px] font-sans transition-colors hover:border-neutral-400 dark:hover:border-neutral-600 cursor-pointer"
                 data-search-trigger aria-label="Sitede ara (Cmd+K)" aria-haspopup="dialog">
                 <i data-lucide="search" class="w-3.5 h-3.5 opacity-60 shrink-0"></i>
                 <span class="flex-1 text-left">Ara…</span>
@@ -211,6 +241,24 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Bölgeler (Collapsible) --}}
+            @if($menuAreas->isNotEmpty())
+                <div>
+                    <button type="button" data-nav-group="areas" data-active="{{ $groups['areas'] ? 'true' : 'false' }}" @class(['w-full flex items-center justify-between', $mobileNavClass, 'text-neutral-950 dark:text-neutral-50 font-medium' => $groups['areas']]) data-mobile-collapse>
+                        <span class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> Bölgeler</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 opacity-60"></i>
+                    </button>
+                    <div class="max-h-0 overflow-hidden transition-all duration-200 ease-in-out pl-6" @if($groups['areas']) style="max-height: none" @endif>
+                        <div class="flex flex-col gap-1 pt-1">
+                            <a href="{{ route('service-areas') }}" {!! $onAreaList ? 'aria-current="page"' : '' !!} @class([$mobileNavClass, $mobileNavActive => $onAreaList])><span class="flex items-center gap-2"><i data-lucide="map" class="w-4 h-4"></i> Tüm hizmet bölgeleri</span></a>
+                            @foreach($menuAreas as $menuArea)
+                                <a href="{{ route('service-areas.show', $menuArea) }}" {!! $openAreaSlug === $menuArea->slug ? 'aria-current="page"' : '' !!} @class([$mobileNavClass, $mobileNavActive => $openAreaSlug === $menuArea->slug])><span class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> {{ $menuArea->name }}</span></a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             {{-- Yazı (Collapsible) --}}
             <div>
